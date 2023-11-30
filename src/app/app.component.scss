@@ -1,0 +1,11 @@
+$topFontColor: rgb(00,221,33);
+
+.top{
+  font-size: 30px;
+  top: auto;
+  color: #f3c;
+  background-color: $topFontColor;
+  @if($topFontColor != rgb(99,99,99)){
+    font-size: 20px;
+  }
+};

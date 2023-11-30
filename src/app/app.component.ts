@@ -7,4 +7,5 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'lazyrhythm';
+  topList = ['Web Security', 'FrontEnd', 'BackEnd', 'Testing', 'Ops',]
 }

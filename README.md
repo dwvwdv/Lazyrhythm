@@ -1,6 +1,8 @@
 # Lazyrhythm
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.0.
+## What is Lazyrhythm?
+
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.0 -> 17.0.2.
 
 ## Development server
 
