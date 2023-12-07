@@ -1,11 +1,74 @@
 $topFontColor: rgb(00,221,33);
+$topArea: 10%;
+
 
 .top{
-  font-size: 30px;
-  top: auto;
-  color: #f3c;
-  background-color: $topFontColor;
-  @if($topFontColor != rgb(99,99,99)){
-    font-size: 20px;
-  }
+  width:100%;
 };
+
+.top ,.top-content{
+  display: flex;
+  padding: 10px 30px;
+  justify-content:space-between;
+
+  // width: fit-content;
+}
+
+.main-content{
+  position: relative;
+  top: 50%;
+}
+
+.show-screen{
+  top: 30%;
+  width: 100%;
+
+  background-color: orange;
+  // display: none;
+}
+
+
+.hidden-div{
+  color: greenyellow;
+}
+
+@media all and (min-width:700px) { //phone
+  .hidden-div{
+    display: none;
+  }
+  .top{
+    width: 85%;
+    height: $topArea;
+    margin: 20px;
+
+    position: fixed;
+    // top: 0;
+    // left: 0;
+    z-index: 9999;
+
+    font-size: 30px;
+    border-radius: 7px;
+    color: #f3c;
+    background-color: $topFontColor;
+    @if($topFontColor != rgb(99,99,99)){
+      font-size: 20px;
+    }
+    opacity: 0.5;
+    // float: inline;
+  }
+  .top ,.top-content{
+    float: left;
+    padding: 10px 30px;
+
+    // width: fit-content;
+  }
+
+  .rand-pic{
+    width: 50px;
+    height: 100px;
+    display: none;
+  }
+}
+
+@media screen and (min-width:900px){
+}
