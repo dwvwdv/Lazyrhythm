@@ -1,74 +1,80 @@
-$topFontColor: rgb(00,221,33);
+$topBackgroundColor: rgb(155, 255, 255);
+$topFontColor: rgb(0, 0, 0);
 $topArea: 10%;
 
 
-.top{
-  width:100%;
-};
-
-.top ,.top-content{
-  display: flex;
-  padding: 10px 30px;
-  justify-content:space-between;
-
-  // width: fit-content;
-}
-
-.main-content{
-  position: relative;
-  top: 50%;
-}
-
-.show-screen{
-  top: 30%;
+.top {
   width: 100%;
-
-  background-color: orange;
-  // display: none;
+  text-align: center;
+  background-color: $topBackgroundColor;
 }
 
-
-.hidden-div{
-  color: greenyellow;
+.top,
+.top-content {
+  display: flex;
+  padding: 0.5rem 0rem;
+  justify-content: space-around;
 }
 
-@media all and (min-width:700px) { //phone
-  .hidden-div{
+// .main-content {
+//   position: relative;
+//   top: 50%;
+// }
+//
+// .show-screen {
+//   top: 30%;
+//   width: 100%;
+//
+//   background-color: orange;
+//   // display: none;
+// }
+//
+//
+// .hidden-div {
+//   color: greenyellow;
+// }
+
+
+@media all and (min-width:900px) {
+
+  //phone
+  .hidden-div {
     display: none;
   }
-  .top{
-    width: 85%;
-    height: $topArea;
-    margin: 20px;
 
-    position: fixed;
-    // top: 0;
-    // left: 0;
+  .top {
+    margin: 1rem 0rem;
+
+    // position: fixed;
     z-index: 9999;
-
+    //
     font-size: 30px;
-    border-radius: 7px;
-    color: #f3c;
-    background-color: $topFontColor;
-    @if($topFontColor != rgb(99,99,99)){
+    border-radius: 1px;
+    color: $topFontColor;
+
+    // background-color: rgb(99, 99, 99);
+    //
+    @if($topFontColor !=rgb(99, 99, 99)) {
       font-size: 20px;
     }
-    opacity: 0.5;
+
+    // opacity: 0.99;
     // float: inline;
   }
-  .top ,.top-content{
-    float: left;
-    padding: 10px 30px;
 
-    // width: fit-content;
-  }
+  // .top,
+  // .top-content {
+  //   float: left;
+  //   padding: 10px 30px;
+  //
+  //   // width: fit-content;
+  // }
 
-  .rand-pic{
-    width: 50px;
-    height: 100px;
-    display: none;
-  }
+  // .rand-pic {
+  //   width: 50px;
+  //   height: 100px;
+  //   display: none;
+  // }
 }
 
-@media screen and (min-width:900px){
-}
+@media screen and (min-width:900px) {}

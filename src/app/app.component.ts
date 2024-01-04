@@ -9,9 +9,9 @@ export class AppComponent {
   title = 'lazyrhythm';
   topList = ['Web Security', 'FrontEnd', 'BackEnd', 'Testing', 'Ops',]
   user = 'dwvwdv';
-  pic = 'picTest';
+  pic = 'https://picsum.photos/200/300';
 
-  getCat = function() {
+  getPicture = function() {
     fetch("https://picsum.photos/200/300")
       .then(response => response.text())
       .then(result => console.log(result))
