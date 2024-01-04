@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MenuComponent } from './menu/menu.component';
 
 @Component({
   selector: 'app-root',
@@ -11,10 +12,15 @@ export class AppComponent {
   user = 'dwvwdv';
   pic = 'https://picsum.photos/200/300';
 
+
   getPicture = function() {
     fetch("https://picsum.photos/200/300")
       .then(response => response.text())
       .then(result => console.log(result))
       .catch(error => console.log('error', error));
+  }
+
+  showMenu = function(input: string) {
+    console.log(input)
   }
 }

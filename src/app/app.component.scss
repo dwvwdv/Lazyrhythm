@@ -13,7 +13,21 @@ $topArea: 10%;
 .top-content {
   display: flex;
   padding: 0.5rem 0rem;
+  border-radius: 3px;
   justify-content: space-around;
+  cursor: default;
+}
+
+// .top-content-button {
+//   width: 8rem;
+//   height: 1.8rem;
+//   border-radius: 0.5rem;
+//   background-color: blue;
+// }
+
+.top-content:hover {
+  background-color: green;
+  width: 12rem;
 }
 
 // .main-content {

@@ -2,12 +2,18 @@
 
   <div class="top">
     @for(topItem of topList;track topList){
-    <div class="top-content">{{topItem}}</div>
+    <div class="top-content" (mouseover)="showMenu(topItem)">
+      <div class="top-content-button">
+        {{topItem}}
+      </div>
+    </div>
     }
   </div>
   <!-- <a href={{lst1}}></a> -->
 
-  <div class="main-content">
+<div class="main-content">
+  <app-menu></app-menu>
+  <app-menu></app-menu>
     <table class="showPicTable">
       <tr>
         <td>{{pic}}</td>
@@ -20,7 +26,7 @@
         <!-- <td><img src="https://picsum.photos/200/300?3" alt="" class="rand-pic"></td> -->
       </tr>
       <tr>
-        <td><app-menu></app-menu></td>
+        <td></td>
         <td></td>
         <td></td>
       </tr>

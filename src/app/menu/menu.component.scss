@@ -1,8 +1,9 @@
 .menu {
   background-color: #f0c;
   border-radius: 3px;
+  cursor: default;
 }
 
-.menu-content {
-
+.menu-content:hover {
+  background-color: red;
 }
