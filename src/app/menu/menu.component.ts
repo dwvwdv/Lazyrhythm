@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-menu',
@@ -8,7 +8,10 @@ import { Component } from '@angular/core';
   styleUrl: './menu.component.scss'
 })
 export class MenuComponent {
+  constructor() {
+    // this.items = ['Web Page', 'Server', 'Active Directory'];
+  }
   test = 'menu component.';
   myWebSite = "http://google.com";
-  items = ['Web Page', 'Server', 'Active Directory'];
+  @Input() items: string[] = [''];
 }

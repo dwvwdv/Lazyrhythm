@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output, inject } from '@angular/core';
 import { MenuComponent } from './menu/menu.component';
 
 @Component({
@@ -11,6 +11,8 @@ export class AppComponent {
   topList = ['Web Security', 'FrontEnd', 'BackEnd', 'Testing', 'Ops',]
   user = 'dwvwdv';
   pic = 'https://picsum.photos/200/300';
+  aaa: string[] = ['a', 'aa', 'aaa'];
+  // @Input() items: string[] = [''];
 
 
   getPicture = function() {
@@ -20,7 +22,42 @@ export class AppComponent {
       .catch(error => console.log('error', error));
   }
 
-  showMenu = function(input: string) {
-    console.log(input)
+  showMenu = function(topItemName: string) {
+    let hoverList: { [key: string]: string[] } = {
+      'Web Security': [
+        'Client',
+        'Server',
+        'Active Directory'
+      ],
+      'FrontEnd': [
+        'Basic',
+        'Framework',
+        'Packet',
+        'CSS Beautiful',
+      ],
+      'BackEnd': [
+        'Authorize',
+        'Database',
+        'Architecture',
+      ],
+      'Testing': [
+        'Unit Test',
+        'Intergration Test',
+        'End to end Test',
+        'Smoke Test',
+        'Regression Test',
+      ],
+      'Ops': [
+        'Cloud',
+        'Docker',
+        'Git',
+      ],
+    };
+    // housingService: HousingService = inject(HousingService);
+    // let menuComponent: MenuComponent = inject(menuService);
+    // let menuComponent: MenuComponent = new MenuComponent(hoverList[topItemName]);
+    // c.items = hoverList[topItemName];
+
+    console.log(hoverList[topItemName]);
   }
 }
