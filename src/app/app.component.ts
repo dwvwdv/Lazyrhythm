@@ -11,7 +11,7 @@ export class AppComponent {
   topList = ['Web Security', 'FrontEnd', 'BackEnd', 'Testing', 'Ops',]
   user = 'dwvwdv';
   pic = 'https://picsum.photos/200/300';
-  aaa: string[] = ['a', 'aa', 'aaa'];
+  bbb: string[] = ['b', '3', '433'];
   // @Input() items: string[] = [''];
 
 
@@ -22,7 +22,7 @@ export class AppComponent {
       .catch(error => console.log('error', error));
   }
 
-  showMenu = function(topItemName: string) {
+  showMenu(topItemName: string) {
     let hoverList: { [key: string]: string[] } = {
       'Web Security': [
         'Client',
@@ -57,7 +57,7 @@ export class AppComponent {
     // let menuComponent: MenuComponent = inject(menuService);
     // let menuComponent: MenuComponent = new MenuComponent(hoverList[topItemName]);
     // c.items = hoverList[topItemName];
-
+    this.bbb = hoverList[topItemName];
     console.log(hoverList[topItemName]);
   }
 }

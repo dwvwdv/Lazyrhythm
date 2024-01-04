@@ -13,5 +13,8 @@ export class MenuComponent {
   }
   test = 'menu component.';
   myWebSite = "http://google.com";
-  @Input() items: string[] = [''];
+  @Input() items: string[] = [];
+  // getList(list: string) {
+  //   this.items = list;
+  // }
 }
