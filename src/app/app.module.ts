@@ -4,6 +4,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MenuComponent } from './menu/menu.component';
+import { AnotherPageComponent } from './another-page/another-page.component';
+import { appConfig } from './app.config';
 
 @NgModule({
   declarations: [
@@ -12,7 +14,8 @@ import { MenuComponent } from './menu/menu.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    MenuComponent
+    MenuComponent,
+    AnotherPageComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,5 +1,4 @@
-import { Component, EventEmitter, Output, inject } from '@angular/core';
-import { MenuComponent } from './menu/menu.component';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -11,8 +10,7 @@ export class AppComponent {
   topList = ['Web Security', 'FrontEnd', 'BackEnd', 'Testing', 'Ops',]
   user = 'dwvwdv';
   pic = 'https://picsum.photos/200/300';
-  bbb: string[] = ['b', '3', '433'];
-  // @Input() items: string[] = [''];
+  menuList: string[] = ['b', '3', '433'];
 
 
   getPicture = function() {
@@ -57,7 +55,10 @@ export class AppComponent {
     // let menuComponent: MenuComponent = inject(menuService);
     // let menuComponent: MenuComponent = new MenuComponent(hoverList[topItemName]);
     // c.items = hoverList[topItemName];
-    this.bbb = hoverList[topItemName];
-    console.log(hoverList[topItemName]);
+    this.menuList = hoverList[topItemName];
+    // document.getelementsbyclassname('menu')[0].style.display = 'grid';
+    let menuDom = document.getElementsByClassName('menu') as HTMLCollectionOf<HTMLElement>;
+    menuDom[0].style.display = 'grid';
+    console.log(document.getElementsByClassName('menu')[0]);
   }
 }

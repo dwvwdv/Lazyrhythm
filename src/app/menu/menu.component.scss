@@ -1,9 +1,21 @@
 .menu {
-  background-color: #f0c;
-  border-radius: 3px;
+  border-radius: 0.5rem;
   cursor: default;
+  display: none;
+  width: 10rem;
+}
+
+.menu-content {
+  border: solid;
+  border-radius: 0.5rem;
+  background-color: #5cc;
 }
 
 .menu-content:hover {
-  background-color: red;
+  background-color: #ccc;
+}
+
+.menu-link {
+  text-decoration: none;
+  color: #c55;
 }

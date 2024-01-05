@@ -1,7 +1,8 @@
 <div class="menu">
   @for(item of items;track items){
-  <div class="menu-content">
-    {{item}}
-  </div>
+    <div class="menu-content">
+    <a href="{{getItemLink(item)}}" class="menu-link">{{item}}</a>
+    </div>
+    <router-outlet></router-outlet>
   }
 </div>
