@@ -5,7 +5,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MenuComponent } from './menu/menu.component';
 import { AnotherPageComponent } from './another-page/another-page.component';
-import { appConfig } from './app.config';
+import { routes } from './app.route';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -15,9 +16,12 @@ import { appConfig } from './app.config';
     BrowserModule,
     AppRoutingModule,
     MenuComponent,
-    AnotherPageComponent
+    AnotherPageComponent,
+    RouterModule.forChild(routes)
   ],
+  exports: [RouterModule],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}
