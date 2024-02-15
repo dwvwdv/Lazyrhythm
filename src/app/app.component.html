@@ -1,81 +1,57 @@
-<div class="show-screen" >
+<body>
+  <div class="show-screen" >
 
-  <div class="top">
-    @for(topItem of topList;track topList){
-    <div class="top-content" (mouseover)="showMenu(topItem)">
-      <div class="top-content-button">
-        {{topItem}}
+    <div class="top">
+      @for(topItem of topList;track topList){
+      <div class="top-content" (mouseover)="showMenu(topItem)">
+        <div class="top-content-button">
+          {{topItem}}
+        </div>
       </div>
+      }
     </div>
-    }
-  </div>
-  <!-- <app-another-page></app-another-page> -->
-  <!-- <a href={{lst1}}></a> -->
-  <!-- <app-menu (getList())={{aaa}}/> -->
-  <!-- <app-menu [items]="['1','3','433']"/> -->
-  <app-menu [items]="menuList"/>
+    <!-- <app-another-page></app-another-page> -->
+    <!-- <a href={{lst1}}></a> -->
+    <!-- <app-menu (getList())={{aaa}}/> -->
+    <!-- <app-menu [items]="['1','3','433']"/> -->
+    <app-menu [items]="menuList"/>
 
-  <div class="main-content">
-    <table class="showPicTable">
-      <tr>
-        <td>{{pic}}</td>
-        <td>{{pic}}</td>
-        <td>{{pic}}</td>
-      </tr>
-      <tr>
-        <!-- <td><img src="https://picsum.photos/200/300?1" alt="" class="rand-pic"></td> -->
-        <!-- <td><img src="https://picsum.photos/200/300?2" alt="" class="rand-pic"></td> -->
-        <!-- <td><img src="https://picsum.photos/200/300?3" alt="" class="rand-pic"></td> -->
-      </tr>
-      <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-    </table>
+    <div class="main-content">
+      <table class="showPicTable">
+        <tr>
+          <td>{{pic}}</td>
+          <td>{{pic}}</td>
+          <td>{{pic}}</td>
+        </tr>
+        <tr>
+          <!-- <td><img src="https://picsum.photos/200/300?1" alt="" class="rand-pic"></td> -->
+          <!-- <td><img src="https://picsum.photos/200/300?2" alt="" class="rand-pic"></td> -->
+          <!-- <td><img src="https://picsum.photos/200/300?3" alt="" class="rand-pic"></td> -->
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </table>
+    </div>
+    <h1>Hello {{user}}!</h1>
+    <h1>Welcome to {{title}}!</h1>
+    <div>
+      Lorem ipsum dolor
+    </div>
+    <div class="close">
+      <!-- sit amet consectetur adipisicing elit. Repellat dolores necessitatibus officiis illo eligendi reprehenderit! Aliquam expedita animi, eum saepe aperiam fuga ullam pariatur deleniti dignissimos tempore minus commodi facere. -->
+    </div>
+    <div class="neumorphism-btn" align="center">
+      hello
+    </div>
   </div>
-  <h1>Hello {{user}}!</h1>
-  <h1>Welcome to {{title}}!</h1>
-  <div>
-    Lorem ipsum dolor
-  </div>
-  <div class="close">
-    <!-- sit amet consectetur adipisicing elit. Repellat dolores necessitatibus officiis illo eligendi reprehenderit! Aliquam expedita animi, eum saepe aperiam fuga ullam pariatur deleniti dignissimos tempore minus commodi facere. -->
-    Lorem, ipsum dolor sit amet consectetur adipisicing elit. At nemo quos optio, obcaecati eius itaque saepe molestiae temporibus quisquam vel officia repellendus, esse repudiandae? Suscipit cumque provident eaque inventore in.<br/>
-    Lorem, ipsum dolor sit amet consectetur adipisicing elit. At nemo quos optio, obcaecati eius itaque saepe molestiae temporibus quisquam vel officia repellendus, esse repudiandae? Suscipit cumque provident eaque inventore in.<br/>
-    Lorem, ipsum dolor sit amet consectetur adipisicing elit. At nemo quos optio, obcaecati eius itaque saepe molestiae temporibus quisquam vel officia repellendus, esse repudiandae? Suscipit cumque provident eaque inventore in.<br/>
-    Lorem, ipsum dolor sit amet consectetur adipisicing elit. At nemo quos optio, obcaecati eius itaque saepe molestiae temporibus quisquam vel officia repellendus, esse repudiandae? Suscipit cumque provident eaque inventore in.<br/>
-    Lorem, ipsum dolor sit amet consectetur adipisicing elit. At nemo quos optio, obcaecati eius itaque saepe molestiae temporibus quisquam vel officia repellendus, esse repudiandae? Suscipit cumque provident eaque inventore in.<br/>
-    Lorem, ipsum dolor sit amet consectetur adipisicing elit. At nemo quos optio, obcaecati eius itaque saepe molestiae temporibus quisquam vel officia repellendus, esse repudiandae? Suscipit cumque provident eaque inventore in.<br/>
-    Lorem, ipsum dolor sit amet consectetur adipisicing elit. At nemo quos optio, obcaecati eius itaque saepe molestiae temporibus quisquam vel officia repellendus, esse repudiandae? Suscipit cumque provident eaque inventore in.<br/>
-    Lorem, ipsum dolor sit amet consectetur adipisicing elit. At nemo quos optio, obcaecati eius itaque saepe molestiae temporibus quisquam vel officia repellendus, esse repudiandae? Suscipit cumque provident eaque inventore in.<br/>
-    Lorem, ipsum dolor sit amet consectetur adipisicing elit. At nemo quos optio, obcaecati eius itaque saepe molestiae temporibus quisquam vel officia repellendus, esse repudiandae? Suscipit cumque provident eaque inventore in.<br/>
-    Lorem, ipsum dolor sit amet consectetur adipisicing elit. At nemo quos optio, obcaecati eius itaque saepe molestiae temporibus quisquam vel officia repellendus, esse repudiandae? Suscipit cumque provident eaque inventore in.<br/>
-    Lorem, ipsum dolor sit amet consectetur adipisicing elit. At nemo quos optio, obcaecati eius itaque saepe molestiae temporibus quisquam vel officia repellendus, esse repudiandae? Suscipit cumque provident eaque inventore in.<br/>
-    Lorem, ipsum dolor sit amet consectetur adipisicing elit. At nemo quos optio, obcaecati eius itaque saepe molestiae temporibus quisquam vel officia repellendus, esse repudiandae? Suscipit cumque provident eaque inventore in.<br/>
-    Lorem, ipsum dolor sit amet consectetur adipisicing elit. At nemo quos optio, obcaecati eius itaque saepe molestiae temporibus quisquam vel officia repellendus, esse repudiandae? Suscipit cumque provident eaque inventore in.<br/>
-    Lorem, ipsum dolor sit amet consectetur adipisicing elit. At nemo quos optio, obcaecati eius itaque saepe molestiae temporibus quisquam vel officia repellendus, esse repudiandae? Suscipit cumque provident eaque inventore in.<br/>
-    Lorem, ipsum dolor sit amet consectetur adipisicing elit. At nemo quos optio, obcaecati eius itaque saepe molestiae temporibus quisquam vel officia repellendus, esse repudiandae? Suscipit cumque provident eaque inventore in.<br/>
-    Lorem, ipsum dolor sit amet consectetur adipisicing elit. At nemo quos optio, obcaecati eius itaque saepe molestiae temporibus quisquam vel officia repellendus, esse repudiandae? Suscipit cumque provident eaque inventore in.<br/>
-    Lorem, ipsum dolor sit amet consectetur adipisicing elit. At nemo quos optio, obcaecati eius itaque saepe molestiae temporibus quisquam vel officia repellendus, esse repudiandae? Suscipit cumque provident eaque inventore in.<br/>
-    Lorem, ipsum dolor sit amet consectetur adipisicing elit. At nemo quos optio, obcaecati eius itaque saepe molestiae temporibus quisquam vel officia repellendus, esse repudiandae? Suscipit cumque provident eaque inventore in.<br/>
-    Lorem, ipsum dolor sit amet consectetur adipisicing elit. At nemo quos optio, obcaecati eius itaque saepe molestiae temporibus quisquam vel officia repellendus, esse repudiandae? Suscipit cumque provident eaque inventore in.    Lorem, ipsum dolor sit amet consectetur adipisicing elit. At nemo quos optio, obcaecati eius itaque saepe molestiae temporibus quisquam vel officia repellendus, esse repudiandae? Suscipit cumque provident eaque inventore in.<br/>
-    Lorem, ipsum dolor sit amet consectetur adipisicing elit. At nemo quos optio, obcaecati eius itaque saepe molestiae temporibus quisquam vel officia repellendus, esse repudiandae? Suscipit cumque provident eaque inventore in.<br/>
-    Lorem, ipsum dolor sit amet consectetur adipisicing elit. At nemo quos optio, obcaecati eius itaque saepe molestiae temporibus quisquam vel officia repellendus, esse repudiandae? Suscipit cumque provident eaque inventore in.<br/>
-    Lorem, ipsum dolor sit amet consectetur adipisicing elit. At nemo quos optio, obcaecati eius itaque saepe molestiae temporibus quisquam vel officia repellendus, esse repudiandae? Suscipit cumque provident eaque inventore in.<br/>
-    Lorem, ipsum dolor sit amet consectetur adipisicing elit. At nemo quos optio, obcaecati eius itaque saepe molestiae temporibus quisquam vel officia repellendus, esse repudiandae? Suscipit cumque provident eaque inventore in.<br/>
-    Lorem, ipsum dolor sit amet consectetur adipisicing elit. At nemo quos optio, obcaecati eius itaque saepe molestiae temporibus quisquam vel officia repellendus, esse repudiandae? Suscipit cumque provident eaque inventore in.<br/>
-    Lorem, ipsum dolor sit amet consectetur adipisicing elit. At nemo quos optio, obcaecati eius itaque saepe molestiae temporibus quisquam vel officia repellendus, esse repudiandae? Suscipit cumque provident eaque inventore in.<br/>
-    Lorem, ipsum dolor sit amet consectetur adipisicing elit. At nemo quos optio, obcaecati eius itaque saepe molestiae temporibus quisquam vel officia repellendus, esse repudiandae? Suscipit cumque provident eaque inventore in.<br/>
-    Lorem, ipsum dolor sit amet consectetur adipisicing elit. At nemo quos optio, obcaecati eius itaque saepe molestiae temporibus quisquam vel officia repellendus, esse repudiandae? Suscipit cumque provident eaque inventore in.<br/>
-    Lorem, ipsum dolor sit amet consectetur adipisicing elit. At nemo quos optio, obcaecati eius itaque saepe molestiae temporibus quisquam vel officia repellendus, esse repudiandae? Suscipit cumque provident eaque inventore in.<br/>
-    Lorem, ipsum dolor sit amet consectetur adipisicing elit. At nemo quos optio, obcaecati eius itaque saepe molestiae temporibus quisquam vel officia repellendus, esse repudiandae? Suscipit cumque provident eaque inventore in.<br/>
-  </div>
-</div>
 
-<div class="hidden-div">
-  C:\Users\user\code\Angular\lazyrhythm\src\app
-  <br/>
-  media property is not activity
+  <div class="hidden-div">
+    C:\Users\user\code\Angular\lazyrhythm\src\app
+    <br/>
+    media property is not activity
 
-</div>
+  </div>
+</body>

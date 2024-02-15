@@ -1,7 +1,11 @@
 $topBackgroundColor: rgb(155, 255, 255);
 $topFontColor: rgb(0, 0, 0);
 $topArea: 10%;
+$themeColor: #058a5e;
 
+body {
+  background-color: #504949;
+}
 
 .top {
   width: 100%;
@@ -89,6 +93,28 @@ $topArea: 10%;
   //   height: 100px;
   //   display: none;
   // }
+}
+
+.neumorphism-btn {
+  width: 250px;
+  height: 250px;
+  border-radius: 50px;
+  background: linear-gradient(145deg, #484242, #564e4e);
+  box-shadow: 20px 20px 60px #443e3e,
+    -20px -20px 60px #5c5454;
+}
+
+.neumorphism-btn:hover {
+  cursor: pointer;
+}
+
+.neumorphism-btn:active {
+  width: 250px;
+  height: 250px;
+  border-radius: 50px;
+  background: linear-gradient(145deg, #484242, #564e4e);
+  box-shadow: inset 20px 20px 60px #443e3e,
+    inset -20px -20px 60px #5c5454;
 }
 
 @media screen and (min-width:900px) {}
