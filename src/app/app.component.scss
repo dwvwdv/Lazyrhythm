@@ -8,8 +8,8 @@ body {
 }
 
 .top {
-  width: 100%;
-  text-align: center;
+  // width: 100%;
+  // text-align: center;
   background-color: $topBackgroundColor;
 }
 
@@ -39,82 +39,79 @@ body {
 //   top: 50%;
 // }
 //
-// .show-screen {
-//   top: 30%;
-//   width: 100%;
-//
-//   background-color: orange;
-//   // display: none;
-// }
-//
-//
+.show-screen {
+  height: 100vh;
+  width: 100vw;
+}
+
+
 // .hidden-div {
 //   color: greenyellow;
 // }
 
 
-@media all and (min-width:900px) {
-
-  //phone
-  .hidden-div {
-    display: none;
-  }
-
-  .top {
-    margin: 1rem 0rem;
-
-    // position: fixed;
-    z-index: 9999;
-    //
-    font-size: 30px;
-    border-radius: 1px;
-    color: $topFontColor;
-
-    // background-color: rgb(99, 99, 99);
-    //
-    @if($topFontColor !=rgb(99, 99, 99)) {
-      font-size: 20px;
-    }
-
-    // opacity: 0.99;
-    // float: inline;
-  }
-
-  // .top,
-  // .top-content {
-  //   float: left;
-  //   padding: 10px 30px;
-  //
-  //   // width: fit-content;
-  // }
-
-  // .rand-pic {
-  //   width: 50px;
-  //   height: 100px;
-  //   display: none;
-  // }
-}
-
-.neumorphism-btn {
-  width: 250px;
-  height: 250px;
-  border-radius: 50px;
-  background: linear-gradient(145deg, #484242, #564e4e);
-  box-shadow: 20px 20px 60px #443e3e,
-    -20px -20px 60px #5c5454;
-}
-
-.neumorphism-btn:hover {
-  cursor: pointer;
-}
-
-.neumorphism-btn:active {
-  width: 250px;
-  height: 250px;
-  border-radius: 50px;
-  background: linear-gradient(145deg, #484242, #564e4e);
-  box-shadow: inset 20px 20px 60px #443e3e,
-    inset -20px -20px 60px #5c5454;
-}
-
-@media screen and (min-width:900px) {}
+// @media all and (min-width:900px) {
+//
+//   //phone
+//   .hidden-div {
+//     display: none;
+//   }
+//
+//   .top {
+//     margin: 1rem 0rem;
+//
+//     // position: fixed;
+//     z-index: 9999;
+//     //
+//     font-size: 30px;
+//     border-radius: 1px;
+//     color: $topFontColor;
+//
+//     // background-color: rgb(99, 99, 99);
+//     //
+//     @if($topFontColor !=rgb(99, 99, 99)) {
+//       font-size: 20px;
+//     }
+//
+//     // opacity: 0.99;
+//     // float: inline;
+//   }
+//
+//   // .top,
+//   // .top-content {
+//   //   float: left;
+//   //   padding: 10px 30px;
+//   //
+//   //   // width: fit-content;
+//   // }
+//
+//   // .rand-pic {
+//   //   width: 50px;
+//   //   height: 100px;
+//   //   display: none;
+//   // }
+// }
+//
+// .neumorphism-btn {
+//   width: 250px;
+//   height: 250px;
+//   border-radius: 50px;
+//   background: linear-gradient(145deg, #484242, #564e4e);
+//   box-shadow: 20px 20px 60px #443e3e,
+//     -20px -20px 60px #5c5454;
+// }
+//
+// .neumorphism-btn:hover {
+//   cursor: pointer;
+// }
+//
+// .neumorphism-btn:active {
+//   width: 250px;
+//   height: 250px;
+//   border-radius: 50px;
+//   background: linear-gradient(145deg, #484242, #564e4e);
+//   box-shadow: inset 20px 20px 60px #443e3e,
+//     inset -20px -20px 60px #5c5454;
+// }
+//
+// @media screen and (min-width:900px) {}
