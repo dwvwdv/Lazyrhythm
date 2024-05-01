@@ -1,17 +1,8 @@
-<h1>Welcome to {{title}}!</h1>
+<h1 >Welcome to {{title}}!</h1>
 <div class="show-screen" >
-  <div class="top">
-    @for(topItem of topList;track topList){
-    <div class="top-content" (mouseover)="showMenu(topItem)">
-      <div class="top-content-button">
-        {{topItem}}
-      </div>
-    </div>
-    }
-  </div>
-  <app-menu [items]="menuList"/>
+  <app-menu />
 
     <div class="main-content">
+      <router-outlet></router-outlet>
     </div>
 </div>
-<router-outlet></router-outlet>

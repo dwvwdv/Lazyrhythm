@@ -19,3 +19,31 @@
   text-decoration: none;
   color: #c55;
 }
+
+$topBackgroundColor: rgb(155, 255, 255);
+$topFontColor: rgb(0, 0, 0);
+$themeColor: #058a5e;
+
+body {
+  background-color: #504949;
+}
+
+.top {
+  // width: 100%;
+  // text-align: center;
+  background-color: $topBackgroundColor;
+}
+
+.top,
+.top-content {
+  display: flex;
+  padding: 0.5rem 0rem;
+  border-radius: 3px;
+  justify-content: space-around;
+  cursor: default;
+}
+
+.top-content:hover {
+  background-color: green;
+  width: 12rem;
+}
