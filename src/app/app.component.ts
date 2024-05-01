@@ -7,8 +7,6 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'Lazyrhythm';
-  menuList: string[] = ['b', '3', '433'];
-
 
   getPicture = function() {
     fetch("https://picsum.photos/200/300")

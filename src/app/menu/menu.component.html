@@ -1,6 +1,6 @@
 <div class="top">
   @for(topItem of topList;track topList){
-  <div class="top-content" (mouseover)="showMenu(topItem)">
+  <div class="top-content" (mouseover)="showMenu(topItem,$index)">
     <div class="top-content-button">
       {{topItem}}
     </div>

@@ -27,7 +27,7 @@ export class MenuComponent {
     return url[item];
   }
 
-  showMenu(topItemName: string) {
+  showMenu(topItemName: string, idx: number) {
     let hoverList: { [key: string]: string[] } = {
       'Web Security': [
         'Client',
@@ -58,14 +58,12 @@ export class MenuComponent {
         'Git',
       ],
     };
-    // housingService: HousingService = inject(HousingService);
-    // let menuComponent: MenuComponent = inject(menuService);
-    // let menuComponent: MenuComponent = new MenuComponent(hoverList[topItemName]);
-    // c.items = hoverList[topItemName];
     this.items = hoverList[topItemName];
-    // document.getelementsbyclassname('menu')[0].style.display = 'grid';
     let menuDom = document.getElementsByClassName('menu') as HTMLCollectionOf<HTMLElement>;
+    let topContentDom = document.getElementsByClassName('top-content-button') as HTMLCollectionOf<HTMLElement>;
     menuDom[0].style.display = 'grid';
-    console.log(document.getElementsByClassName('menu')[0]);
+    menuDom[0].style.top = `${topContentDom[idx].offsetTop + 40}px`;
+    menuDom[0].style.left = `${topContentDom[idx].offsetLeft - 40}px`;
+
   }
 }
