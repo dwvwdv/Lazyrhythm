@@ -7,6 +7,10 @@ body {
   background-color: #504949;
 }
 
+img {
+  filter: url(#noice);
+}
+
 .top {
   // width: 100%;
   // text-align: center;

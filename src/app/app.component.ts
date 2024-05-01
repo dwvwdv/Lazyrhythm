@@ -11,6 +11,16 @@ export class AppComponent {
   user = 'dwvwdv';
   pic = 'https://picsum.photos/200/300';
   menuList: string[] = ['b', '3', '433'];
+  filter_xy = "0 0.5";
+
+  ngOnInit() {
+    setInterval(() => {
+
+      let x = Math.random();
+      let y = Math.random();
+      this.filter_xy = `0 ${y}`;
+    }, 150);
+  }
 
 
   getPicture = function() {
