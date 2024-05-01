@@ -1,0 +1,10 @@
+
+<svg style="display:none">
+  <filter id="noice" x="-20%" y="-20%" width="140%" height="140%" filterUnits="objectBoundingBox" primitiveUnits="userSpaceOnUse" color-interpolation-filters="linearRGB">
+  <feTurbulence type="turbulence" [attr.baseFrequency]="filter_xy" numOctaves="2" seed="2" stitchTiles="stitch" x="0%" y="0%" width="100%" height="100%" result="turbulence"/>
+  <feDisplacementMap in="SourceGraphic" in2="turbulence" scale="30" xChannelSelector="R" yChannelSelector="B" x="0%" y="0%" width="100%" height="100%" result="displacementMap"/>
+  </filter>
+</svg>
+
+<img src="https://picsum.photos/200/300?3" alt="" class="rand-pic">
+<p>css-magic works!</p>

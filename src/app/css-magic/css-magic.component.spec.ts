@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AnotherPageComponent } from './another-page.component';
+import { CssMagicComponent } from './css-magic.component';
 
-describe('AnotherPageComponent', () => {
-  let component: AnotherPageComponent;
-  let fixture: ComponentFixture<AnotherPageComponent>;
+describe('CssMagicComponent', () => {
+  let component: CssMagicComponent;
+  let fixture: ComponentFixture<CssMagicComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AnotherPageComponent]
+      imports: [CssMagicComponent]
     })
     .compileComponents();
-
-    fixture = TestBed.createComponent(AnotherPageComponent);
+    
+    fixture = TestBed.createComponent(CssMagicComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

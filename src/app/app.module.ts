@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { MenuComponent } from './menu/menu.component';
 import { AnotherPageComponent } from './another-page/another-page.component';
 import { routes } from './app.route';
-import { RouterModule } from '@angular/router';
+import { RouterModule, RouterOutlet } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -17,7 +17,8 @@ import { RouterModule } from '@angular/router';
     AppRoutingModule,
     MenuComponent,
     AnotherPageComponent,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    RouterOutlet
   ],
   exports: [RouterModule],
   providers: [],
