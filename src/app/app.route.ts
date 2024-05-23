@@ -18,4 +18,9 @@ export const routes: Routes = [
     title: 'CSS Magic',
     component: CssMagicComponent,
   },
+  {
+    path: 'get-user',
+    title: 'apiUser',
+    component: AnotherPageComponent,
+  },
 ];
