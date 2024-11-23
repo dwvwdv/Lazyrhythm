@@ -1,0 +1,159 @@
+.home-container {
+  min-height: 100vh;
+  overflow-x: hidden;
+  padding-top: 64px; // 為導航欄留出空間
+
+  // 打字機效果
+  .hero-section {
+    height: calc(100vh - 64px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: var(--background-color);
+    text-align: center;
+
+    .typewriter-text {
+      font-size: 3.5rem;
+      color: var(--text-color);
+      margin-bottom: 1rem;
+      border-right: 0.1em solid var(--text-color);
+      white-space: nowrap;
+      overflow: hidden;
+      animation: blink-caret 0.75s step-end infinite;
+    }
+
+    .subtitle {
+      font-size: 1.5rem;
+      color: var(--text-secondary);
+      opacity: 0.8;
+    }
+  }
+
+  // 推骨牌效果
+  .domino-section {
+    padding: 6rem 2rem;
+    background: var(--surface-color);
+    text-align: center;
+
+    h2 {
+      font-size: 2.5rem;
+      color: var(--text-color);
+      margin-bottom: 3rem;
+    }
+
+    .domino-container {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+
+      .domino {
+        width: 200px;
+        height: 200px;
+        perspective: 1000px;
+
+        .domino-inner {
+          width: 100%;
+          height: 100%;
+          background: var(--card-background);
+          border-radius: 12px;
+          box-shadow: 0 4px 15px var(--shadow-color);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          padding: 1.5rem;
+          transition: transform 0.3s ease;
+
+          &:hover {
+            transform: translateY(-5px);
+          }
+
+          i {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+          }
+
+          span {
+            color: var(--text-color);
+            font-size: 1.2rem;
+            font-weight: 500;
+          }
+        }
+      }
+    }
+  }
+
+  // 懸浮卡片效果
+  .cards-section {
+    padding: 6rem 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    background: var(--background-color);
+
+    .floating-card {
+      background: var(--card-background);
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px var(--shadow-color);
+      text-align: center;
+
+      i {
+        font-size: 2.5rem;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+      }
+
+      h3 {
+        color: var(--text-color);
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+      }
+
+      p {
+        color: var(--text-muted);
+        line-height: 1.6;
+      }
+    }
+  }
+}
+
+// 打字機光標動畫
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: var(--text-color) }
+}
+
+// 響應式設計
+@media (max-width: 768px) {
+  .home-container {
+    .hero-section {
+      .typewriter-text {
+        font-size: 2rem;
+      }
+      .subtitle {
+        font-size: 1.2rem;
+      }
+    }
+
+    .domino-section {
+      padding: 4rem 1rem;
+      
+      h2 {
+        font-size: 2rem;
+      }
+
+      .domino {
+        width: 160px !important;
+        height: 160px !important;
+      }
+    }
+
+    .cards-section {
+      padding: 4rem 1rem;
+    }
+  }
+}

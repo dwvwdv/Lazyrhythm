@@ -1,1 +1,25 @@
-<p>works works!</p>
+<section class="works-container">
+  <h1 class="title">我們的作品</h1>
+  
+  <!-- 輪播展示區 -->
+  <div class="carousel-section">
+    <app-carousel [items]="carouselItems"></app-carousel>
+  </div>
+
+  <!-- 作品列表 -->
+  <div class="works-grid">
+    <article class="work-card" *ngFor="let work of works">
+      <div class="work-image">
+        <img [src]="work.image" [alt]="work.title">
+      </div>
+      <div class="work-content">
+        <h2>{{work.title}}</h2>
+        <p class="description">{{work.description}}</p>
+        <div class="tags">
+          <span class="tag" *ngFor="let tag of work.tags">{{tag}}</span>
+        </div>
+        <a [href]="work.link" class="learn-more" target="_blank">了解更多</a>
+      </div>
+    </article>
+  </div>
+</section>

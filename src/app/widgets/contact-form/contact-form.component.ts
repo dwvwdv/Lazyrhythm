@@ -1,8 +1,11 @@
 import { Component, Input } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-contact-form',
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './contact-form.component.html',
   styleUrls: ['./contact-form.component.scss']
 })
@@ -16,7 +19,7 @@ export class ContactFormComponent {
       email: ['', [Validators.required, Validators.email]],
       subject: [''],
       message: ['', Validators.required],
-      amount: ['', this.formType === 'sponsor' ? Validators.required : null]
+      amount: ['']
     });
   }
 

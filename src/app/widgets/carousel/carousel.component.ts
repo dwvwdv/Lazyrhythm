@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 interface CarouselItem {
   image: string;
@@ -8,6 +9,8 @@ interface CarouselItem {
 
 @Component({
   selector: 'app-carousel',
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './carousel.component.html',
   styleUrls: ['./carousel.component.scss']
 })

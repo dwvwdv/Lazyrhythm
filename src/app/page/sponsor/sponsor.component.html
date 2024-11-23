@@ -1,1 +1,33 @@
-<p>sponsor works!</p>
+<section class="sponsor-container">
+  <div class="sponsor-content">
+    <div class="sponsor-info">
+      <h1>贊助我們</h1>
+      <p>您的支持是我持續創作的動力</p>
+      
+      <div class="sponsor-methods">
+        <div class="method">
+          <h3>比特幣贊助</h3>
+          <div class="bitcoin-address">
+            <code>{{bitcoinAddress}}</code>
+            <button (click)="copyBitcoinAddress()" class="copy-btn">
+              <i class="fas fa-copy"></i>
+            </button>
+          </div>
+          <img [src]="bitcoinQRCode" alt="Bitcoin QR Code" class="qr-code">
+        </div>
+
+        <div class="method">
+          <h3>Ko-fi 贊助</h3>
+          <p>透過 Ko-fi 平台贊助</p>
+          <a [href]="kofiLink" target="_blank" class="kofi-button">
+            <img src="https://storage.ko-fi.com/cdn/kofi5.png" alt="Buy Me a Coffee at ko-fi.com">
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="sponsor-form-wrapper">
+      <app-contact-form formType="sponsor"></app-contact-form>
+    </div>
+  </div>
+</section>

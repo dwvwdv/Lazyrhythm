@@ -8,19 +8,21 @@ import { AppComponent } from './app.component';
 import { NavbarComponent } from './widgets/navbar/navbar.component';
 import { CarouselComponent } from './widgets/carousel/carousel.component';
 import { ContactFormComponent } from './widgets/contact-form/contact-form.component';
+import { ThemeService } from './services/theme.service';
 
 @NgModule({
   declarations: [
     AppComponent,
-    NavbarComponent,
-    CarouselComponent,
-    ContactFormComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+
+    NavbarComponent,
+    CarouselComponent,
+    ContactFormComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

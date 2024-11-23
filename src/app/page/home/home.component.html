@@ -1,1 +1,29 @@
-<p>home works!</p>
+<div class="home-container">
+  <!-- 打字機效果 -->
+  <section class="hero-section">
+    <h1 class="typewriter-text"></h1>
+    <p class="subtitle">獨立遊戲開發工作室</p>
+  </section>
+
+  <!-- 推骨牌效果 -->
+  <section class="domino-section">
+    <h2>我們的特色</h2>
+    <div class="domino-container">
+      <div class="domino" *ngFor="let item of dominoItems">
+        <div class="domino-inner">
+          <i [class]="item.icon"></i>
+          <span>{{item.text}}</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 懸浮卡片效果 -->
+  <section class="cards-section">
+    <div class="floating-card" *ngFor="let card of cardItems">
+      <i [class]="card.icon"></i>
+      <h3>{{card.title}}</h3>
+      <p>{{card.description}}</p>
+    </div>
+  </section>
+</div>

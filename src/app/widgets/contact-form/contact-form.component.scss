@@ -1,14 +1,15 @@
 .contact-form {
-  max-width: 600px;
-  margin: 2rem auto;
+  width: 100%;
+  background-color: var(--surface-color);
   padding: 2rem;
-  background-color: var(--background-color);
   border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-
+  box-shadow: 0 2px 10px var(--shadow-color);
+  
   h2 {
+    font-size: 1.8rem;
     margin-bottom: 2rem;
     color: var(--text-color);
+    text-align: center;
   }
 
   .form-group {
@@ -18,41 +19,66 @@
       display: block;
       margin-bottom: 0.5rem;
       color: var(--text-color);
+      font-weight: 500;
     }
 
     input, textarea {
       width: 100%;
       padding: 0.8rem;
-      border: 1px solid #ddd;
-      border-radius: 4px;
+      border: 2px solid var(--border-color);
+      border-radius: 8px;
       background-color: var(--background-color);
       color: var(--text-color);
+      transition: all 0.3s ease;
 
       &:focus {
         outline: none;
-        border-color: var(--secondary-color);
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 2px var(--primary-color-alpha);
       }
+
+      &.ng-invalid.ng-touched {
+        border-color: var(--error-color, #dc3545);
+      }
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 120px;
     }
   }
 
   button {
     width: 100%;
     padding: 1rem;
-    background-color: var(--secondary-color);
+    background-color: var(--primary-color);
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: all 0.3s ease;
 
     &:hover {
       background-color: var(--secondary-color);
-      filter: brightness(0.9);
+      transform: translateY(-2px);
     }
 
     &:disabled {
-      background-color: #ccc;
+      background-color: var(--disabled-color, #ccc);
       cursor: not-allowed;
+      transform: none;
+    }
+  }
+}
+
+// 暗黑模式樣式
+[data-theme='dark'] {
+  .contact-form {
+    input, textarea {
+      --input-background: #2a2a2a;
+      --border-color: #444;
     }
   }
 } 
