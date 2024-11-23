@@ -16,7 +16,7 @@
     <textarea id="message" formControlName="message" rows="5"></textarea>
   </div>
 
-  <button class="btn" type="submit" [disabled]="!contactForm.valid">
+  <button type="submit">
     {{ formType === 'contact' ? '送出訊息' : '確認贊助' }}
   </button>
 </form> 
