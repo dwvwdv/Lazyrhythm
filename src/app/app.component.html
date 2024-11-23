@@ -1,9 +1,11 @@
-<h1 >Welcome to {{title}}!</h1>
-<div class="show-screen" >
-  <app-menu />
+<div class="app-container">
+  <app-navbar></app-navbar>
+  
+  <main class="main-content" role="main">
+    <router-outlet></router-outlet>
+  </main>
 
-    <div class="main-content">
-      <router-outlet></router-outlet>
-    </div>
-  <app-menu />
+  <footer role="contentinfo">
+    <p>© {{currentYear}} {{title}}. All rights reserved.</p>
+  </footer>
 </div>

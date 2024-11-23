@@ -1,0 +1,32 @@
+<form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="contact-form">
+  <h2>{{ formType === 'contact' ? '聯絡我們' : '贊助表單' }}</h2>
+  
+  <div class="form-group">
+    <label for="name">姓名</label>
+    <input id="name" type="text" formControlName="name">
+  </div>
+
+  <div class="form-group">
+    <label for="email">電子郵件</label>
+    <input id="email" type="email" formControlName="email">
+  </div>
+
+  <div class="form-group">
+    <label for="subject">主旨</label>
+    <input id="subject" type="text" formControlName="subject">
+  </div>
+
+  <div class="form-group" *ngIf="formType === 'sponsor'">
+    <label for="amount">贊助金額</label>
+    <input id="amount" type="number" formControlName="amount">
+  </div>
+
+  <div class="form-group">
+    <label for="message">訊息</label>
+    <textarea id="message" formControlName="message" rows="5"></textarea>
+  </div>
+
+  <button type="submit" [disabled]="!contactForm.valid">
+    {{ formType === 'contact' ? '送出訊息' : '確認贊助' }}
+  </button>
+</form> 

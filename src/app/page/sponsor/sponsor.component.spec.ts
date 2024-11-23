@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CssMagicComponent } from './css-magic.component';
+import { SponsorComponent } from './sponsor.component';
 
-describe('CssMagicComponent', () => {
-  let component: CssMagicComponent;
-  let fixture: ComponentFixture<CssMagicComponent>;
+describe('SponsorComponent', () => {
+  let component: SponsorComponent;
+  let fixture: ComponentFixture<SponsorComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CssMagicComponent]
+      imports: [SponsorComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(CssMagicComponent);
+    fixture = TestBed.createComponent(SponsorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

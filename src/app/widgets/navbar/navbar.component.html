@@ -1,0 +1,15 @@
+<nav class="navbar">
+  <div class="logo">
+    <a routerLink="/">LazyRhythm</a>
+  </div>
+  
+  <div class="nav-links">
+    <a routerLink="/about" routerLinkActive="active">關於公司</a>
+    <a routerLink="/works" routerLinkActive="active">作品集</a>
+    <a routerLink="/contact" routerLinkActive="active">聯絡方式</a>
+    <a routerLink="/sponsor" routerLinkActive="active">贊助我們</a>
+    <button class="theme-toggle" (click)="toggleTheme()">
+      {{ isDarkMode ? '🌞' : '🌙' }}
+    </button>
+  </div>
+</nav> 
