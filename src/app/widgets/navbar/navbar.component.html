@@ -3,7 +3,7 @@
     <a routerLink="/">LazyRhythm</a>
   </div>
   
-  <div class="nav-links">
+  <div class="nav-links" [class.show]="isMenuOpen">
     <a routerLink="/about" routerLinkActive="active">關於公司</a>
     <a routerLink="/works" routerLinkActive="active">作品集</a>
     <a routerLink="/contact" routerLinkActive="active">聯絡方式</a>
@@ -12,4 +12,8 @@
       {{ isDarkMode ? '🌞' : '🌙' }}
     </button>
   </div>
+
+  <button class="menu-toggle" (click)="toggleMenu()">
+    <i [class]="isMenuOpen ? 'fas fa-times' : 'fas fa-bars'"></i>
+  </button>
 </nav> 

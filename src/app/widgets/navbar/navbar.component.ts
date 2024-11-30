@@ -12,6 +12,7 @@ import { ThemeService } from '../../services/theme.service';
 })
 export class NavbarComponent implements OnInit {
   isDarkMode = false;
+  isMenuOpen = false;
 
   constructor(private themeService: ThemeService) {}
 
@@ -23,7 +24,15 @@ export class NavbarComponent implements OnInit {
     );
   }
 
+  toggleMenu() {
+    this.isMenuOpen = !this.isMenuOpen;
+  }
+
   toggleTheme() {
     this.themeService.toggleTheme();
+  }
+
+  closeMenu() {
+    this.isMenuOpen = false;
   }
 } 
