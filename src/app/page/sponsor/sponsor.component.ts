@@ -12,7 +12,7 @@ import { ContactFormComponent } from '../../widgets/contact-form/contact-form.co
 export class SponsorComponent {
   bitcoinAddress = '1234567890abcdef'; // 替換為實際的比特幣地址
   bitcoinQRCode = 'assets/images/bitcoin-qr.png'; // 替換為實際的 QR code 圖片路徑
-  kofiLink = 'https://ko-fi.com/yourusername'; // 替換為實際的 Ko-fi 連結
+  kofiLink = 'https://ko-fi.com/lazyrhythm'; // 替換為實際的 Ko-fi 連結
 
   copyBitcoinAddress() {
     navigator.clipboard.writeText(this.bitcoinAddress);
