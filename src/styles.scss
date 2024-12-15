@@ -8,7 +8,7 @@
   --background-color: #5E81AC;
   --surface-color: #4E81AC;
   --elevated-surface: #D8DEE9;
-  // --text-color: #2E3440;
+  --text-color: #2E3440;
   --text-secondary: #3B4252;
   --text-muted: #4C566A;
   --success-color: #A3BE8C;
@@ -162,7 +162,7 @@ input, textarea {
   color: var(--text-color);
   border: 1px solid var(--border-color);
   transition: all 0.3s ease;
-  
+
   &:focus {
     border-color: var(--primary-color);
     box-shadow: 0 0 0 2px var(--primary-color-alpha);
@@ -190,7 +190,7 @@ input, textarea {
 ::-webkit-scrollbar-thumb {
   background: var(--primary-color);
   border-radius: 5px;
-  
+
   &:hover {
     background: var(--secondary-color);
   }
@@ -200,7 +200,7 @@ input, textarea {
   .card {
     margin: 0.5rem;
   }
-  
+
   .btn {
     padding: 0.75rem 1.5rem;
   }

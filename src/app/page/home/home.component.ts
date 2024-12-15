@@ -75,7 +75,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   private initDominoEffect() {
     const dominos = gsap.utils.toArray('.domino');
-    
+
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: '.domino-section',
@@ -97,7 +97,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   private initFloatingCards() {
     const cards = gsap.utils.toArray('.floating-card');
-    
+
     cards.forEach((card: any, i) => {
       gsap.from(card, {
         opacity: 0,

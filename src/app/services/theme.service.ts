@@ -11,7 +11,7 @@ export class ThemeService {
   constructor() {
     // 設置初始主題
     this.setDarkMode(this.isDarkMode());
-    
+
     // 監聽系統主題變化
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
       this.setDarkMode(e.matches);
@@ -29,7 +29,7 @@ export class ThemeService {
   setDarkMode(isDark: boolean) {
     this.darkMode.next(isDark);
     localStorage.setItem('darkMode', isDark.toString());
-    
+
     // 直接設置 document root 的 data-theme
     if (isDark) {
       document.documentElement.setAttribute('data-theme', 'dark');
@@ -43,4 +43,4 @@ export class ThemeService {
   toggleTheme() {
     this.setDarkMode(!this.darkMode.value);
   }
-} 
+}

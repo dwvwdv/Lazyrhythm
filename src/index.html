@@ -8,13 +8,6 @@
   <meta name="color-scheme" content="light dark">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-  <script>
-    // 初始化主題
-    const darkMode = localStorage.getItem('darkMode') === 'true' || 
-      window.matchMedia('(prefers-color-scheme: dark)').matches;
-    document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : 'light');
-    document.body.style.backgroundColor = darkMode ? '#1A1B26' : '#ECEFF4';
-  </script>
 </head>
 <body>
   <app-root></app-root>
