@@ -1,6 +1,6 @@
 <div class="app-container" [attr.data-theme]="isDarkMode ? 'dark' : 'light'">
   <app-navbar></app-navbar>
-  
+
   <main class="main-content" role="main">
     <router-outlet></router-outlet>
   </main>
@@ -8,4 +8,6 @@
   <footer role="contentinfo">
     <p>© {{currentYear}} {{title}}. All rights reserved.</p>
   </footer>
+
+  <app-snake-cursor></app-snake-cursor>
 </div>
