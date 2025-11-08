@@ -8,11 +8,10 @@ interface CarouselItem {
 }
 
 @Component({
-  selector: 'app-carousel',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './carousel.component.html',
-  styleUrls: ['./carousel.component.scss']
+    selector: 'app-carousel',
+    imports: [CommonModule],
+    templateUrl: './carousel.component.html',
+    styleUrls: ['./carousel.component.scss']
 })
 export class CarouselComponent {
   @Input() items: CarouselItem[] = [];
