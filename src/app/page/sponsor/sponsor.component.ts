@@ -3,11 +3,10 @@ import { CommonModule } from '@angular/common';
 import { ContactFormComponent } from '../../widgets/contact-form/contact-form.component';
 
 @Component({
-  selector: 'app-sponsor',
-  standalone: true,
-  imports: [CommonModule, ContactFormComponent],
-  templateUrl: './sponsor.component.html',
-  styleUrls: ['./sponsor.component.scss']
+    selector: 'app-sponsor',
+    imports: [CommonModule, ContactFormComponent],
+    templateUrl: './sponsor.component.html',
+    styleUrls: ['./sponsor.component.scss']
 })
 export class SponsorComponent {
   bitcoinAddress = '1234567890abcdef'; // 替換為實際的比特幣地址

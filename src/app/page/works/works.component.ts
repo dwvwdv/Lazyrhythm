@@ -11,11 +11,10 @@ interface Work {
 }
 
 @Component({
-  selector: 'app-works',
-  standalone: true,
-  imports: [CommonModule, CarouselComponent],
-  templateUrl: './works.component.html',
-  styleUrls: ['./works.component.scss']
+    selector: 'app-works',
+    imports: [CommonModule, CarouselComponent],
+    templateUrl: './works.component.html',
+    styleUrls: ['./works.component.scss']
 })
 export class WorksComponent {
   carouselItems = [

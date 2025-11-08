@@ -3,11 +3,10 @@ import { CommonModule } from '@angular/common';
 import { ContactFormComponent } from '../../widgets/contact-form/contact-form.component';
 
 @Component({
-  selector: 'app-contact',
-  standalone: true,
-  imports: [CommonModule, ContactFormComponent],
-  templateUrl: './contact.component.html',
-  styleUrls: ['./contact.component.scss']
+    selector: 'app-contact',
+    imports: [CommonModule, ContactFormComponent],
+    templateUrl: './contact.component.html',
+    styleUrls: ['./contact.component.scss']
 })
 export class ContactComponent {
 }
