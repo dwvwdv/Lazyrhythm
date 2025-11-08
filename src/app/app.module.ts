@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { NavbarComponent } from './widgets/navbar/navbar.component';
 import { CarouselComponent } from './widgets/carousel/carousel.component';
 import { ContactFormComponent } from './widgets/contact-form/contact-form.component';
+import { SnakeCursorComponent } from './widgets/snake-cursor/snake-cursor.component';
 import { ThemeService } from './services/theme.service';
 
 @NgModule({
@@ -22,7 +23,8 @@ import { ThemeService } from './services/theme.service';
 
     NavbarComponent,
     CarouselComponent,
-    ContactFormComponent
+    ContactFormComponent,
+    SnakeCursorComponent
   ],
   providers: [],
   bootstrap: [AppComponent]
