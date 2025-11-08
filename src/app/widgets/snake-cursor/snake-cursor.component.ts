@@ -250,13 +250,12 @@ export class SnakeCursorComponent implements AfterViewInit, OnDestroy {
       }
     });
 
-    // Draw grid position indicator at mouse cursor (semi-transparent)
-    const mouseGridX = Math.floor(this.mousePosition.x / this.gridSize);
-    const mouseGridY = Math.floor(this.mousePosition.y / this.gridSize);
-    const indicatorX = mouseGridX * this.gridSize + this.gridSize / 2;
-    const indicatorY = mouseGridY * this.gridSize + this.gridSize / 2;
-
-    this.ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
-    this.drawRoundedSquare(indicatorX, indicatorY, this.gridSize - 2, this.borderRadius);
+    // Optional: Draw grid position indicator at mouse cursor (disabled by default)
+    // const mouseGridX = Math.floor(this.mousePosition.x / this.gridSize);
+    // const mouseGridY = Math.floor(this.mousePosition.y / this.gridSize);
+    // const indicatorX = mouseGridX * this.gridSize + this.gridSize / 2;
+    // const indicatorY = mouseGridY * this.gridSize + this.gridSize / 2;
+    // this.ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+    // this.drawRoundedSquare(indicatorX, indicatorY, this.gridSize - 2, this.borderRadius);
   }
 }
