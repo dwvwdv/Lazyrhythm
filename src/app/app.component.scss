@@ -1,34 +1,10 @@
+/* Neumorphism App Container */
+
 h1 {
   text-align: center;
+  color: var(--text-color);
+  font-weight: 700;
 }
-
-// $topBackgroundColor: rgb(155, 255, 255);
-// $topFontColor: rgb(0, 0, 0);
-// $themeColor: #058a5e;
-//
-// body {
-//   background-color: #504949;
-// }
-//
-// .top {
-//   // width: 100%;
-//   // text-align: center;
-//   background-color: $topBackgroundColor;
-// }
-//
-// .top,
-// .top-content {
-//   display: flex;
-//   padding: 0.5rem 0rem;
-//   border-radius: 3px;
-//   justify-content: space-around;
-//   cursor: default;
-// }
-//
-// .top-content:hover {
-//   background-color: green;
-//   width: 12rem;
-// }
 
 .app-container {
   min-height: 100vh;
@@ -38,15 +14,24 @@ h1 {
 }
 
 .main-content {
-  padding-top: 64px; // navbar 的高度
-  min-height: calc(100vh - 64px - 60px); // 減去 navbar 和 footer 的高度
+  padding-top: 80px; // navbar 的高度（增加以適應新的 navbar padding）
+  min-height: calc(100vh - 80px - 80px); // 減去 navbar 和 footer 的高度
   background-color: var(--background-color);
+  padding: 2rem;
 }
 
 footer {
   background-color: var(--surface-color);
   color: var(--text-color);
-  padding: 20px;
+  padding: 2rem;
   text-align: center;
-  border-top: 1px solid var(--border-color);
+  box-shadow: var(--neu-shadow-md);
+  border-radius: 20px 20px 0 0;
+  margin-top: 2rem;
+
+  p {
+    margin: 0;
+    font-weight: 500;
+    color: var(--text-secondary);
+  }
 }

@@ -1,3 +1,5 @@
+/* Neumorphism About Component */
+
 .about-container {
   padding: 2rem;
   max-width: 1200px;
@@ -6,85 +8,115 @@
   .about-header {
     text-align: center;
     margin-bottom: 4rem;
-    
+
     h1 {
       font-size: 3rem;
       color: var(--text-color);
-      margin-bottom: 1rem;
+      margin-bottom: 1.5rem;
+      font-weight: 700;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.05);
     }
 
     .subtitle {
-      font-size: 1.2rem;
-      color: var(--secondary-color);
+      font-size: 1.3rem;
+      color: var(--text-secondary);
+      padding: 1rem 2rem;
+      border-radius: 20px;
+      background: var(--surface-color);
+      box-shadow: var(--neu-shadow-sm);
+      display: inline-block;
     }
   }
 
   .about-content {
     .story-section {
       margin-bottom: 4rem;
-      
+      padding: 2.5rem;
+      background: var(--card-background);
+      border-radius: 25px;
+      box-shadow: var(--neu-shadow-md);
+
       h2 {
-        font-size: 2rem;
+        font-size: 2.2rem;
         color: var(--text-color);
         margin-bottom: 1.5rem;
+        font-weight: 700;
       }
 
       p {
         font-size: 1.1rem;
         line-height: 1.8;
-        color: var(--text-color);
+        color: var(--text-secondary);
+        margin-bottom: 1rem;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
       }
     }
 
     .vision-section {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 2rem;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2.5rem;
       margin-bottom: 4rem;
 
       .vision-card {
         text-align: center;
-        padding: 2rem;
-        background: var(--background-color);
-        border-radius: 12px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease;
+        padding: 2.5rem;
+        background: var(--card-background);
+        border-radius: 25px;
+        box-shadow: var(--neu-shadow-md);
+        transition: all 0.3s ease;
 
         &:hover {
-          transform: translateY(-5px);
+          transform: translateY(-8px);
+          box-shadow: var(--neu-shadow-lg);
         }
 
         i {
-          font-size: 2.5rem;
+          font-size: 3rem;
           color: var(--primary-color);
-          margin-bottom: 1rem;
+          margin-bottom: 1.5rem;
+          display: inline-block;
+          padding: 1.2rem;
+          border-radius: 50%;
+          background: var(--surface-color);
+          box-shadow: var(--neu-shadow-sm);
         }
 
         h3 {
-          font-size: 1.5rem;
+          font-size: 1.6rem;
           color: var(--text-color);
           margin-bottom: 1rem;
+          font-weight: 700;
         }
 
         p {
-          color: var(--text-color);
-          line-height: 1.6;
+          color: var(--text-muted);
+          line-height: 1.8;
+          font-size: 1rem;
         }
       }
     }
 
     .timeline-section {
       margin-bottom: 4rem;
+      padding: 2.5rem;
+      background: var(--card-background);
+      border-radius: 25px;
+      box-shadow: var(--neu-shadow-md);
 
       h2 {
-        font-size: 2rem;
+        font-size: 2.2rem;
         color: var(--text-color);
-        margin-bottom: 2rem;
+        margin-bottom: 2.5rem;
+        font-weight: 700;
       }
 
       .timeline {
         position: relative;
-        padding-left: 2rem;
+        padding-left: 2.5rem;
 
         &::before {
           content: '';
@@ -92,40 +124,52 @@
           left: 0;
           top: 0;
           bottom: 0;
-          width: 2px;
-          background: var(--primary-color);
+          width: 3px;
+          background: linear-gradient(to bottom, var(--primary-color), var(--secondary-color));
+          border-radius: 10px;
+          box-shadow: var(--neu-shadow-sm);
         }
 
         .timeline-item {
           position: relative;
-          margin-bottom: 2rem;
+          margin-bottom: 2.5rem;
           padding-left: 2rem;
 
           &::before {
             content: '';
             position: absolute;
-            left: -0.5rem;
+            left: -0.65rem;
             top: 0.5rem;
-            width: 1rem;
-            height: 1rem;
-            background: var(--primary-color);
+            width: 1.3rem;
+            height: 1.3rem;
+            background: var(--surface-color);
+            border: 3px solid var(--primary-color);
             border-radius: 50%;
+            box-shadow: var(--neu-shadow-sm);
+          }
+
+          &:last-child {
+            margin-bottom: 0;
           }
 
           .date {
-            font-weight: bold;
+            font-weight: 700;
             color: var(--primary-color);
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.8rem;
+            font-size: 1.1rem;
           }
 
           .content {
             h3 {
               color: var(--text-color);
               margin-bottom: 0.5rem;
+              font-weight: 600;
+              font-size: 1.2rem;
             }
 
             p {
-              color: var(--text-color);
+              color: var(--text-secondary);
+              line-height: 1.6;
             }
           }
         }
@@ -133,29 +177,49 @@
     }
 
     .tech-stack-section {
+      padding: 2.5rem;
+      background: var(--card-background);
+      border-radius: 25px;
+      box-shadow: var(--neu-shadow-md);
+
       h2 {
-        font-size: 2rem;
+        font-size: 2.2rem;
         color: var(--text-color);
-        margin-bottom: 2rem;
+        margin-bottom: 2.5rem;
+        font-weight: 700;
+        text-align: center;
       }
 
       .tech-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
         gap: 2rem;
 
         .tech-item {
           text-align: center;
+          padding: 1.5rem;
+          background: var(--surface-color);
+          border-radius: 20px;
+          box-shadow: var(--neu-shadow-sm);
+          transition: all 0.3s ease;
+
+          &:hover {
+            box-shadow: var(--neu-shadow-md);
+            transform: translateY(-5px);
+          }
 
           img {
-            width: 50px;
-            height: 50px;
-            margin-bottom: 0.5rem;
+            width: 60px;
+            height: 60px;
+            margin-bottom: 1rem;
+            filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.1));
           }
 
           span {
             display: block;
             color: var(--text-color);
+            font-weight: 600;
+            font-size: 0.95rem;
           }
         }
       }
@@ -163,20 +227,99 @@
   }
 }
 
-// 響應式設計
+// Responsive design
 @media (max-width: 768px) {
   .about-container {
-    padding: 1rem;
+    padding: 1.5rem;
 
     .about-header {
+      margin-bottom: 3rem;
+
       h1 {
-        font-size: 2rem;
+        font-size: 2.2rem;
+      }
+
+      .subtitle {
+        font-size: 1.1rem;
+        padding: 0.8rem 1.5rem;
       }
     }
 
     .about-content {
+      .story-section {
+        padding: 2rem;
+        margin-bottom: 3rem;
+
+        h2 {
+          font-size: 1.8rem;
+        }
+
+        p {
+          font-size: 1rem;
+        }
+      }
+
       .vision-section {
         grid-template-columns: 1fr;
+        gap: 2rem;
+        margin-bottom: 3rem;
+
+        .vision-card {
+          padding: 2rem;
+
+          i {
+            font-size: 2.5rem;
+          }
+
+          h3 {
+            font-size: 1.4rem;
+          }
+        }
+      }
+
+      .timeline-section {
+        padding: 2rem;
+        margin-bottom: 3rem;
+
+        h2 {
+          font-size: 1.8rem;
+          margin-bottom: 2rem;
+        }
+
+        .timeline {
+          padding-left: 2rem;
+
+          .timeline-item {
+            padding-left: 1.5rem;
+          }
+        }
+      }
+
+      .tech-stack-section {
+        padding: 2rem;
+
+        h2 {
+          font-size: 1.8rem;
+          margin-bottom: 2rem;
+        }
+
+        .tech-grid {
+          grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+          gap: 1.5rem;
+
+          .tech-item {
+            padding: 1rem;
+
+            img {
+              width: 50px;
+              height: 50px;
+            }
+
+            span {
+              font-size: 0.85rem;
+            }
+          }
+        }
       }
     }
   }

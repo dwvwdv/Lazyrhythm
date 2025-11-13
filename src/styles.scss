@@ -1,49 +1,94 @@
 /* You can add global styles to this file, and also import other style files */
 
-/* Global Styles */
+/* Neumorphism Design System - Global Styles */
 :root {
-  --primary-color: #A3BE8C;
-  --secondary-color: #81A1C1;
-  --accent-color: #88C0D0;
-  --background-color: #5E81AC;
-  --surface-color: #4E81AC;
-  --elevated-surface: #D8DEE9;
-  --text-color: #2E3440;
-  --text-secondary: #3B4252;
-  --text-muted: #4C566A;
-  --success-color: #A3BE8C;
-  --error-color: #BF616A;
-  --warning-color: #EBCB8B;
-  --info-color: #B48EAD;
-  --border-color: #D8DEE9;
-  --shadow-color: rgba(46, 52, 64, 0.1);
-  --primary-color-alpha: rgba(94, 129, 172, 0.1);
-  --card-background: #FFFFFF;
-  --input-background: #FFFFFF;
-  --code-background: #2E3440;
-  --disabled-color: #D8DEE9;
+  /* Base Colors */
+  --primary-color: #6C9BCF;
+  --secondary-color: #88B3E0;
+  --accent-color: #A8DADC;
+
+  /* Neumorphism Background - Light Theme */
+  --background-color: #e0e5ec;
+  --surface-color: #e0e5ec;
+  --elevated-surface: #e0e5ec;
+  --card-background: #e0e5ec;
+  --input-background: #e0e5ec;
+
+  /* Neumorphism Shadows - Light Theme */
+  --shadow-light: #ffffff;
+  --shadow-dark: #a3b1c6;
+  --shadow-inset-light: #ffffff;
+  --shadow-inset-dark: #a3b1c6;
+
+  /* Neumorphism Box Shadows */
+  --neu-shadow-sm: 4px 4px 8px var(--shadow-dark), -4px -4px 8px var(--shadow-light);
+  --neu-shadow-md: 8px 8px 16px var(--shadow-dark), -8px -8px 16px var(--shadow-light);
+  --neu-shadow-lg: 12px 12px 24px var(--shadow-dark), -12px -12px 24px var(--shadow-light);
+  --neu-shadow-inset: inset 4px 4px 8px var(--shadow-inset-dark), inset -4px -4px 8px var(--shadow-inset-light);
+  --neu-shadow-inset-md: inset 6px 6px 12px var(--shadow-inset-dark), inset -6px -6px 12px var(--shadow-inset-light);
+
+  /* Text Colors */
+  --text-color: #2d3748;
+  --text-secondary: #4a5568;
+  --text-muted: #718096;
+
+  /* Semantic Colors */
+  --success-color: #68D391;
+  --error-color: #FC8181;
+  --warning-color: #F6AD55;
+  --info-color: #63B3ED;
+
+  /* Legacy Support */
+  --border-color: rgba(163, 177, 198, 0.3);
+  --shadow-color: rgba(163, 177, 198, 0.4);
+  --primary-color-alpha: rgba(108, 155, 207, 0.15);
+  --code-background: #2d3748;
+  --disabled-color: #cbd5e0;
 }
 
 [data-theme='dark'] {
+  /* Base Colors - Dark Theme */
   --primary-color: #7AA2F7;
   --secondary-color: #BB9AF7;
   --accent-color: #7DCFFF;
-  --background-color: #1A1B26;
-  --surface-color: #24283B;
-  --elevated-surface: #2F334D;
-  --text-color: #C0CAF5;
-  --text-secondary: #A9B1D6;
-  --text-muted: #565F89;
-  --success-color: #9ECE6A;
-  --error-color: #F7768E;
-  --warning-color: #E0AF68;
-  --info-color: #BB9AF7;
-  --border-color: #2F334D;
-  --shadow-color: rgba(0, 0, 0, 0.3);
-  --primary-color-alpha: rgba(122, 162, 247, 0.1);
-  --card-background: #24283B;
-  --input-background: #1A1B26;
-  --disabled-color: #565F89;
+
+  /* Neumorphism Background - Dark Theme */
+  --background-color: #2a2d3a;
+  --surface-color: #2a2d3a;
+  --elevated-surface: #2a2d3a;
+  --card-background: #2a2d3a;
+  --input-background: #2a2d3a;
+
+  /* Neumorphism Shadows - Dark Theme */
+  --shadow-light: rgba(255, 255, 255, 0.05);
+  --shadow-dark: rgba(0, 0, 0, 0.5);
+  --shadow-inset-light: rgba(255, 255, 255, 0.05);
+  --shadow-inset-dark: rgba(0, 0, 0, 0.5);
+
+  /* Neumorphism Box Shadows - Dark Theme */
+  --neu-shadow-sm: 4px 4px 8px var(--shadow-dark), -4px -4px 8px var(--shadow-light);
+  --neu-shadow-md: 8px 8px 16px var(--shadow-dark), -8px -8px 16px var(--shadow-light);
+  --neu-shadow-lg: 12px 12px 24px var(--shadow-dark), -12px -12px 24px var(--shadow-light);
+  --neu-shadow-inset: inset 4px 4px 8px var(--shadow-inset-dark), inset -4px -4px 8px var(--shadow-inset-light);
+  --neu-shadow-inset-md: inset 6px 6px 12px var(--shadow-inset-dark), inset -6px -6px 12px var(--shadow-inset-light);
+
+  /* Text Colors - Dark Theme */
+  --text-color: #e2e8f0;
+  --text-secondary: #cbd5e0;
+  --text-muted: #a0aec0;
+
+  /* Semantic Colors - Dark Theme */
+  --success-color: #68D391;
+  --error-color: #FC8181;
+  --warning-color: #F6AD55;
+  --info-color: #63B3ED;
+
+  /* Legacy Support */
+  --border-color: rgba(255, 255, 255, 0.1);
+  --shadow-color: rgba(0, 0, 0, 0.5);
+  --primary-color-alpha: rgba(122, 162, 247, 0.15);
+  --code-background: #1a1d28;
+  --disabled-color: #4a5568;
 }
 
 * {
@@ -122,50 +167,88 @@ footer {
   color: white;
 }
 
-/* Global styles */
+/* Neumorphism Global Components */
+
+/* Neumorphism Card */
 .card {
   background-color: var(--card-background);
-  border: 1px solid var(--border-color);
-  box-shadow: 0 2px 4px var(--shadow-color);
+  border-radius: 20px;
+  box-shadow: var(--neu-shadow-md);
+  border: none;
   transition: all 0.3s ease;
 
   &:hover {
-    box-shadow: 0 4px 8px var(--shadow-color);
+    box-shadow: var(--neu-shadow-lg);
+  }
+
+  /* Pressed/Inset variant */
+  &.card-inset {
+    box-shadow: var(--neu-shadow-inset);
   }
 }
 
+/* Neumorphism Buttons */
 .btn {
-  background-color: var(--primary-color);
+  background-color: var(--surface-color);
   color: var(--text-color);
   border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
+  padding: 0.75rem 1.5rem;
+  border-radius: 15px;
   cursor: pointer;
+  box-shadow: var(--neu-shadow-sm);
   transition: all 0.3s ease;
+  font-weight: 500;
+  position: relative;
 
   &:hover {
-    background-color: var(--secondary-color);
-    transform: translateY(-2px);
+    box-shadow: var(--neu-shadow-md);
+  }
+
+  &:active {
+    box-shadow: var(--neu-shadow-inset);
+  }
+
+  &.btn-primary {
+    background: linear-gradient(145deg, var(--primary-color), #5a8bc4);
+    color: white;
+
+    &:hover {
+      background: linear-gradient(145deg, #5a8bc4, var(--primary-color));
+    }
   }
 
   &.btn-secondary {
-    background-color: var(--secondary-color);
+    background: linear-gradient(145deg, var(--secondary-color), #709fd9);
+    color: white;
+
+    &:hover {
+      background: linear-gradient(145deg, #709fd9, var(--secondary-color));
+    }
   }
 
   &.btn-accent {
-    background-color: var(--accent-color);
+    background: linear-gradient(145deg, var(--accent-color), #8fcfd1);
+    color: white;
+
+    &:hover {
+      background: linear-gradient(145deg, #8fcfd1, var(--accent-color));
+    }
   }
 }
 
+/* Neumorphism Input Fields */
 input, textarea {
   background-color: var(--input-background);
   color: var(--text-color);
-  border: 1px solid var(--border-color);
+  border: none;
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  box-shadow: var(--neu-shadow-inset);
   transition: all 0.3s ease;
+  font-family: inherit;
 
   &:focus {
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 2px var(--primary-color-alpha);
+    box-shadow: var(--neu-shadow-inset-md);
     outline: none;
   }
 
@@ -174,25 +257,52 @@ input, textarea {
   }
 }
 
-::selection {
-  background-color: var(--primary-color);
+/* Select dropdown */
+select {
+  background-color: var(--input-background);
   color: var(--text-color);
+  border: none;
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  box-shadow: var(--neu-shadow-sm);
+  transition: all 0.3s ease;
+  cursor: pointer;
+
+  &:focus {
+    box-shadow: var(--neu-shadow-inset);
+    outline: none;
+  }
 }
 
+::selection {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+/* Neumorphism Scrollbar */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 12px;
+  background: var(--background-color);
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--surface-color);
+  background: var(--background-color);
+  border-radius: 10px;
+  margin: 5px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--primary-color);
-  border-radius: 5px;
+  background: var(--surface-color);
+  border-radius: 10px;
+  box-shadow: var(--neu-shadow-sm);
+  border: 2px solid var(--background-color);
 
   &:hover {
-    background: var(--secondary-color);
+    box-shadow: var(--neu-shadow-md);
+  }
+
+  &:active {
+    box-shadow: var(--neu-shadow-inset);
   }
 }
 

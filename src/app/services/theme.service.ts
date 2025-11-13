@@ -33,10 +33,10 @@ export class ThemeService {
     // 直接設置 document root 的 data-theme
     if (isDark) {
       document.documentElement.setAttribute('data-theme', 'dark');
-      document.body.style.backgroundColor = '#1A1B26'; // Tokyo Night dark background
+      document.body.style.backgroundColor = '#2a2d3a'; // Neumorphism dark background
     } else {
       document.documentElement.setAttribute('data-theme', 'light');
-      document.body.style.backgroundColor = '#5E81AC'; // Nord light background
+      document.body.style.backgroundColor = '#e0e5ec'; // Neumorphism light background
     }
   }
 

@@ -1,51 +1,61 @@
+/* Neumorphism Home Component */
+
 .home-container {
   min-height: 100vh;
   overflow-x: hidden;
-  padding-top: 64px; // 為導航欄留出空間
 
-  // 打字機效果
+  // Hero section with typewriter effect
   .hero-section {
-    height: calc(100vh - 64px);
+    min-height: calc(100vh - 80px);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     background: var(--background-color);
     text-align: center;
+    padding: 2rem;
 
     .typewriter-text {
       font-size: 3.5rem;
       color: var(--text-color);
-      margin-bottom: 1rem;
-      border-right: 0.1em solid var(--text-color);
+      margin-bottom: 1.5rem;
+      border-right: 0.15em solid var(--primary-color);
       white-space: nowrap;
       overflow: hidden;
       animation: blink-caret 0.75s step-end infinite;
+      font-weight: 700;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
     }
 
     .subtitle {
       font-size: 1.5rem;
       color: var(--text-secondary);
-      opacity: 0.8;
+      padding: 1rem 2rem;
+      border-radius: 20px;
+      background: var(--surface-color);
+      box-shadow: var(--neu-shadow-md);
+      max-width: 600px;
     }
   }
 
-  // 推骨牌效果
+  // Neumorphism Domino section
   .domino-section {
     padding: 6rem 2rem;
-    background: var(--surface-color);
+    background: var(--background-color);
     text-align: center;
 
     h2 {
       font-size: 2.5rem;
       color: var(--text-color);
       margin-bottom: 3rem;
+      font-weight: 700;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.05);
     }
 
     .domino-container {
       display: flex;
       justify-content: center;
-      gap: 2rem;
+      gap: 2.5rem;
       flex-wrap: wrap;
 
       .domino {
@@ -56,104 +66,162 @@
         .domino-inner {
           width: 100%;
           height: 100%;
-          background: var(--card-background);
-          border-radius: 12px;
-          box-shadow: 0 4px 15px var(--shadow-color);
+          background: var(--surface-color);
+          border-radius: 20px;
+          box-shadow: var(--neu-shadow-md);
           display: flex;
           flex-direction: column;
           align-items: center;
           justify-content: center;
           padding: 1.5rem;
-          transition: transform 0.3s ease;
+          transition: all 0.3s ease;
 
           &:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px);
+            box-shadow: var(--neu-shadow-lg);
+          }
+
+          &:active {
+            box-shadow: var(--neu-shadow-inset);
+            transform: translateY(-2px);
           }
 
           i {
             font-size: 2.5rem;
             color: var(--primary-color);
             margin-bottom: 1rem;
+            filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.1));
           }
 
           span {
             color: var(--text-color);
             font-size: 1.2rem;
-            font-weight: 500;
+            font-weight: 600;
           }
         }
       }
     }
   }
 
-  // 懸浮卡片效果
+  // Neumorphism Floating cards section
   .cards-section {
     padding: 6rem 2rem;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
-    background: var(--background-color);
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2.5rem;
+    background: var(--surface-color);
 
     .floating-card {
       background: var(--card-background);
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px var(--shadow-color);
+      padding: 2.5rem;
+      border-radius: 25px;
+      box-shadow: var(--neu-shadow-md);
       text-align: center;
+      transition: all 0.3s ease;
+
+      &:hover {
+        box-shadow: var(--neu-shadow-lg);
+        transform: translateY(-5px);
+      }
 
       i {
-        font-size: 2.5rem;
+        font-size: 3rem;
         color: var(--primary-color);
-        margin-bottom: 1rem;
+        margin-bottom: 1.5rem;
+        display: inline-block;
+        padding: 1rem;
+        border-radius: 50%;
+        background: var(--surface-color);
+        box-shadow: var(--neu-shadow-sm);
       }
 
       h3 {
         color: var(--text-color);
-        font-size: 1.5rem;
+        font-size: 1.6rem;
         margin-bottom: 1rem;
+        font-weight: 700;
       }
 
       p {
         color: var(--text-muted);
-        line-height: 1.6;
+        line-height: 1.8;
+        font-size: 1rem;
       }
     }
   }
 }
 
-// 打字機光標動畫
+// Typewriter cursor animation
 @keyframes blink-caret {
-  from, to { border-color: transparent }
-  50% { border-color: var(--text-color) }
+  from, to {
+    border-color: transparent
+  }
+  50% {
+    border-color: var(--primary-color)
+  }
 }
 
-// 響應式設計
+// Responsive design
 @media (max-width: 768px) {
   .home-container {
     .hero-section {
+      padding: 1.5rem;
+
       .typewriter-text {
-        font-size: 2rem;
+        font-size: 2.2rem;
       }
+
       .subtitle {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
+        padding: 0.8rem 1.5rem;
       }
     }
 
     .domino-section {
-      padding: 4rem 1rem;
-      
+      padding: 4rem 1.5rem;
+
       h2 {
         font-size: 2rem;
       }
 
-      .domino {
-        width: 160px !important;
-        height: 160px !important;
+      .domino-container {
+        gap: 1.5rem;
+
+        .domino {
+          width: 160px !important;
+          height: 160px !important;
+
+          .domino-inner {
+            padding: 1rem;
+
+            i {
+              font-size: 2rem;
+            }
+
+            span {
+              font-size: 1rem;
+            }
+          }
+        }
       }
     }
 
     .cards-section {
-      padding: 4rem 1rem;
+      padding: 4rem 1.5rem;
+      gap: 1.5rem;
+      grid-template-columns: 1fr;
+
+      .floating-card {
+        padding: 2rem;
+
+        i {
+          font-size: 2.5rem;
+        }
+
+        h3 {
+          font-size: 1.4rem;
+        }
+      }
     }
   }
 }
