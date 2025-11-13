@@ -1,10 +1,7 @@
-/* Neumorphism Home Component */
-
 .home-container {
   min-height: 100vh;
   overflow-x: hidden;
 
-  // Hero section with typewriter effect
   .hero-section {
     min-height: calc(100vh - 80px);
     display: flex;
@@ -24,7 +21,6 @@
       overflow: hidden;
       animation: blink-caret 0.75s step-end infinite;
       font-weight: 700;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
     }
 
     .subtitle {
@@ -38,7 +34,6 @@
     }
   }
 
-  // Neumorphism Domino section
   .domino-section {
     padding: 6rem 2rem;
     background: var(--background-color);
@@ -49,7 +44,6 @@
       color: var(--text-color);
       margin-bottom: 3rem;
       font-weight: 700;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.05);
     }
 
     .domino-container {
@@ -61,7 +55,6 @@
       .domino {
         width: 200px;
         height: 200px;
-        perspective: 1000px;
 
         .domino-inner {
           width: 100%;
@@ -90,7 +83,6 @@
             font-size: 2.5rem;
             color: var(--primary-color);
             margin-bottom: 1rem;
-            filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.1));
           }
 
           span {
@@ -103,7 +95,6 @@
     }
   }
 
-  // Neumorphism Floating cards section
   .cards-section {
     padding: 6rem 2rem;
     display: grid;
@@ -145,62 +136,36 @@
       p {
         color: var(--text-muted);
         line-height: 1.8;
-        font-size: 1rem;
       }
     }
   }
 }
 
-// Typewriter cursor animation
 @keyframes blink-caret {
-  from, to {
-    border-color: transparent
-  }
-  50% {
-    border-color: var(--primary-color)
-  }
+  from, to { border-color: transparent }
+  50% { border-color: var(--primary-color) }
 }
 
-// Responsive design
 @media (max-width: 768px) {
   .home-container {
     .hero-section {
       padding: 1.5rem;
-
-      .typewriter-text {
-        font-size: 2.2rem;
-      }
-
-      .subtitle {
-        font-size: 1.1rem;
-        padding: 0.8rem 1.5rem;
-      }
+      .typewriter-text { font-size: 2.2rem; }
+      .subtitle { font-size: 1.1rem; padding: 0.8rem 1.5rem; }
     }
 
     .domino-section {
       padding: 4rem 1.5rem;
-
-      h2 {
-        font-size: 2rem;
-      }
-
+      h2 { font-size: 2rem; }
       .domino-container {
         gap: 1.5rem;
-
         .domino {
           width: 160px !important;
           height: 160px !important;
-
           .domino-inner {
             padding: 1rem;
-
-            i {
-              font-size: 2rem;
-            }
-
-            span {
-              font-size: 1rem;
-            }
+            i { font-size: 2rem; }
+            span { font-size: 1rem; }
           }
         }
       }
@@ -210,17 +175,10 @@
       padding: 4rem 1.5rem;
       gap: 1.5rem;
       grid-template-columns: 1fr;
-
       .floating-card {
         padding: 2rem;
-
-        i {
-          font-size: 2.5rem;
-        }
-
-        h3 {
-          font-size: 1.4rem;
-        }
+        i { font-size: 2.5rem; }
+        h3 { font-size: 1.4rem; }
       }
     }
   }
