@@ -1,5 +1,7 @@
 import { Component, ElementRef, ViewChild, AfterViewInit, OnDestroy, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ThemeService } from '../../services/theme.service';
+import { Subscription } from 'rxjs';
 
 interface Point {
   x: number;
@@ -24,6 +26,8 @@ export class SnakeCursorComponent implements AfterViewInit, OnDestroy {
 
   private ctx!: CanvasRenderingContext2D;
   private animationFrameId: number = 0;
+  private themeSubscription?: Subscription;
+  private isDarkMode = false;
 
   // Configuration parameters
   private readonly gridSize = 20; // Size of each grid cell (square)
@@ -43,15 +47,27 @@ export class SnakeCursorComponent implements AfterViewInit, OnDestroy {
   private lastMoveTime = 0;
   private targetGridPosition: Point | null = null;
 
+  constructor(private themeService: ThemeService) {}
+
   ngAfterViewInit(): void {
     this.initCanvas();
     this.initSnake();
     this.startAnimation();
+
+    // Subscribe to theme changes
+    this.themeSubscription = this.themeService.darkMode$.subscribe(
+      isDark => {
+        this.isDarkMode = isDark;
+      }
+    );
   }
 
   ngOnDestroy(): void {
     if (this.animationFrameId) {
       cancelAnimationFrame(this.animationFrameId);
+    }
+    if (this.themeSubscription) {
+      this.themeSubscription.unsubscribe();
     }
   }
 
@@ -205,57 +221,105 @@ export class SnakeCursorComponent implements AfterViewInit, OnDestroy {
     // Clear canvas
     this.ctx.clearRect(0, 0, this.canvasRef.nativeElement.width, this.canvasRef.nativeElement.height);
 
-    // Draw snake segments as rounded squares
+    // Neumorphism color scheme based on theme
+    const colorScheme = this.isDarkMode ? {
+      // Dark theme: vibrant blue gradient
+      baseHue: 210,        // Blue
+      hueRange: 30,        // To light blue/cyan
+      baseSaturation: 85,
+      baseLightness: 65,
+      shadowColor: 'rgba(0, 0, 0, 0.6)',
+      highlightColor: 'rgba(255, 255, 255, 0.1)',
+      eyeWhite: '#e2e8f0',
+      pupilColor: '#1a1d28'
+    } : {
+      // Light theme: softer blue gradient matching neumorphism palette
+      baseHue: 205,        // Blue
+      hueRange: 25,        // To cyan-blue
+      baseSaturation: 60,
+      baseLightness: 55,
+      shadowColor: 'rgba(163, 177, 198, 0.5)',
+      highlightColor: 'rgba(255, 255, 255, 0.8)',
+      eyeWhite: '#ffffff',
+      pupilColor: '#2d3748'
+    };
+
+    // Draw snake segments with neumorphism effect
     this.snakeSegments.forEach((segment, index) => {
       // Convert grid position to pixel position
       const pixelX = segment.x * this.gridSize + this.gridSize / 2;
       const pixelY = segment.y * this.gridSize + this.gridSize / 2;
 
-      // Gradient from head to tail (green to blue)
-      const hue = 120 + (index / this.snakeSegments.length) * 60; // 120 (green) to 180 (cyan)
-      const lightness = 50 - (index / this.snakeSegments.length) * 10; // Slightly darker towards tail
-      this.ctx.fillStyle = `hsla(${hue}, 70%, ${lightness}%, 0.9)`;
+      // Calculate color gradient from head to tail
+      const progress = index / Math.max(this.snakeSegments.length - 1, 1);
+      const hue = colorScheme.baseHue + progress * colorScheme.hueRange;
+      const saturation = colorScheme.baseSaturation - progress * 15;
+      const lightness = colorScheme.baseLightness - progress * 10;
+      const alpha = 0.95 - progress * 0.2;
 
-      // Draw rounded square
+      // Draw shadow for neumorphism effect (bottom-right)
+      this.ctx.fillStyle = colorScheme.shadowColor;
+      this.drawRoundedSquare(pixelX + 1.5, pixelY + 1.5, this.gridSize - 2, this.borderRadius);
+
+      // Draw highlight (top-left)
+      this.ctx.fillStyle = colorScheme.highlightColor;
+      this.drawRoundedSquare(pixelX - 1, pixelY - 1, this.gridSize - 2, this.borderRadius);
+
+      // Draw main segment
+      this.ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness}%, ${alpha})`;
       this.drawRoundedSquare(pixelX, pixelY, this.gridSize - 2, this.borderRadius);
+
+      // Draw inner glow for more neumorphism depth
+      if (index < 3) {
+        const glowSize = this.gridSize - 6;
+        this.ctx.fillStyle = `hsla(${hue}, ${saturation + 10}%, ${lightness + 15}%, 0.4)`;
+        this.drawRoundedSquare(pixelX, pixelY, glowSize, this.borderRadius - 1);
+      }
 
       // Draw eyes on the head
       if (index === 0) {
         const eyeSize = 2.5;
         const eyeOffset = 4;
+        const eyeY = pixelY - eyeOffset;
 
-        // Determine eye position based on direction
-        let eyeY = pixelY - eyeOffset;
+        // Eye background (neumorphic inset)
+        this.ctx.fillStyle = colorScheme.shadowColor;
+        this.ctx.beginPath();
+        this.ctx.arc(pixelX - eyeOffset, eyeY, eyeSize + 0.5, 0, Math.PI * 2);
+        this.ctx.fill();
+        this.ctx.beginPath();
+        this.ctx.arc(pixelX + eyeOffset, eyeY, eyeSize + 0.5, 0, Math.PI * 2);
+        this.ctx.fill();
 
         // White of eyes
-        this.ctx.fillStyle = 'white';
+        this.ctx.fillStyle = colorScheme.eyeWhite;
         this.ctx.beginPath();
         this.ctx.arc(pixelX - eyeOffset, eyeY, eyeSize, 0, Math.PI * 2);
         this.ctx.fill();
-
         this.ctx.beginPath();
         this.ctx.arc(pixelX + eyeOffset, eyeY, eyeSize, 0, Math.PI * 2);
         this.ctx.fill();
 
-        // Pupils
-        this.ctx.fillStyle = 'black';
+        // Pupils with slight gradient
         const pupilSize = 1.2;
+        this.ctx.fillStyle = colorScheme.pupilColor;
         this.ctx.beginPath();
         this.ctx.arc(pixelX - eyeOffset, eyeY, pupilSize, 0, Math.PI * 2);
         this.ctx.fill();
-
         this.ctx.beginPath();
         this.ctx.arc(pixelX + eyeOffset, eyeY, pupilSize, 0, Math.PI * 2);
         this.ctx.fill();
+
+        // Eye highlights
+        this.ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+        const highlightSize = 0.8;
+        this.ctx.beginPath();
+        this.ctx.arc(pixelX - eyeOffset + 0.5, eyeY - 0.5, highlightSize, 0, Math.PI * 2);
+        this.ctx.fill();
+        this.ctx.beginPath();
+        this.ctx.arc(pixelX + eyeOffset + 0.5, eyeY - 0.5, highlightSize, 0, Math.PI * 2);
+        this.ctx.fill();
       }
     });
-
-    // Optional: Draw grid position indicator at mouse cursor (disabled by default)
-    // const mouseGridX = Math.floor(this.mousePosition.x / this.gridSize);
-    // const mouseGridY = Math.floor(this.mousePosition.y / this.gridSize);
-    // const indicatorX = mouseGridX * this.gridSize + this.gridSize / 2;
-    // const indicatorY = mouseGridY * this.gridSize + this.gridSize / 2;
-    // this.ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
-    // this.drawRoundedSquare(indicatorX, indicatorY, this.gridSize - 2, this.borderRadius);
   }
 }
