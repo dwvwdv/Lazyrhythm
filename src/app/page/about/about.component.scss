@@ -112,104 +112,6 @@
       }
     }
 
-    // Timeline Section
-    .timeline-section {
-      margin-bottom: 5rem;
-      padding: 3rem;
-      background: var(--card-background);
-      border-radius: 24px;
-      box-shadow: var(--neumorphic-shadow);
-
-      h2 {
-        font-size: 2.2rem;
-        color: var(--text-color);
-        margin-bottom: 3rem;
-        font-weight: 600;
-      }
-
-      .timeline {
-        position: relative;
-
-        .timeline-item {
-          display: flex;
-          gap: 2rem;
-          margin-bottom: 3rem;
-          position: relative;
-
-          &:last-child {
-            margin-bottom: 0;
-
-            .marker-line {
-              display: none;
-            }
-          }
-
-          .timeline-marker {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-
-            .marker-dot {
-              width: 24px;
-              height: 24px;
-              background: var(--card-background);
-              border-radius: 50%;
-              box-shadow: var(--neumorphic-shadow-small);
-              position: relative;
-              z-index: 2;
-
-              &::after {
-                content: '';
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                width: 12px;
-                height: 12px;
-                background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-                border-radius: 50%;
-              }
-            }
-
-            .marker-line {
-              flex: 1;
-              width: 3px;
-              background: linear-gradient(180deg, var(--primary-color), var(--secondary-color));
-              opacity: 0.3;
-              margin-top: 0.5rem;
-              min-height: 60px;
-            }
-          }
-
-          .timeline-content {
-            flex: 1;
-            padding-bottom: 1rem;
-
-            .date {
-              font-weight: 700;
-              font-size: 1.1rem;
-              color: var(--primary-color);
-              margin-bottom: 0.75rem;
-              letter-spacing: 1px;
-            }
-
-            h3 {
-              color: var(--text-color);
-              margin-bottom: 0.75rem;
-              font-size: 1.3rem;
-              font-weight: 600;
-            }
-
-            p {
-              color: var(--text-muted);
-              line-height: 1.7;
-            }
-          }
-        }
-      }
-    }
-
     // Tech Stack Section
     .tech-stack-section {
       padding: 3rem;
@@ -294,7 +196,6 @@
 
     .about-content {
       .story-section,
-      .timeline-section,
       .tech-stack-section {
         padding: 2rem;
       }
@@ -333,17 +234,8 @@
 
     .about-content {
       .story-section,
-      .timeline-section,
       .tech-stack-section {
         padding: 1.5rem;
-      }
-
-      .timeline-section {
-        .timeline {
-          .timeline-item {
-            gap: 1rem;
-          }
-        }
       }
 
       .tech-stack-section {

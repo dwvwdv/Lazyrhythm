@@ -31,102 +31,60 @@ export class WorksComponent {
   ];
 
   projects: Project[] = [
-    // Financial Tech Projects
-    {
-      id: 'crypto-bot',
-      image: 'assets/images/crypto-bot.jpg',
-      title: 'Crypto Trading Bot',
-      description: 'Automated cryptocurrency trading system with advanced market analysis, risk management, and multi-exchange support.',
-      tags: ['Python', 'Machine Learning', 'API Integration'],
-      category: 'finance',
-      link: '#',
-      technologies: ['Python', 'TensorFlow', 'CCXT', 'PostgreSQL']
-    },
-    {
-      id: 'portfolio-tracker',
-      image: 'assets/images/portfolio.jpg',
-      title: 'Portfolio Analytics Dashboard',
-      description: 'Real-time investment portfolio tracking with advanced analytics, performance metrics, and risk assessment.',
-      tags: ['React', 'D3.js', 'Real-time Data'],
-      category: 'finance',
-      link: '#',
-      technologies: ['React', 'TypeScript', 'D3.js', 'WebSocket']
-    },
-
-    // Gaming Projects
-    {
-      id: 'rhythm-game',
-      image: 'assets/images/rhythm-game.jpg',
-      title: 'LazyBeat',
-      description: 'Experimental rhythm game with procedurally generated levels that sync to your music library.',
-      tags: ['Unity', 'C#', 'Audio Processing'],
-      category: 'gaming',
-      link: '#',
-      technologies: ['Unity', 'C#', 'FMOD', 'Blender']
-    },
-    {
-      id: 'puzzle-game',
-      image: 'assets/images/puzzle.jpg',
-      title: 'Quantum Puzzles',
-      description: 'Mind-bending puzzle game exploring quantum mechanics concepts through interactive gameplay.',
-      tags: ['Game Design', 'Physics', 'Education'],
-      category: 'gaming',
-      link: '#',
-      technologies: ['Unity', 'C#', 'Shader Graph']
-    },
-
     // Security Tools
     {
-      id: 'network-scanner',
-      image: 'assets/images/network-scanner.jpg',
-      title: 'NetRecon',
-      description: 'Comprehensive network reconnaissance tool for penetration testing and security audits.',
-      tags: ['Rust', 'Networking', 'Security'],
+      id: 'hitcon-crawl',
+      image: 'assets/images/hitcon-crawl.jpg',
+      title: 'HITCON-Vuls-Crawler',
+      description: 'Fast terminal-based TUI tool for browsing HITCON vulnerability disclosures. Efficient command-line interface for security researchers to quickly access and review publicly disclosed vulnerabilities.',
+      tags: ['Python', 'TUI', 'Security Research'],
       category: 'security',
-      link: '#',
-      technologies: ['Rust', 'Nmap', 'Wireshark API']
-    },
-    {
-      id: 'password-auditor',
-      image: 'assets/images/password-audit.jpg',
-      title: 'PasswordShield Auditor',
-      description: 'Enterprise password policy auditing tool with breach detection and strength analysis.',
-      tags: ['Python', 'Cryptography', 'CLI'],
-      category: 'security',
-      link: '#',
-      technologies: ['Python', 'Hashcat', 'SQLite']
-    },
-    {
-      id: 'vuln-scanner',
-      image: 'assets/images/vuln-scanner.jpg',
-      title: 'WebVuln Scanner',
-      description: 'Automated web application vulnerability scanner for OWASP Top 10 security issues.',
-      tags: ['Security', 'Web', 'Automation'],
-      category: 'security',
-      link: '#',
-      technologies: ['Python', 'Selenium', 'BeautifulSoup']
+      link: 'https://github.com/dwvwdv/HITCON-Vuls-Crawler',
+      technologies: ['Python', 'Terminal UI', 'Web Scraping']
     },
 
-    // Automation Projects
+    // Financial Tech Projects
     {
-      id: 'workflow-automation',
-      image: 'assets/images/workflow.jpg',
-      title: 'FlowMaster',
-      description: 'Visual workflow automation platform for complex business processes and API integrations.',
-      tags: ['Node.js', 'Automation', 'Low-Code'],
-      category: 'automation',
+      id: 'sure-finance',
+      image: 'assets/images/sure-finance.jpg',
+      title: 'Sure Finance',
+      description: 'Financial management and analysis platform designed for tracking investments, analyzing market trends, and managing personal finance portfolios.',
+      tags: ['Finance', 'Analytics', 'Data Visualization'],
+      category: 'finance',
       link: '#',
-      technologies: ['Node.js', 'React', 'MongoDB', 'Redis']
+      technologies: ['TypeScript', 'Angular', 'Chart.js']
+    },
+
+    // Automation & Utility Tools
+    {
+      id: 'hookfy',
+      image: 'assets/images/hookfy.jpg',
+      title: 'hookfy',
+      description: 'Android notification monitoring application with webhook support. Enables real-time notification forwarding and tracking for enhanced mobile workflow automation.',
+      tags: ['Flutter', 'Mobile', 'Webhooks'],
+      category: 'automation',
+      link: 'https://github.com/dwvwdv/hookfy',
+      technologies: ['Dart', 'Flutter', 'Android SDK', 'HTTP']
     },
     {
-      id: 'data-pipeline',
-      image: 'assets/images/data-pipeline.jpg',
-      title: 'DataFlow Pipeline',
-      description: 'Scalable data processing pipeline with ETL capabilities and real-time monitoring.',
-      tags: ['Python', 'Big Data', 'Cloud'],
-      category: 'automation',
-      link: '#',
-      technologies: ['Python', 'Apache Airflow', 'AWS', 'Docker']
+      id: 'lazyembed',
+      image: 'assets/images/lazyembed.jpg',
+      title: 'LazyEmbed',
+      description: 'A static webpage utility toolkit featuring various web development tools and helpers. Streamlines common web development tasks with an easy-to-use interface.',
+      tags: ['HTML', 'JavaScript', 'Web Tools'],
+      category: 'other',
+      link: 'https://github.com/dwvwdv/LazyEmbed',
+      technologies: ['HTML', 'CSS', 'JavaScript']
+    },
+    {
+      id: 'code-toolbox',
+      image: 'assets/images/code-toolbox.jpg',
+      title: 'CodeToolbox',
+      description: 'C++ Qt-based code utility collection. A comprehensive desktop application housing various implemented code functionalities and development tools.',
+      tags: ['C++', 'Qt', 'Desktop'],
+      category: 'other',
+      link: 'https://github.com/dwvwdv/CodeToolbox',
+      technologies: ['C++', 'Qt Framework', 'CMake']
     }
   ];
 

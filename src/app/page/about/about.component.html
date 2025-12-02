@@ -32,24 +32,6 @@
       </div>
     </div>
 
-    <!-- Timeline -->
-    <div class="timeline-section">
-      <h2>Evolution Timeline</h2>
-      <div class="timeline">
-        <div class="timeline-item" *ngFor="let event of timelineEvents; let i = index">
-          <div class="timeline-marker">
-            <div class="marker-dot"></div>
-            <div class="marker-line" *ngIf="i < timelineEvents.length - 1"></div>
-          </div>
-          <div class="timeline-content">
-            <div class="date">{{event.date}}</div>
-            <h3>{{event.title}}</h3>
-            <p>{{event.description}}</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <!-- Tech Stack -->
     <div class="tech-stack-section">
       <h2>Technology Arsenal</h2>
