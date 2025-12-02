@@ -9,13 +9,18 @@ import { ContactFormComponent } from '../../widgets/contact-form/contact-form.co
     styleUrls: ['./sponsor.component.scss']
 })
 export class SponsorComponent {
-  bitcoinAddress = '1234567890abcdef'; // 替換為實際的比特幣地址
-  bitcoinQRCode = 'assets/images/bitcoin-qr.png'; // 替換為實際的 QR code 圖片路徑
-  kofiLink = 'https://ko-fi.com/lazyrhythm'; // 替換為實際的 Ko-fi 連結
+  bscAddress = '0x6ea43c866b82da77b55aa561dc0de58cb69ad066';
+  bscQRCode = 'https://filedn.eu/lyWyjTiBuD9uWONu3Or0JNX/lazyrhythm/bscAddr.jpg';
+  kofiLink = 'https://ko-fi.com/lazyrhythm';
 
-  copyBitcoinAddress() {
-    navigator.clipboard.writeText(this.bitcoinAddress);
-    // 可以添加複製成功的提示
-    alert('已複製比特幣地址！');
+  showToast = false;
+
+  copyBscAddress() {
+    navigator.clipboard.writeText(this.bscAddress).then(() => {
+      this.showToast = true;
+      setTimeout(() => {
+        this.showToast = false;
+      }, 2000);
+    });
   }
 }

@@ -6,14 +6,14 @@
 
       <div class="sponsor-methods">
         <div class="method">
-          <h3>Bitcoin Support</h3>
-          <div class="bitcoin-address">
-            <code>{{bitcoinAddress}}</code>
-            <button (click)="copyBitcoinAddress()" class="copy-btn">
+          <h3>BSC Wallet</h3>
+          <div class="bsc-address">
+            <code>{{bscAddress}}</code>
+            <button (click)="copyBscAddress()" class="copy-btn">
               <i class="fas fa-copy"></i>
             </button>
           </div>
-          <img [src]="bitcoinQRCode" alt="Bitcoin QR Code" class="qr-code">
+          <img [src]="bscQRCode" alt="BSC Wallet QR Code" class="qr-code">
         </div>
 
         <div class="method">
@@ -29,5 +29,11 @@
     <div class="sponsor-form-wrapper">
       <app-contact-form formType="sponsor"></app-contact-form>
     </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast-notification" [class.show]="showToast">
+    <i class="fas fa-check-circle"></i>
+    <span>Address copied to clipboard!</span>
   </div>
 </section>
