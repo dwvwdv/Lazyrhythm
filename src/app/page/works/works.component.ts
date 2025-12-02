@@ -34,7 +34,7 @@ export class WorksComponent {
     // Security Tools
     {
       id: 'hitcon-crawl',
-      image: '',
+      image: 'https://filedn.eu/lyWyjTiBuD9uWONu3Or0JNX/lazyrhythm/HITCON-Vuls-Crawler/demo.png',
       title: 'HITCON-Vuls-Crawler',
       description: 'Fast terminal-based TUI tool for browsing HITCON vulnerability disclosures. Efficient command-line interface for security researchers to quickly access and review publicly disclosed vulnerabilities.',
       tags: ['Python', 'TUI', 'Security Research'],
