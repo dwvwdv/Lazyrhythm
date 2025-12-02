@@ -10,33 +10,27 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
     styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit, AfterViewInit {
-  dominoItems = [
-    { icon: 'fas fa-gamepad', text: '遊戲開發' },
-    { icon: 'fas fa-code', text: '程式設計' },
-    { icon: 'fas fa-paint-brush', text: '美術設計' },
-    { icon: 'fas fa-music', text: '音樂製作' }
-  ];
-
-  cardItems = [
+  // Main feature areas of the experimental lab
+  labAreas = [
     {
-      icon: 'fas fa-rocket',
-      title: '創新遊戲體驗',
-      description: '打造獨特的遊戲玩法，帶給玩家全新的體驗'
+      icon: 'fas fa-chart-line',
+      title: 'Financial Tech',
+      description: 'Trading bots, market analysis, and fintech applications'
     },
     {
-      icon: 'fas fa-heart',
-      title: '精心製作',
-      description: '每個細節都經過精心打磨，確保最佳品質'
+      icon: 'fas fa-gamepad',
+      title: 'Game Development',
+      description: 'Interactive experiences and experimental game mechanics'
     },
     {
-      icon: 'fas fa-users',
-      title: '社群互動',
-      description: '重視玩家回饋，持續優化遊戲體驗'
+      icon: 'fas fa-shield-alt',
+      title: 'Security Tools',
+      description: 'Cybersecurity utilities and penetration testing tools'
     },
     {
-      icon: 'fas fa-star',
-      title: '獨特風格',
-      description: '建立專屬的遊戲風格，打造難忘的遊戲世界'
+      icon: 'fas fa-robot',
+      title: 'Automation',
+      description: 'Workflow automation and productivity tools'
     }
   ];
 
@@ -45,80 +39,54 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.initTypewriter();
+    // Initialization
   }
 
   ngAfterViewInit() {
-    this.initDominoEffect();
-    this.initFloatingCards();
+    this.initRhythmicAnimations();
   }
 
-  private initTypewriter() {
-    const text = "歡迎來到 LazyRhythm";
-    const element = document.querySelector('.typewriter-text');
-    if (!element) return;
-
-    let i = 0;
-    const speed = 100;
-
-    function typeWriter() {
-      if (i < text.length) {
-        element!.textContent += text.charAt(i);
-        i++;
-        setTimeout(typeWriter, speed);
-      }
-    }
-
-    typeWriter();
-  }
-
-  private initDominoEffect() {
-    const dominos = gsap.utils.toArray('.domino');
-
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: '.domino-section',
-        start: 'top center',
-        toggleActions: 'play none none reverse'
-      }
-    });
-
-    dominos.forEach((domino: any, i) => {
-      tl.from(domino, {
-        rotateX: -90,
-        opacity: 0,
-        duration: 0.5,
-        ease: 'back.out(1.7)',
-        delay: i * 0.1
-      }, i * 0.1);
-    });
-  }
-
-  private initFloatingCards() {
-    const cards = gsap.utils.toArray('.floating-card');
+  // LazyRhythm themed animations - slow, rhythmic, wave-based
+  private initRhythmicAnimations() {
+    // Rhythmic pulse animation for lab area cards
+    const cards = gsap.utils.toArray('.lab-card');
 
     cards.forEach((card: any, i) => {
+      // Slow fade-in on scroll
       gsap.from(card, {
         opacity: 0,
-        y: 50,
-        duration: 1,
-        delay: i * 0.2,
+        y: 30,
+        duration: 1.2,
+        ease: 'power2.out',
         scrollTrigger: {
           trigger: card,
-          start: 'top bottom-=100',
+          start: 'top bottom-=50',
           toggleActions: 'play none none reverse'
         }
       });
 
+      // Continuous rhythmic pulse - subtle scale animation
       gsap.to(card, {
-        y: 'random(-10, 10)',
-        rotation: 'random(-3, 3)',
-        duration: 'random(2, 3)',
+        scale: 1.02,
+        duration: 2 + (i * 0.3), // Staggered rhythm
         repeat: -1,
         yoyo: true,
         ease: 'sine.inOut',
-        delay: i * 0.1
+        delay: i * 0.4
       });
     });
+
+    // Wave animation for hero section
+    const heroTitle = document.querySelector('.hero-title');
+    if (heroTitle) {
+      // Gentle wave motion
+      gsap.to(heroTitle, {
+        y: -10,
+        duration: 3,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut'
+      });
+    }
   }
 }
