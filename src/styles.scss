@@ -1,13 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
 
-/* Global Styles */
+/* Global Styles with Neomorphism Design */
 :root {
   --primary-color: #A3BE8C;
   --secondary-color: #81A1C1;
   --accent-color: #88C0D0;
-  --background-color: #5E81AC;
-  --surface-color: #4E81AC;
-  --elevated-surface: #D8DEE9;
+  --background-color: #E0E5EC;
+  --surface-color: #E0E5EC;
+  --elevated-surface: #E0E5EC;
   --text-color: #2E3440;
   --text-secondary: #3B4252;
   --text-muted: #4C566A;
@@ -16,10 +16,17 @@
   --warning-color: #EBCB8B;
   --info-color: #B48EAD;
   --border-color: #D8DEE9;
-  --shadow-color: rgba(46, 52, 64, 0.1);
-  --primary-color-alpha: rgba(94, 129, 172, 0.1);
-  --card-background: #FFFFFF;
-  --input-background: #FFFFFF;
+
+  /* Neomorphism shadows */
+  --shadow-light: #ffffff;
+  --shadow-dark: #a3b1c6;
+  --neumorphic-shadow: 8px 8px 16px var(--shadow-dark), -8px -8px 16px var(--shadow-light);
+  --neumorphic-shadow-inset: inset 6px 6px 12px var(--shadow-dark), inset -6px -6px 12px var(--shadow-light);
+  --neumorphic-shadow-small: 4px 4px 8px var(--shadow-dark), -4px -4px 8px var(--shadow-light);
+
+  --primary-color-alpha: rgba(163, 190, 140, 0.15);
+  --card-background: #E0E5EC;
+  --input-background: #E0E5EC;
   --code-background: #2E3440;
   --disabled-color: #D8DEE9;
 }
@@ -28,9 +35,9 @@
   --primary-color: #7AA2F7;
   --secondary-color: #BB9AF7;
   --accent-color: #7DCFFF;
-  --background-color: #1A1B26;
-  --surface-color: #24283B;
-  --elevated-surface: #2F334D;
+  --background-color: #2A2D3A;
+  --surface-color: #2A2D3A;
+  --elevated-surface: #2A2D3A;
   --text-color: #C0CAF5;
   --text-secondary: #A9B1D6;
   --text-muted: #565F89;
@@ -39,10 +46,17 @@
   --warning-color: #E0AF68;
   --info-color: #BB9AF7;
   --border-color: #2F334D;
-  --shadow-color: rgba(0, 0, 0, 0.3);
-  --primary-color-alpha: rgba(122, 162, 247, 0.1);
-  --card-background: #24283B;
-  --input-background: #1A1B26;
+
+  /* Dark mode neomorphism */
+  --shadow-light: #363948;
+  --shadow-dark: #1e202c;
+  --neumorphic-shadow: 8px 8px 16px var(--shadow-dark), -8px -8px 16px var(--shadow-light);
+  --neumorphic-shadow-inset: inset 6px 6px 12px var(--shadow-dark), inset -6px -6px 12px var(--shadow-light);
+  --neumorphic-shadow-small: 4px 4px 8px var(--shadow-dark), -4px -4px 8px var(--shadow-light);
+
+  --primary-color-alpha: rgba(122, 162, 247, 0.15);
+  --card-background: #2A2D3A;
+  --input-background: #2A2D3A;
   --disabled-color: #565F89;
 }
 
@@ -122,50 +136,69 @@ footer {
   color: white;
 }
 
-/* Global styles */
+/* Global styles with Neomorphism */
 .card {
   background-color: var(--card-background);
-  border: 1px solid var(--border-color);
-  box-shadow: 0 2px 4px var(--shadow-color);
-  transition: all 0.3s ease;
+  border: none;
+  border-radius: 20px;
+  box-shadow: var(--neumorphic-shadow);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 
   &:hover {
-    box-shadow: 0 4px 8px var(--shadow-color);
+    box-shadow: 12px 12px 24px var(--shadow-dark), -12px -12px 24px var(--shadow-light);
+    transform: translateY(-2px);
+  }
+
+  &.pressed {
+    box-shadow: var(--neumorphic-shadow-inset);
   }
 }
 
 .btn {
-  background-color: var(--primary-color);
+  background-color: var(--card-background);
   color: var(--text-color);
   border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  box-shadow: var(--neumorphic-shadow-small);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-weight: 500;
 
   &:hover {
-    background-color: var(--secondary-color);
-    transform: translateY(-2px);
+    box-shadow: 6px 6px 12px var(--shadow-dark), -6px -6px 12px var(--shadow-light);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    box-shadow: var(--neumorphic-shadow-inset);
+    transform: translateY(0);
+  }
+
+  &.btn-primary {
+    color: var(--primary-color);
   }
 
   &.btn-secondary {
-    background-color: var(--secondary-color);
+    color: var(--secondary-color);
   }
 
   &.btn-accent {
-    background-color: var(--accent-color);
+    color: var(--accent-color);
   }
 }
 
 input, textarea {
   background-color: var(--input-background);
   color: var(--text-color);
-  border: 1px solid var(--border-color);
+  border: none;
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  box-shadow: var(--neumorphic-shadow-inset);
   transition: all 0.3s ease;
 
   &:focus {
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 2px var(--primary-color-alpha);
+    box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light), 0 0 0 3px var(--primary-color-alpha);
     outline: none;
   }
 

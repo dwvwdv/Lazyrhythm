@@ -1,54 +1,47 @@
 <section class="about-container">
   <div class="about-header">
-    <h1>關於 LazyRhythm</h1>
-    <p class="subtitle">獨立遊戲開發工作室</p>
+    <h1>About LazyRhythm</h1>
+    <p class="subtitle">A Personal Experimental Laboratory</p>
   </div>
 
   <div class="about-content">
+    <!-- Introduction -->
     <div class="story-section">
-      <h2>我們的故事</h2>
-      <p>LazyRhythm 是一個充滿熱情的獨立遊戲開發工作室。我們專注於創造有趣且富有創意的遊戲體驗，希望能為玩家帶來歡樂與感動。</p>
+      <h2>The Lab Story</h2>
+      <p>
+        LazyRhythm is not a company. It's a personal experimental laboratory where curiosity meets code.
+        A space dedicated to building projects that span multiple domains—from financial technology
+        and game development to cybersecurity tools and automation systems.
+      </p>
+      <p>
+        Each project follows its own rhythm, emerging from genuine interest and evolving through
+        hands-on experimentation. No rigid schedules, no corporate constraints—just the lazy,
+        natural flow of innovation.
+      </p>
     </div>
 
-    <div class="vision-section">
-      <div class="vision-card">
-        <i class="fas fa-lightbulb"></i>
-        <h3>願景</h3>
-        <p>打造獨特的遊戲體驗，為玩家創造難忘的回憶。</p>
-      </div>
-
-      <div class="vision-card">
-        <i class="fas fa-heart"></i>
-        <h3>使命</h3>
-        <p>透過遊戲傳遞正面的價值觀，讓玩家在娛樂中獲得啟發。</p>
-      </div>
-
-      <div class="vision-card">
-        <i class="fas fa-star"></i>
-        <h3>價值觀</h3>
-        <p>創新、品質、玩家至上。</p>
-      </div>
-    </div>
-
-    <div class="timeline-section">
-      <h2>發展歷程</h2>
-      <div class="timeline">
-        <div class="timeline-item" *ngFor="let event of timelineEvents">
-          <div class="date">{{event.date}}</div>
-          <div class="content">
-            <h3>{{event.title}}</h3>
-            <p>{{event.description}}</p>
-          </div>
+    <!-- Core Principles -->
+    <div class="principles-section">
+      <h2>Core Principles</h2>
+      <div class="principles-grid">
+        <div class="principle-card" *ngFor="let principle of principles">
+          <i [class]="principle.icon"></i>
+          <h3>{{principle.title}}</h3>
+          <p>{{principle.description}}</p>
         </div>
       </div>
     </div>
 
+    <!-- Tech Stack -->
     <div class="tech-stack-section">
-      <h2>技術棧</h2>
+      <h2>Technology Arsenal</h2>
       <div class="tech-grid">
         <div class="tech-item" *ngFor="let tech of techStack">
-          <img [src]="tech.icon" [alt]="tech.name">
-          <span>{{tech.name}}</span>
+          <i [class]="tech.icon"></i>
+          <div class="tech-info">
+            <span class="tech-name">{{tech.name}}</span>
+            <span class="tech-category">{{tech.category}}</span>
+          </div>
         </div>
       </div>
     </div>

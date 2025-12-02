@@ -1,29 +1,40 @@
 <div class="home-container">
-  <!-- 打字機效果 -->
+  <!-- Hero Section -->
   <section class="hero-section">
-    <h1 class="typewriter-text"></h1>
-    <p class="subtitle">獨立遊戲開發工作室</p>
+    <h1 class="hero-title">LazyRhythm</h1>
+    <p class="hero-subtitle">Personal Experimental Laboratory</p>
+    <p class="hero-description">
+      Exploring the intersection of technology, creativity, and innovation.<br>
+      Multi-domain projects spanning finance, gaming, security, and beyond.
+    </p>
   </section>
 
-  <!-- 推骨牌效果 -->
-  <section class="domino-section">
-    <h2>我們的特色</h2>
-    <div class="domino-container">
-      <div class="domino" *ngFor="let item of dominoItems">
-        <div class="domino-inner">
-          <i [class]="item.icon"></i>
-          <span>{{item.text}}</span>
+  <!-- Lab Areas Section -->
+  <section class="lab-areas-section">
+    <h2 class="section-title">Research Areas</h2>
+    <div class="lab-grid">
+      <div class="lab-card" *ngFor="let area of labAreas">
+        <div class="card-icon">
+          <i [class]="area.icon"></i>
         </div>
+        <h3 class="card-title">{{area.title}}</h3>
+        <p class="card-description">{{area.description}}</p>
       </div>
     </div>
   </section>
 
-  <!-- 懸浮卡片效果 -->
-  <section class="cards-section">
-    <div class="floating-card" *ngFor="let card of cardItems">
-      <i [class]="card.icon"></i>
-      <h3>{{card.title}}</h3>
-      <p>{{card.description}}</p>
+  <!-- Philosophy Section -->
+  <section class="philosophy-section">
+    <div class="philosophy-content">
+      <h2>Lazy. Rhythmic. Experimental.</h2>
+      <p>
+        The rhythm of innovation doesn't rush. Every project follows its own tempo,
+        emerging from curiosity and evolving through experimentation.
+      </p>
+      <p>
+        This is a space where ideas breathe, technologies merge, and possibilities unfold
+        at their own lazy rhythm.
+      </p>
     </div>
   </section>
 </div>

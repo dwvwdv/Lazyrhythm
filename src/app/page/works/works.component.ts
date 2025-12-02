@@ -1,50 +1,101 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CarouselComponent } from '../../widgets/carousel/carousel.component';
 
-interface Work {
+interface Project {
+  id: string;
   image: string;
   title: string;
   description: string;
   tags: string[];
+  category: 'finance' | 'gaming' | 'security' | 'automation' | 'other';
   link: string;
+  technologies: string[];
 }
 
 @Component({
     selector: 'app-works',
-    imports: [CommonModule, CarouselComponent],
+    imports: [CommonModule],
     templateUrl: './works.component.html',
     styleUrls: ['./works.component.scss']
 })
 export class WorksComponent {
-  carouselItems = [
+  selectedCategory: string = 'all';
+
+  categories = [
+    { id: 'all', name: 'All Projects', icon: 'fas fa-th' },
+    { id: 'finance', name: 'Financial Tech', icon: 'fas fa-chart-line' },
+    { id: 'gaming', name: 'Games', icon: 'fas fa-gamepad' },
+    { id: 'security', name: 'Security Tools', icon: 'fas fa-shield-alt' },
+    { id: 'automation', name: 'Automation', icon: 'fas fa-robot' },
+    { id: 'other', name: 'Other', icon: 'fas fa-code' }
+  ];
+
+  projects: Project[] = [
+    // Security Tools
     {
-      image: 'assets/images/game1.jpg',
-      title: '遊戲標題1',
-      description: '遊戲描述1'
+      id: 'hitcon-crawl',
+      image: 'https://filedn.eu/lyWyjTiBuD9uWONu3Or0JNX/lazyrhythm/HITCON-Vuls-Crawler/demo.png',
+      title: 'HITCON-Vuls-Crawler',
+      description: 'Fast terminal-based TUI tool for browsing HITCON vulnerability disclosures. Efficient command-line interface for security researchers to quickly access and review publicly disclosed vulnerabilities.',
+      tags: ['Python', 'TUI', 'Security Research'],
+      category: 'security',
+      link: 'https://github.com/dwvwdv/HITCON-Vuls-Crawler',
+      technologies: ['Python', 'Terminal UI', 'Web Scraping']
+    },
+
+    // Financial Tech Projects
+    {
+      id: 'sure-finance',
+      image: 'https://filedn.eu/lyWyjTiBuD9uWONu3Or0JNX/lazyrhythm/Surefiance/icon.png',
+      title: 'Sure Finance',
+      description: 'Financial management and analysis platform designed for tracking investments, analyzing market trends, and managing personal finance portfolios.',
+      tags: ['Finance', 'Analytics', 'Data Visualization'],
+      category: 'finance',
+      link: '#',
+      technologies: ['TypeScript', 'Angular', 'Chart.js']
+    },
+
+    // Automation & Utility Tools
+    {
+      id: 'hookfy',
+      image: 'https://filedn.eu/lyWyjTiBuD9uWONu3Or0JNX/lazyrhythm/hookfy/icon.png',
+      title: 'hookfy',
+      description: 'Android notification monitoring application with webhook support. Enables real-time notification forwarding and tracking for enhanced mobile workflow automation.',
+      tags: ['Flutter', 'Mobile', 'Webhooks'],
+      category: 'automation',
+      link: 'https://github.com/dwvwdv/hookfy',
+      technologies: ['Dart', 'Flutter', 'Android SDK', 'HTTP']
     },
     {
-      image: 'assets/images/game2.jpg',
-      title: '遊戲標題2',
-      description: '遊戲描述2'
+      id: 'lazyembed',
+      image: '',
+      title: 'LazyEmbed',
+      description: 'A static webpage utility toolkit featuring various web development tools and helpers. Streamlines common web development tasks with an easy-to-use interface.',
+      tags: ['HTML', 'JavaScript', 'Web Tools'],
+      category: 'other',
+      link: 'https://github.com/dwvwdv/LazyEmbed',
+      technologies: ['HTML', 'CSS', 'JavaScript']
+    },
+    {
+      id: 'code-toolbox',
+      image: '',
+      title: 'CodeToolbox',
+      description: 'C++ Qt-based code utility collection. A comprehensive desktop application housing various implemented code functionalities and development tools.',
+      tags: ['C++', 'Qt', 'Desktop'],
+      category: 'other',
+      link: 'https://github.com/dwvwdv/CodeToolbox',
+      technologies: ['C++', 'Qt Framework', 'CMake']
     }
   ];
 
-  works: Work[] = [
-    {
-      image: 'assets/images/game1.jpg',
-      title: '遊戲專案1',
-      description: '這是一個充滿冒險的遊戲，玩家將在這裡體驗前所未有的樂趣...',
-      tags: ['冒險', 'RPG', '多人遊戲'],
-      link: '#'
-    },
-    {
-      image: 'assets/images/game2.jpg',
-      title: '遊戲專案2',
-      description: '一個策略性的遊戲，考驗玩家的智慧與決策能力...',
-      tags: ['策略', '回合制', '單人遊戲'],
-      link: '#'
+  get filteredProjects(): Project[] {
+    if (this.selectedCategory === 'all') {
+      return this.projects;
     }
-    // 可以添加更多作品
-  ];
+    return this.projects.filter(project => project.category === this.selectedCategory);
+  }
+
+  selectCategory(categoryId: string): void {
+    this.selectedCategory = categoryId;
+  }
 }

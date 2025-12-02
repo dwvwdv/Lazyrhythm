@@ -1,25 +1,56 @@
 <section class="works-container">
-  <h1 class="title">我們的作品</h1>
-  
-  <!-- 輪播展示區 -->
-  <div class="carousel-section">
-    <app-carousel [items]="carouselItems"></app-carousel>
+  <div class="works-header">
+    <h1 class="title">Project Showcase</h1>
+    <p class="subtitle">Experimental projects across multiple domains</p>
   </div>
 
-  <!-- 作品列表 -->
-  <div class="works-grid">
-    <article class="work-card" *ngFor="let work of works">
-      <div class="work-image">
-        <img [src]="work.image" [alt]="work.title">
-      </div>
-      <div class="work-content">
-        <h2>{{work.title}}</h2>
-        <p class="description">{{work.description}}</p>
-        <div class="tags">
-          <span class="tag" *ngFor="let tag of work.tags">{{tag}}</span>
+  <!-- Category Filter -->
+  <div class="category-filter">
+    <button
+      *ngFor="let category of categories"
+      class="category-btn"
+      [class.active]="selectedCategory === category.id"
+      (click)="selectCategory(category.id)">
+      <i [class]="category.icon"></i>
+      <span>{{category.name}}</span>
+    </button>
+  </div>
+
+  <!-- Projects Grid -->
+  <div class="projects-grid">
+    <article class="project-card" *ngFor="let project of filteredProjects">
+      <div class="project-image" [class.no-image]="!project.image">
+        <img *ngIf="project.image" [src]="project.image" [alt]="project.title" />
+        <div *ngIf="!project.image" class="image-placeholder">
+          <i class="fas fa-code"></i>
         </div>
-        <a [href]="work.link" class="learn-more" target="_blank">了解更多</a>
+        <div class="image-overlay">
+          <span class="category-badge">{{project.category}}</span>
+        </div>
+      </div>
+      <div class="project-content">
+        <h2 class="project-title">{{project.title}}</h2>
+        <p class="project-description">{{project.description}}</p>
+
+        <div class="project-tags">
+          <span class="tag" *ngFor="let tag of project.tags">{{tag}}</span>
+        </div>
+
+        <div class="project-technologies">
+          <span class="tech-label">Tech Stack:</span>
+          <span class="tech-item" *ngFor="let tech of project.technologies">{{tech}}</span>
+        </div>
+
+        <a [href]="project.link" class="learn-more-btn" target="_blank">
+          Learn More <i class="fas fa-arrow-right"></i>
+        </a>
       </div>
     </article>
+  </div>
+
+  <!-- Empty State -->
+  <div class="empty-state" *ngIf="filteredProjects.length === 0">
+    <i class="fas fa-folder-open"></i>
+    <p>No projects found in this category</p>
   </div>
 </section>
