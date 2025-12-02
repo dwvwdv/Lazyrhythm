@@ -34,7 +34,7 @@ export class WorksComponent {
     // Security Tools
     {
       id: 'hitcon-crawl',
-      image: 'assets/images/hitcon-crawl.jpg',
+      image: '',
       title: 'HITCON-Vuls-Crawler',
       description: 'Fast terminal-based TUI tool for browsing HITCON vulnerability disclosures. Efficient command-line interface for security researchers to quickly access and review publicly disclosed vulnerabilities.',
       tags: ['Python', 'TUI', 'Security Research'],
@@ -46,7 +46,7 @@ export class WorksComponent {
     // Financial Tech Projects
     {
       id: 'sure-finance',
-      image: 'assets/images/sure-finance.jpg',
+      image: 'https://filedn.eu/lyWyjTiBuD9uWONu3Or0JNX/lazyrhythm/Surefiance/icon.png',
       title: 'Sure Finance',
       description: 'Financial management and analysis platform designed for tracking investments, analyzing market trends, and managing personal finance portfolios.',
       tags: ['Finance', 'Analytics', 'Data Visualization'],
@@ -58,7 +58,7 @@ export class WorksComponent {
     // Automation & Utility Tools
     {
       id: 'hookfy',
-      image: 'assets/images/hookfy.jpg',
+      image: 'https://filedn.eu/lyWyjTiBuD9uWONu3Or0JNX/lazyrhythm/hookfy/icon.png',
       title: 'hookfy',
       description: 'Android notification monitoring application with webhook support. Enables real-time notification forwarding and tracking for enhanced mobile workflow automation.',
       tags: ['Flutter', 'Mobile', 'Webhooks'],
@@ -68,7 +68,7 @@ export class WorksComponent {
     },
     {
       id: 'lazyembed',
-      image: 'assets/images/lazyembed.jpg',
+      image: '',
       title: 'LazyEmbed',
       description: 'A static webpage utility toolkit featuring various web development tools and helpers. Streamlines common web development tasks with an easy-to-use interface.',
       tags: ['HTML', 'JavaScript', 'Web Tools'],
@@ -78,7 +78,7 @@ export class WorksComponent {
     },
     {
       id: 'code-toolbox',
-      image: 'assets/images/code-toolbox.jpg',
+      image: '',
       title: 'CodeToolbox',
       description: 'C++ Qt-based code utility collection. A comprehensive desktop application housing various implemented code functionalities and development tools.',
       tags: ['C++', 'Qt', 'Desktop'],

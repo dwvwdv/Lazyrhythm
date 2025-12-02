@@ -19,8 +19,11 @@
   <!-- Projects Grid -->
   <div class="projects-grid">
     <article class="project-card" *ngFor="let project of filteredProjects">
-      <div class="project-image">
-        <img [src]="project.image" [alt]="project.title" />
+      <div class="project-image" [class.no-image]="!project.image">
+        <img *ngIf="project.image" [src]="project.image" [alt]="project.title" />
+        <div *ngIf="!project.image" class="image-placeholder">
+          <i class="fas fa-code"></i>
+        </div>
         <div class="image-overlay">
           <span class="category-badge">{{project.category}}</span>
         </div>
