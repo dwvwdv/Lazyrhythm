@@ -17,7 +17,7 @@ export interface WebsiteProjectRow {
 export interface ContractPayload {
   form_type: 'contact' | 'sponsor';
   name: string;
-  email: string;
+  email?: string | null;
   subject?: string | null;
   message: string;
   amount?: number | null;
