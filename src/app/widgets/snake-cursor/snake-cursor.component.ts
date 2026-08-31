@@ -1,16 +1,9 @@
-import { Component, ElementRef, ViewChild, AfterViewInit, OnDestroy, HostListener } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, OnDestroy, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-interface Point {
+interface TrailPoint {
   x: number;
   y: number;
-}
-
-enum Direction {
-  UP,
-  DOWN,
-  LEFT,
-  RIGHT
 }
 
 @Component({
@@ -23,239 +16,109 @@ export class SnakeCursorComponent implements AfterViewInit, OnDestroy {
   @ViewChild('snakeCanvas', { static: false }) canvasRef!: ElementRef<HTMLCanvasElement>;
 
   private ctx!: CanvasRenderingContext2D;
-  private animationFrameId: number = 0;
+  private animationFrameId = 0;
+  private enabled = true;
+  private dpr = 1;
 
-  // Configuration parameters
-  private readonly gridSize = 20; // Size of each grid cell (square)
-  private readonly moveSpeed = 150; // Milliseconds between moves (lower = faster)
-  private readonly initialSegments = 5;
-  private readonly maxLength = 30; // Maximum snake length
-  private readonly borderRadius = 4; // Rounded corner radius
-
-  // Mouse tracking
-  private mousePosition: Point = { x: 0, y: 0 };
-  private lastMousePosition: Point = { x: 0, y: 0 };
-  private mouseHasMoved = false;
-
-  // Snake state
-  private snakeSegments: Point[] = []; // Grid positions
-  private currentDirection: Direction = Direction.RIGHT;
-  private lastMoveTime = 0;
-  private targetGridPosition: Point | null = null;
+  private pointer: TrailPoint = { x: -100, y: -100 };
+  private trail: TrailPoint[] = Array.from({ length: 5 }, () => ({ x: -100, y: -100 }));
 
   ngAfterViewInit(): void {
-    this.initCanvas();
-    this.initSnake();
-    this.startAnimation();
+    this.enabled = window.matchMedia('(pointer: fine)').matches &&
+      !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (!this.enabled) {
+      this.canvasRef.nativeElement.hidden = true;
+      return;
+    }
+
+    this.ctx = this.canvasRef.nativeElement.getContext('2d')!;
+    this.resizeCanvas();
+    this.animate();
   }
 
   ngOnDestroy(): void {
-    if (this.animationFrameId) {
-      cancelAnimationFrame(this.animationFrameId);
-    }
+    cancelAnimationFrame(this.animationFrameId);
   }
 
   @HostListener('window:mousemove', ['$event'])
   onMouseMove(event: MouseEvent): void {
-    const newX = event.clientX;
-    const newY = event.clientY;
+    if (!this.enabled) return;
+    this.pointer = { x: event.clientX, y: event.clientY };
+  }
 
-    // Check if mouse has actually moved
-    if (newX !== this.lastMousePosition.x || newY !== this.lastMousePosition.y) {
-      this.mouseHasMoved = true;
-      this.lastMousePosition = { x: newX, y: newY };
-    }
-
-    this.mousePosition.x = newX;
-    this.mousePosition.y = newY;
+  @HostListener('window:mouseleave')
+  onMouseLeave(): void {
+    this.pointer = { x: -100, y: -100 };
   }
 
   @HostListener('window:resize')
   onResize(): void {
-    this.resizeCanvas();
-  }
-
-  private initCanvas(): void {
-    const canvas = this.canvasRef.nativeElement;
-    this.ctx = canvas.getContext('2d')!;
-    this.resizeCanvas();
+    if (this.enabled) this.resizeCanvas();
   }
 
   private resizeCanvas(): void {
     const canvas = this.canvasRef.nativeElement;
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    this.dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.floor(window.innerWidth * this.dpr);
+    canvas.height = Math.floor(window.innerHeight * this.dpr);
+    canvas.style.width = `${window.innerWidth}px`;
+    canvas.style.height = `${window.innerHeight}px`;
+    this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
   }
 
-  private initSnake(): void {
-    const centerGridX = Math.floor(window.innerWidth / 2 / this.gridSize);
-    const centerGridY = Math.floor(window.innerHeight / 2 / this.gridSize);
+  private animate = (): void => {
+    this.updateTrail();
+    this.draw();
+    this.animationFrameId = requestAnimationFrame(this.animate);
+  };
 
-    // Initialize snake segments in grid coordinates
-    for (let i = 0; i < this.initialSegments; i++) {
-      this.snakeSegments.push({
-        x: centerGridX - i,
-        y: centerGridY
-      });
-    }
+  private updateTrail(): void {
+    let target = this.pointer;
 
-    // Initialize mouse position
-    this.mousePosition.x = window.innerWidth / 2;
-    this.mousePosition.y = window.innerHeight / 2;
-    this.lastMousePosition = { ...this.mousePosition };
-  }
-
-  private startAnimation(): void {
-    const animate = (timestamp: number) => {
-      if (!this.lastMoveTime) this.lastMoveTime = timestamp;
-
-      const elapsed = timestamp - this.lastMoveTime;
-
-      if (elapsed >= this.moveSpeed) {
-        this.update();
-        this.lastMoveTime = timestamp;
-      }
-
-      this.draw();
-      this.animationFrameId = requestAnimationFrame(animate);
-    };
-    this.animationFrameId = requestAnimationFrame(animate);
-  }
-
-  private update(): void {
-    if (this.snakeSegments.length === 0) return;
-
-    const head = this.snakeSegments[0];
-    const mouseGridX = Math.floor(this.mousePosition.x / this.gridSize);
-    const mouseGridY = Math.floor(this.mousePosition.y / this.gridSize);
-
-    // Determine direction to move towards mouse
-    const dx = mouseGridX - head.x;
-    const dy = mouseGridY - head.y;
-
-    // Only change direction if we're not already at the target
-    if (dx !== 0 || dy !== 0) {
-      // Choose primary direction based on largest difference
-      if (Math.abs(dx) > Math.abs(dy)) {
-        this.currentDirection = dx > 0 ? Direction.RIGHT : Direction.LEFT;
-      } else if (Math.abs(dy) > 0) {
-        this.currentDirection = dy > 0 ? Direction.DOWN : Direction.UP;
-      }
-    }
-
-    // Calculate new head position
-    let newHead = { ...head };
-    switch (this.currentDirection) {
-      case Direction.UP:
-        newHead.y -= 1;
-        break;
-      case Direction.DOWN:
-        newHead.y += 1;
-        break;
-      case Direction.LEFT:
-        newHead.x -= 1;
-        break;
-      case Direction.RIGHT:
-        newHead.x += 1;
-        break;
-    }
-
-    // Check if reached cursor position
-    const reachedCursor = newHead.x === mouseGridX && newHead.y === mouseGridY;
-
-    // Add new head
-    this.snakeSegments.unshift(newHead);
-
-    // Grow if reached cursor and mouse has moved, and not at max length
-    if (reachedCursor && this.mouseHasMoved && this.snakeSegments.length < this.maxLength) {
-      this.mouseHasMoved = false; // Reset flag
-    } else {
-      // Remove tail (no growth)
-      this.snakeSegments.pop();
-    }
-
-    // Keep snake within bounds
-    const maxGridX = Math.floor(window.innerWidth / this.gridSize);
-    const maxGridY = Math.floor(window.innerHeight / this.gridSize);
-
-    if (newHead.x < 0) newHead.x = 0;
-    if (newHead.x >= maxGridX) newHead.x = maxGridX - 1;
-    if (newHead.y < 0) newHead.y = 0;
-    if (newHead.y >= maxGridY) newHead.y = maxGridY - 1;
-  }
-
-  private drawRoundedSquare(x: number, y: number, size: number, radius: number): void {
-    const halfSize = size / 2;
-
-    this.ctx.beginPath();
-    this.ctx.moveTo(x - halfSize + radius, y - halfSize);
-    this.ctx.lineTo(x + halfSize - radius, y - halfSize);
-    this.ctx.quadraticCurveTo(x + halfSize, y - halfSize, x + halfSize, y - halfSize + radius);
-    this.ctx.lineTo(x + halfSize, y + halfSize - radius);
-    this.ctx.quadraticCurveTo(x + halfSize, y + halfSize, x + halfSize - radius, y + halfSize);
-    this.ctx.lineTo(x - halfSize + radius, y + halfSize);
-    this.ctx.quadraticCurveTo(x - halfSize, y + halfSize, x - halfSize, y + halfSize - radius);
-    this.ctx.lineTo(x - halfSize, y - halfSize + radius);
-    this.ctx.quadraticCurveTo(x - halfSize, y - halfSize, x - halfSize + radius, y - halfSize);
-    this.ctx.closePath();
-    this.ctx.fill();
+    this.trail.forEach((point, index) => {
+      const easing = 0.28 - index * 0.025;
+      point.x += (target.x - point.x) * easing;
+      point.y += (target.y - point.y) * easing;
+      target = point;
+    });
   }
 
   private draw(): void {
-    // Clear canvas
-    this.ctx.clearRect(0, 0, this.canvasRef.nativeElement.width, this.canvasRef.nativeElement.height);
+    const canvas = this.canvasRef.nativeElement;
+    this.ctx.clearRect(0, 0, canvas.width / this.dpr, canvas.height / this.dpr);
 
-    // Draw snake segments as rounded squares
-    this.snakeSegments.forEach((segment, index) => {
-      // Convert grid position to pixel position
-      const pixelX = segment.x * this.gridSize + this.gridSize / 2;
-      const pixelY = segment.y * this.gridSize + this.gridSize / 2;
+    const styles = getComputedStyle(document.documentElement);
+    const frost1 = styles.getPropertyValue('--frost1').trim() || '#88C0D0';
+    const frost3 = styles.getPropertyValue('--frost3').trim() || '#5E81AC';
+    const polar0 = styles.getPropertyValue('--polar0').trim() || '#2E3440';
 
-      // Gradient from head to tail (green to blue)
-      const hue = 120 + (index / this.snakeSegments.length) * 60; // 120 (green) to 180 (cyan)
-      const lightness = 50 - (index / this.snakeSegments.length) * 10; // Slightly darker towards tail
-      this.ctx.fillStyle = `hsla(${hue}, 70%, ${lightness}%, 0.9)`;
+    this.trail
+      .slice()
+      .reverse()
+      .forEach((point, reverseIndex) => {
+        const index = this.trail.length - 1 - reverseIndex;
+        const size = 4 + (this.trail.length - index) * 1.5;
+        const opacity = 0.12 + (this.trail.length - index) * 0.08;
 
-      // Draw rounded square
-      this.drawRoundedSquare(pixelX, pixelY, this.gridSize - 2, this.borderRadius);
+        this.ctx.globalAlpha = opacity;
+        this.ctx.fillStyle = index === 0 ? frost1 : frost3;
+        this.ctx.fillRect(
+          Math.round(point.x - size / 2) + index * 1.5,
+          Math.round(point.y - size / 2) + index * 1.5,
+          size,
+          size
+        );
+      });
 
-      // Draw eyes on the head
-      if (index === 0) {
-        const eyeSize = 2.5;
-        const eyeOffset = 4;
+    this.ctx.globalAlpha = 1;
 
-        // Determine eye position based on direction
-        let eyeY = pixelY - eyeOffset;
-
-        // White of eyes
-        this.ctx.fillStyle = 'white';
-        this.ctx.beginPath();
-        this.ctx.arc(pixelX - eyeOffset, eyeY, eyeSize, 0, Math.PI * 2);
-        this.ctx.fill();
-
-        this.ctx.beginPath();
-        this.ctx.arc(pixelX + eyeOffset, eyeY, eyeSize, 0, Math.PI * 2);
-        this.ctx.fill();
-
-        // Pupils
-        this.ctx.fillStyle = 'black';
-        const pupilSize = 1.2;
-        this.ctx.beginPath();
-        this.ctx.arc(pixelX - eyeOffset, eyeY, pupilSize, 0, Math.PI * 2);
-        this.ctx.fill();
-
-        this.ctx.beginPath();
-        this.ctx.arc(pixelX + eyeOffset, eyeY, pupilSize, 0, Math.PI * 2);
-        this.ctx.fill();
-      }
-    });
-
-    // Optional: Draw grid position indicator at mouse cursor (disabled by default)
-    // const mouseGridX = Math.floor(this.mousePosition.x / this.gridSize);
-    // const mouseGridY = Math.floor(this.mousePosition.y / this.gridSize);
-    // const indicatorX = mouseGridX * this.gridSize + this.gridSize / 2;
-    // const indicatorY = mouseGridY * this.gridSize + this.gridSize / 2;
-    // this.ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
-    // this.drawRoundedSquare(indicatorX, indicatorY, this.gridSize - 2, this.borderRadius);
+    const head = this.trail[0];
+    const size = 10;
+    this.ctx.fillStyle = polar0;
+    this.ctx.fillRect(Math.round(head.x - size / 2), Math.round(head.y - size / 2), size, size);
+    this.ctx.strokeStyle = frost1;
+    this.ctx.lineWidth = 2;
+    this.ctx.strokeRect(Math.round(head.x - size / 2), Math.round(head.y - size / 2), size, size);
   }
 }
