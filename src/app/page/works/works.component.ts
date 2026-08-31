@@ -7,22 +7,24 @@ interface Project {
   title: string;
   description: string;
   tags: string[];
-  category: 'finance' | 'gaming' | 'security' | 'automation' | 'other';
+  category: 'finance' | 'gaming' | 'security' | 'automation' | 'reading' | 'other';
   link: string;
   technologies: string[];
+  featured?: boolean;
 }
 
 @Component({
-    selector: 'app-works',
-    imports: [CommonModule],
-    templateUrl: './works.component.html',
-    styleUrls: ['./works.component.scss']
+  selector: 'app-works',
+  imports: [CommonModule],
+  templateUrl: './works.component.html',
+  styleUrls: ['./works.component.scss']
 })
 export class WorksComponent {
-  selectedCategory: string = 'all';
+  selectedCategory = 'all';
 
   categories = [
-    { id: 'all', name: 'All Projects', icon: 'fas fa-th' },
+    { id: 'all', name: 'All Projects', icon: 'fas fa-th-large' },
+    { id: 'reading', name: 'Reading & Knowledge', icon: 'fas fa-book-open' },
     { id: 'finance', name: 'Financial Tech', icon: 'fas fa-chart-line' },
     { id: 'gaming', name: 'Games', icon: 'fas fa-gamepad' },
     { id: 'security', name: 'Security Tools', icon: 'fas fa-shield-alt' },
@@ -31,7 +33,28 @@ export class WorksComponent {
   ];
 
   projects: Project[] = [
-    // Security Tools
+    {
+      id: 'driftread',
+      image: 'https://raw.githubusercontent.com/dwvwdv/Driftread/master/frontend/public/favicon.svg',
+      title: 'Driftread',
+      description: 'An RSS discovery and reading platform built around a simple idea: help you find sources you did not know yet, but are likely to enjoy. Browse, read full articles, subscribe, import OPML, and discover new feeds without turning reading into another noisy timeline.',
+      tags: ['RSS', 'Discovery', 'Reading'],
+      category: 'reading',
+      link: 'https://driftread.lazyrhythm.com',
+      technologies: ['Angular', 'FastAPI', 'Supabase', 'Docker'],
+      featured: true
+    },
+    {
+      id: 'cotime-book',
+      image: 'https://raw.githubusercontent.com/dwvwdv/cotime_book/master/assets/icon/app_icon.png',
+      title: 'CoTime Book',
+      description: 'A collaborative EPUB reading app for people who want to read together remotely. Create a room, share a six-character code, and keep everyone on the same page with real-time synchronized reading progress.',
+      tags: ['Collaborative Reading', 'EPUB', 'Realtime'],
+      category: 'reading',
+      link: 'https://github.com/dwvwdv/cotime_book',
+      technologies: ['Flutter', 'Riverpod', 'Supabase Realtime'],
+      featured: true
+    },
     {
       id: 'hitcon-crawl',
       image: 'https://filedn.eu/lyWyjTiBuD9uWONu3Or0JNX/lazyrhythm/HITCON-Vuls-Crawler/demo.png',
@@ -42,8 +65,6 @@ export class WorksComponent {
       link: 'https://github.com/dwvwdv/HITCON-Vuls-Crawler',
       technologies: ['Python', 'Terminal UI', 'Web Scraping']
     },
-
-    // Financial Tech Projects
     {
       id: 'sure-finance',
       image: 'https://filedn.eu/lyWyjTiBuD9uWONu3Or0JNX/lazyrhythm/Surefiance/icon.png',
@@ -54,8 +75,6 @@ export class WorksComponent {
       link: '#',
       technologies: ['TypeScript', 'Angular', 'Chart.js']
     },
-
-    // Automation & Utility Tools
     {
       id: 'hookfy',
       image: 'https://filedn.eu/lyWyjTiBuD9uWONu3Or0JNX/lazyrhythm/hookfy/icon.png',
@@ -80,7 +99,7 @@ export class WorksComponent {
       id: 'code-toolbox',
       image: '',
       title: 'CodeToolbox',
-      description: 'C++ Qt-based code utility collection. A comprehensive desktop application housing various implemented code functionalities and development tools.',
+      description: 'C++ Qt-based code utility collection. A desktop application housing practical development helpers and implemented code utilities.',
       tags: ['C++', 'Qt', 'Desktop'],
       category: 'other',
       link: 'https://github.com/dwvwdv/CodeToolbox',
@@ -92,6 +111,7 @@ export class WorksComponent {
     if (this.selectedCategory === 'all') {
       return this.projects;
     }
+
     return this.projects.filter(project => project.category === this.selectedCategory);
   }
 

@@ -1,6 +1,14 @@
 <nav class="navbar">
-  <div class="logo">
-    <a routerLink="/">LazyRhythm</a>
+  <div class="brand">
+    <a routerLink="/" class="brand-link" aria-label="LazyRhythm home">
+      <span class="brand-mark" aria-hidden="true">
+        <span></span><span></span><span></span>
+      </span>
+      <span class="brand-copy">
+        <strong>LazyRhythm</strong>
+        <small>experimental lab</small>
+      </span>
+    </a>
   </div>
 
   <div class="nav-links" [class.show]="isMenuOpen">
@@ -8,12 +16,12 @@
     <a routerLink="/works" routerLinkActive="active">Projects</a>
     <a routerLink="/contact" routerLinkActive="active">Contact</a>
     <a routerLink="/sponsor" routerLinkActive="active">Support</a>
-    <button class="theme-toggle" (click)="toggleTheme()">
-      {{ isDarkMode ? '🌞' : '🌙' }}
+    <button class="theme-toggle" (click)="toggleTheme()" [attr.aria-label]="isDarkMode ? 'Switch to light theme' : 'Switch to dark theme'">
+      <i [class]="isDarkMode ? 'fas fa-sun' : 'fas fa-moon'"></i>
     </button>
   </div>
 
-  <button class="menu-toggle" (click)="toggleMenu()">
+  <button class="menu-toggle" (click)="toggleMenu()" aria-label="Toggle navigation menu">
     <i [class]="isMenuOpen ? 'fas fa-times' : 'fas fa-bars'"></i>
   </button>
-</nav> 
+</nav>
