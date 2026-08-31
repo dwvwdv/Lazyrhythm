@@ -34,6 +34,17 @@ export class WorksComponent {
 
   projects: Project[] = [
     {
+      id: 'seamless-track',
+      image: 'https://play-lh.googleusercontent.com/Os98OPU_LiN_cfQcUBgi4hrE8VA1_lyvlhpz2uOVTKKitrU38SubCUK8DD0dwKHy7pvHMZBSVeWY0ZJSD8TmTQ=w240-h480',
+      title: '無感記帳',
+      description: 'A local-first Android accounting app that turns financial notifications into transactions automatically. Custom extraction rules, multi-account tracking, analytics, scheduled entries, and optional encrypted Google Drive backup keep everyday bookkeeping useful without making it a daily chore.',
+      tags: ['Automatic Accounting', 'Local First', 'Android'],
+      category: 'finance',
+      link: 'https://play.google.com/store/apps/details?id=com.lazyrhythm.seamless_track',
+      technologies: ['Flutter', 'Kotlin', 'SQLite', 'WorkManager'],
+      featured: true
+    },
+    {
       id: 'driftread',
       image: 'https://raw.githubusercontent.com/dwvwdv/Driftread/master/frontend/public/favicon.svg',
       title: 'Driftread',
