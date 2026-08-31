@@ -9,7 +9,8 @@ export class ThemeService {
   darkMode$ = this.darkMode.asObservable();
 
   constructor() {
-    this.setDarkMode(this.isDarkMode());
+    const hasStoredPreference = localStorage.getItem('darkMode') !== null;
+    this.setDarkMode(this.isDarkMode(), hasStoredPreference);
 
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
       if (localStorage.getItem('darkMode') === null) {
