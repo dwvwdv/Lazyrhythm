@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { WebsiteDataService } from '../../services/website-data.service';
 
 interface Project {
   id: string;
   image: string;
+  imageFit: 'contain' | 'cover';
   title: string;
   description: string;
   tags: string[];
@@ -19,8 +21,11 @@ interface Project {
   templateUrl: './works.component.html',
   styleUrls: ['./works.component.scss']
 })
-export class WorksComponent {
+export class WorksComponent implements OnInit {
   selectedCategory = 'all';
+  projects: Project[] = [];
+  isLoading = true;
+  loadError = false;
 
   categories = [
     { id: 'all', name: 'All Projects', icon: 'fas fa-th-large' },
@@ -32,91 +37,30 @@ export class WorksComponent {
     { id: 'other', name: 'Other', icon: 'fas fa-code' }
   ];
 
-  projects: Project[] = [
-    {
-      id: 'seamless-track',
-      image: 'https://play-lh.googleusercontent.com/Os98OPU_LiN_cfQcUBgi4hrE8VA1_lyvlhpz2uOVTKKitrU38SubCUK8DD0dwKHy7pvHMZBSVeWY0ZJSD8TmTQ=w240-h480',
-      title: '無感記帳',
-      description: 'A local-first Android accounting app that turns financial notifications into transactions automatically. Custom extraction rules, multi-account tracking, analytics, scheduled entries, and optional encrypted Google Drive backup keep everyday bookkeeping useful without making it a daily chore.',
-      tags: ['Automatic Accounting', 'Local First', 'Android'],
-      category: 'finance',
-      link: 'https://play.google.com/store/apps/details?id=com.lazyrhythm.seamless_track',
-      technologies: ['Flutter', 'Kotlin', 'SQLite', 'WorkManager'],
-      featured: true
-    },
-    {
-      id: 'driftread',
-      image: 'https://raw.githubusercontent.com/dwvwdv/Driftread/master/frontend/public/favicon.svg',
-      title: 'Driftread',
-      description: 'An RSS discovery and reading platform built around a simple idea: help you find sources you did not know yet, but are likely to enjoy. Browse, read full articles, subscribe, import OPML, and discover new feeds without turning reading into another noisy timeline.',
-      tags: ['RSS', 'Discovery', 'Reading'],
-      category: 'reading',
-      link: 'https://driftread.lazyrhythm.com',
-      technologies: ['Angular', 'FastAPI', 'Supabase', 'Docker'],
-      featured: true
-    },
-    {
-      id: 'cotime-book',
-      image: 'https://raw.githubusercontent.com/dwvwdv/cotime_book/master/assets/icon/app_icon.png',
-      title: 'CoTime Book',
-      description: 'A collaborative EPUB reading app for people who want to read together remotely. Create a room, share a six-character code, and keep everyone on the same page with real-time synchronized reading progress.',
-      tags: ['Collaborative Reading', 'EPUB', 'Realtime'],
-      category: 'reading',
-      link: 'https://github.com/dwvwdv/cotime_book',
-      technologies: ['Flutter', 'Riverpod', 'Supabase Realtime'],
-      featured: true
-    },
-    {
-      id: 'hitcon-crawl',
-      image: 'https://filedn.eu/lyWyjTiBuD9uWONu3Or0JNX/lazyrhythm/HITCON-Vuls-Crawler/demo.png',
-      title: 'HITCON-Vuls-Crawler',
-      description: 'Fast terminal-based TUI tool for browsing HITCON vulnerability disclosures. Efficient command-line interface for security researchers to quickly access and review publicly disclosed vulnerabilities.',
-      tags: ['Python', 'TUI', 'Security Research'],
-      category: 'security',
-      link: 'https://github.com/dwvwdv/HITCON-Vuls-Crawler',
-      technologies: ['Python', 'Terminal UI', 'Web Scraping']
-    },
-    {
-      id: 'sure-finance',
-      image: 'https://filedn.eu/lyWyjTiBuD9uWONu3Or0JNX/lazyrhythm/Surefiance/icon.png',
-      title: 'Sure Finance',
-      description: 'Financial management and analysis platform designed for tracking investments, analyzing market trends, and managing personal finance portfolios.',
-      tags: ['Finance', 'Analytics', 'Data Visualization'],
-      category: 'finance',
-      link: '#',
-      technologies: ['TypeScript', 'Angular', 'Chart.js']
-    },
-    {
-      id: 'hookfy',
-      image: 'https://filedn.eu/lyWyjTiBuD9uWONu3Or0JNX/lazyrhythm/hookfy/icon.png',
-      title: 'hookfy',
-      description: 'Android notification monitoring application with webhook support. Enables real-time notification forwarding and tracking for enhanced mobile workflow automation.',
-      tags: ['Flutter', 'Mobile', 'Webhooks'],
-      category: 'automation',
-      link: 'https://github.com/dwvwdv/hookfy',
-      technologies: ['Dart', 'Flutter', 'Android SDK', 'HTTP']
-    },
-    {
-      id: 'lazyembed',
-      image: '',
-      title: 'LazyEmbed',
-      description: 'A static webpage utility toolkit featuring various web development tools and helpers. Streamlines common web development tasks with an easy-to-use interface.',
-      tags: ['HTML', 'JavaScript', 'Web Tools'],
-      category: 'other',
-      link: 'https://github.com/dwvwdv/LazyEmbed',
-      technologies: ['HTML', 'CSS', 'JavaScript']
-    },
-    {
-      id: 'code-toolbox',
-      image: '',
-      title: 'CodeToolbox',
-      description: 'C++ Qt-based code utility collection. A desktop application housing practical development helpers and implemented code utilities.',
-      tags: ['C++', 'Qt', 'Desktop'],
-      category: 'other',
-      link: 'https://github.com/dwvwdv/CodeToolbox',
-      technologies: ['C++', 'Qt Framework', 'CMake']
+  constructor(private websiteData: WebsiteDataService) {}
+
+  async ngOnInit(): Promise<void> {
+    try {
+      const rows = await this.websiteData.getProjects();
+      this.projects = rows.map(row => ({
+        id: row.slug,
+        image: row.image_url ?? '',
+        imageFit: row.image_fit,
+        title: row.title,
+        description: row.description,
+        tags: row.tags,
+        category: row.category,
+        link: row.project_url,
+        technologies: row.technologies,
+        featured: row.featured
+      }));
+    } catch (error) {
+      console.error('Unable to load projects from Supabase', error);
+      this.loadError = true;
+    } finally {
+      this.isLoading = false;
     }
-  ];
+  }
 
   get filteredProjects(): Project[] {
     if (this.selectedCategory === 'all') {

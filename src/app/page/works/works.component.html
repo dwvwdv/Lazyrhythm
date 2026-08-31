@@ -18,14 +18,29 @@
     </button>
   </div>
 
-  <div class="projects-grid">
+  <div class="empty-state" *ngIf="isLoading">
+    <span class="empty-mark">~</span>
+    <p>Loading projects...</p>
+  </div>
+
+  <div class="empty-state" *ngIf="loadError && !isLoading">
+    <span class="empty-mark">!</span>
+    <p>Projects are temporarily unavailable.</p>
+  </div>
+
+  <div class="projects-grid" *ngIf="!isLoading && !loadError">
     <article
       class="project-card"
       [class.featured]="project.featured"
       *ngFor="let project of filteredProjects">
 
       <div class="project-image" [class.no-image]="!project.image">
-        <img *ngIf="project.image" [src]="project.image" [alt]="project.title" loading="lazy" />
+        <img
+          *ngIf="project.image"
+          [src]="project.image"
+          [alt]="project.title"
+          [class.cover]="project.imageFit === 'cover'"
+          loading="lazy" />
         <div *ngIf="!project.image" class="image-placeholder" aria-hidden="true">
           <span class="placeholder-wave"><i></i><i></i><i></i><i></i></span>
         </div>
@@ -64,7 +79,7 @@
     </article>
   </div>
 
-  <div class="empty-state" *ngIf="filteredProjects.length === 0">
+  <div class="empty-state" *ngIf="!isLoading && !loadError && filteredProjects.length === 0">
     <span class="empty-mark">~</span>
     <p>No projects found in this category.</p>
   </div>
