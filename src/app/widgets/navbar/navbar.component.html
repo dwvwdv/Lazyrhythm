@@ -1,27 +1,21 @@
 <nav class="navbar">
-  <div class="brand">
-    <a routerLink="/" class="brand-link" aria-label="LazyRhythm home">
-      <span class="brand-mark" aria-hidden="true">
-        <span></span><span></span><span></span>
-      </span>
-      <span class="brand-copy">
-        <strong>LazyRhythm</strong>
-        <small>experimental lab</small>
-      </span>
-    </a>
-  </div>
+  <a routerLink="/" class="brand-link" aria-label="LazyRhythm home">
+    <span class="brand-title">LAZYRHYTHM</span>
+    <span class="brand-slash">//</span>
+    <span class="brand-sub">OFFBEAT LAB</span>
+  </a>
 
   <div class="nav-links" [class.show]="isMenuOpen">
-    <a routerLink="/about" routerLinkActive="active">About</a>
-    <a routerLink="/works" routerLinkActive="active">Projects</a>
-    <a routerLink="/contact" routerLinkActive="active">Contact</a>
-    <a routerLink="/sponsor" routerLinkActive="active">Support</a>
+    <a routerLink="/works" routerLinkActive="active" (click)="closeMenu()">WORK</a>
+    <a routerLink="/about" routerLinkActive="active" (click)="closeMenu()">ABOUT</a>
+    <a routerLink="/contact" routerLinkActive="active" (click)="closeMenu()">CONTACT</a>
+    <a routerLink="/sponsor" routerLinkActive="active" (click)="closeMenu()">SUPPORT</a>
     <button class="theme-toggle" (click)="toggleTheme()" [attr.aria-label]="isDarkMode ? 'Switch to light theme' : 'Switch to dark theme'">
-      <i [class]="isDarkMode ? 'fas fa-sun' : 'fas fa-moon'"></i>
+      <span>{{ isDarkMode ? '[LIGHT]' : '[DARK]' }}</span>
     </button>
   </div>
 
   <button class="menu-toggle" (click)="toggleMenu()" aria-label="Toggle navigation menu">
-    <i [class]="isMenuOpen ? 'fas fa-times' : 'fas fa-bars'"></i>
+    <span>{{ isMenuOpen ? '[X]' : '[MENU]' }}</span>
   </button>
 </nav>
