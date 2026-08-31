@@ -1,56 +1,71 @@
 <section class="works-container">
-  <div class="works-header">
-    <h1 class="title">Project Showcase</h1>
-    <p class="subtitle">Experimental projects across multiple domains</p>
-  </div>
+  <header class="works-header">
+    <div class="eyebrow"><span class="pulse-dot"></span> Selected experiments</div>
+    <h1 class="title">Projects moving at their own rhythm.</h1>
+    <p class="subtitle">
+      Tools, reading experiments, security utilities, and side projects built from curiosity rather than a roadmap.
+    </p>
+  </header>
 
-  <!-- Category Filter -->
-  <div class="category-filter">
+  <div class="category-filter" aria-label="Project categories">
     <button
       *ngFor="let category of categories"
       class="category-btn"
       [class.active]="selectedCategory === category.id"
       (click)="selectCategory(category.id)">
       <i [class]="category.icon"></i>
-      <span>{{category.name}}</span>
+      <span>{{ category.name }}</span>
     </button>
   </div>
 
-  <!-- Projects Grid -->
   <div class="projects-grid">
-    <article class="project-card" *ngFor="let project of filteredProjects">
+    <article
+      class="project-card"
+      [class.featured]="project.featured"
+      *ngFor="let project of filteredProjects">
+
       <div class="project-image" [class.no-image]="!project.image">
-        <img *ngIf="project.image" [src]="project.image" [alt]="project.title" />
-        <div *ngIf="!project.image" class="image-placeholder">
-          <i class="fas fa-code"></i>
+        <img *ngIf="project.image" [src]="project.image" [alt]="project.title" loading="lazy" />
+        <div *ngIf="!project.image" class="image-placeholder" aria-hidden="true">
+          <span class="placeholder-wave"><i></i><i></i><i></i><i></i></span>
         </div>
+
         <div class="image-overlay">
-          <span class="category-badge">{{project.category}}</span>
+          <span class="category-badge">{{ project.category }}</span>
+          <span class="featured-badge" *ngIf="project.featured">featured</span>
         </div>
       </div>
+
       <div class="project-content">
-        <h2 class="project-title">{{project.title}}</h2>
-        <p class="project-description">{{project.description}}</p>
+        <div class="project-heading">
+          <h2 class="project-title">{{ project.title }}</h2>
+          <span class="project-index">/{{ project.id }}</span>
+        </div>
+
+        <p class="project-description">{{ project.description }}</p>
 
         <div class="project-tags">
-          <span class="tag" *ngFor="let tag of project.tags">{{tag}}</span>
+          <span class="tag" *ngFor="let tag of project.tags">{{ tag }}</span>
         </div>
 
         <div class="project-technologies">
-          <span class="tech-label">Tech Stack:</span>
-          <span class="tech-item" *ngFor="let tech of project.technologies">{{tech}}</span>
+          <span class="tech-label">stack</span>
+          <span class="tech-item" *ngFor="let tech of project.technologies">{{ tech }}</span>
         </div>
 
-        <a [href]="project.link" class="learn-more-btn" target="_blank">
-          Learn More <i class="fas fa-arrow-right"></i>
+        <a
+          [href]="project.link"
+          class="learn-more-btn"
+          [attr.target]="project.link.startsWith('http') ? '_blank' : null"
+          [attr.rel]="project.link.startsWith('http') ? 'noopener noreferrer' : null">
+          Open project <i class="fas fa-external-link-alt"></i>
         </a>
       </div>
     </article>
   </div>
 
-  <!-- Empty State -->
   <div class="empty-state" *ngIf="filteredProjects.length === 0">
-    <i class="fas fa-folder-open"></i>
-    <p>No projects found in this category</p>
+    <span class="empty-mark">~</span>
+    <p>No projects found in this category.</p>
   </div>
 </section>

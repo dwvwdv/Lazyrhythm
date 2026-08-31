@@ -1,39 +1,45 @@
 <div class="home-container">
-  <!-- Hero Section -->
   <section class="hero-section">
+    <div class="hero-kicker"><span></span> Personal experimental laboratory</div>
     <h1 class="hero-title">LazyRhythm</h1>
-    <p class="hero-subtitle">Personal Experimental Laboratory</p>
+    <p class="hero-subtitle">Build slowly. Explore deeply. Ship when it clicks.</p>
     <p class="hero-description">
-      Exploring the intersection of technology, creativity, and innovation.<br>
-      Multi-domain projects spanning finance, gaming, security, and beyond.
+      Independent experiments across reading, security, finance, automation, and interactive software — each project following its own tempo.
     </p>
+
+    <div class="rhythm-line" aria-hidden="true">
+      <i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+    </div>
   </section>
 
-  <!-- Lab Areas Section -->
   <section class="lab-areas-section">
-    <h2 class="section-title">Research Areas</h2>
+    <div class="section-heading">
+      <span class="section-index">01</span>
+      <div>
+        <p class="section-label">Current directions</p>
+        <h2 class="section-title">Research areas</h2>
+      </div>
+    </div>
+
     <div class="lab-grid">
       <div class="lab-card" *ngFor="let area of labAreas">
-        <div class="card-icon">
-          <i [class]="area.icon"></i>
-        </div>
-        <h3 class="card-title">{{area.title}}</h3>
-        <p class="card-description">{{area.description}}</p>
+        <div class="card-icon"><i [class]="area.icon"></i></div>
+        <h3 class="card-title">{{ area.title }}</h3>
+        <p class="card-description">{{ area.description }}</p>
       </div>
     </div>
   </section>
 
-  <!-- Philosophy Section -->
   <section class="philosophy-section">
     <div class="philosophy-content">
+      <span class="section-index">02</span>
+      <p class="section-label">Operating principle</p>
       <h2>Lazy. Rhythmic. Experimental.</h2>
       <p>
-        The rhythm of innovation doesn't rush. Every project follows its own tempo,
-        emerging from curiosity and evolving through experimentation.
+        The rhythm of innovation does not need to rush. Projects begin with curiosity, then evolve through testing, rebuilding, and using them for real.
       </p>
       <p>
-        This is a space where ideas breathe, technologies merge, and possibilities unfold
-        at their own lazy rhythm.
+        LazyRhythm is the place where those experiments live — practical enough to use, weird enough to stay interesting.
       </p>
     </div>
   </section>

@@ -9,38 +9,36 @@ export class ThemeService {
   darkMode$ = this.darkMode.asObservable();
 
   constructor() {
-    // 設置初始主題
-    this.setDarkMode(this.isDarkMode());
+    const hasStoredPreference = localStorage.getItem('darkMode') !== null;
+    this.setDarkMode(this.isDarkMode(), hasStoredPreference);
 
-    // 監聽系統主題變化
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-      this.setDarkMode(e.matches);
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+      if (localStorage.getItem('darkMode') === null) {
+        this.setDarkMode(event.matches, false);
+      }
     });
   }
 
   private isDarkMode(): boolean {
     const stored = localStorage.getItem('darkMode');
-    if (stored) {
+    if (stored !== null) {
       return stored === 'true';
     }
+
     return window.matchMedia('(prefers-color-scheme: dark)').matches;
   }
 
-  setDarkMode(isDark: boolean) {
+  setDarkMode(isDark: boolean, persist = true): void {
     this.darkMode.next(isDark);
-    localStorage.setItem('darkMode', isDark.toString());
 
-    // 直接設置 document root 的 data-theme
-    if (isDark) {
-      document.documentElement.setAttribute('data-theme', 'dark');
-      document.body.style.backgroundColor = '#1A1B26'; // Tokyo Night dark background
-    } else {
-      document.documentElement.setAttribute('data-theme', 'light');
-      document.body.style.backgroundColor = '#5E81AC'; // Nord light background
+    if (persist) {
+      localStorage.setItem('darkMode', isDark.toString());
     }
+
+    document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
   }
 
-  toggleTheme() {
+  toggleTheme(): void {
     this.setDarkMode(!this.darkMode.value);
   }
 }

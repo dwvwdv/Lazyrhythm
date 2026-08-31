@@ -1,63 +1,106 @@
-/* You can add global styles to this file, and also import other style files */
-
-/* Global Styles with Neomorphism Design */
+/* Offbeat — LazyRhythm Design System
+ * Nord × Brutalism. Structure 8 / Motion 5 for the portfolio.
+ */
 :root {
-  --primary-color: #A3BE8C;
-  --secondary-color: #81A1C1;
-  --accent-color: #88C0D0;
-  --background-color: #E0E5EC;
-  --surface-color: #E0E5EC;
-  --elevated-surface: #E0E5EC;
-  --text-color: #2E3440;
-  --text-secondary: #3B4252;
-  --text-muted: #4C566A;
-  --success-color: #A3BE8C;
-  --error-color: #BF616A;
-  --warning-color: #EBCB8B;
-  --info-color: #B48EAD;
-  --border-color: #D8DEE9;
+  color-scheme: dark;
 
-  /* Neomorphism shadows */
-  --shadow-light: #ffffff;
-  --shadow-dark: #a3b1c6;
-  --neumorphic-shadow: 8px 8px 16px var(--shadow-dark), -8px -8px 16px var(--shadow-light);
-  --neumorphic-shadow-inset: inset 6px 6px 12px var(--shadow-dark), inset -6px -6px 12px var(--shadow-light);
-  --neumorphic-shadow-small: 4px 4px 8px var(--shadow-dark), -4px -4px 8px var(--shadow-light);
+  /* Polar Night */
+  --polar0: #2E3440;
+  --polar1: #3B4252;
+  --polar2: #434C5E;
+  --polar3: #4C566A;
 
-  --primary-color-alpha: rgba(163, 190, 140, 0.15);
-  --card-background: #E0E5EC;
-  --input-background: #E0E5EC;
-  --code-background: #2E3440;
-  --disabled-color: #D8DEE9;
+  /* Snow Storm */
+  --snow0: #D8DEE9;
+  --snow1: #E5E9F0;
+  --snow2: #ECEFF4;
+  --dim: #9AA0AD;
+
+  /* Frost */
+  --frost0: #8FBCBB;
+  --frost1: #88C0D0;
+  --frost2: #81A1C1;
+  --frost3: #5E81AC;
+
+  /* Aurora */
+  --aurora-red: #BF616A;
+  --aurora-orange: #D08770;
+  --aurora-yellow: #EBCB8B;
+  --aurora-green: #A3BE8C;
+  --aurora-purple: #B48EAD;
+
+  /* Compatibility tokens used by existing components */
+  --primary-color: var(--frost1);
+  --secondary-color: var(--frost2);
+  --accent-color: var(--frost1);
+  --background-color: var(--polar0);
+  --surface-color: var(--polar1);
+  --elevated-surface: var(--polar2);
+  --card-background: var(--polar1);
+  --input-background: var(--polar1);
+  --text-color: var(--snow0);
+  --text-secondary: var(--snow0);
+  --text-muted: var(--dim);
+  --border-color: var(--polar3);
+  --border-strong: var(--frost0);
+  --success-color: var(--aurora-green);
+  --error-color: var(--aurora-red);
+  --warning-color: var(--aurora-yellow);
+  --info-color: var(--frost2);
+  --disabled-color: var(--polar2);
+  --primary-color-alpha: rgba(136, 192, 208, 0.13);
+  --shadow-color: var(--frost3);
+  --shadow-dark: var(--frost3);
+  --shadow-light: var(--frost2);
+  --neumorphic-shadow: 4px 4px 0 var(--frost3);
+  --neumorphic-shadow-small: 3px 3px 0 var(--frost3);
+  --neumorphic-shadow-inset: inset 4px 0 0 var(--frost1);
+  --content-width: 1200px;
 }
 
-[data-theme='dark'] {
-  --primary-color: #7AA2F7;
-  --secondary-color: #BB9AF7;
-  --accent-color: #7DCFFF;
-  --background-color: #2A2D3A;
-  --surface-color: #2A2D3A;
-  --elevated-surface: #2A2D3A;
-  --text-color: #C0CAF5;
-  --text-secondary: #A9B1D6;
-  --text-muted: #565F89;
-  --success-color: #9ECE6A;
-  --error-color: #F7768E;
-  --warning-color: #E0AF68;
-  --info-color: #BB9AF7;
-  --border-color: #2F334D;
+/* Offbeat light mode: Snow Storm surfaces, Polar Night text. */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) {
+    color-scheme: light;
+    --background-color: var(--snow2);
+    --surface-color: var(--snow1);
+    --elevated-surface: var(--snow0);
+    --card-background: var(--snow1);
+    --input-background: var(--snow2);
+    --text-color: var(--polar0);
+    --text-secondary: var(--polar1);
+    --text-muted: #596273;
+    --border-color: var(--polar3);
+    --border-strong: var(--frost3);
+  }
+}
 
-  /* Dark mode neomorphism */
-  --shadow-light: #363948;
-  --shadow-dark: #1e202c;
-  --neumorphic-shadow: 8px 8px 16px var(--shadow-dark), -8px -8px 16px var(--shadow-light);
-  --neumorphic-shadow-inset: inset 6px 6px 12px var(--shadow-dark), inset -6px -6px 12px var(--shadow-light);
-  --neumorphic-shadow-small: 4px 4px 8px var(--shadow-dark), -4px -4px 8px var(--shadow-light);
+:root[data-theme='light'] {
+  color-scheme: light;
+  --background-color: var(--snow2);
+  --surface-color: var(--snow1);
+  --elevated-surface: var(--snow0);
+  --card-background: var(--snow1);
+  --input-background: var(--snow2);
+  --text-color: var(--polar0);
+  --text-secondary: var(--polar1);
+  --text-muted: #596273;
+  --border-color: var(--polar3);
+  --border-strong: var(--frost3);
+}
 
-  --primary-color-alpha: rgba(122, 162, 247, 0.15);
-  --card-background: #2A2D3A;
-  --input-background: #2A2D3A;
-  --disabled-color: #565F89;
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --background-color: var(--polar0);
+  --surface-color: var(--polar1);
+  --elevated-surface: var(--polar2);
+  --card-background: var(--polar1);
+  --input-background: var(--polar1);
+  --text-color: var(--snow0);
+  --text-secondary: var(--snow0);
+  --text-muted: var(--dim);
+  --border-color: var(--polar3);
+  --border-strong: var(--frost0);
 }
 
 * {
@@ -66,140 +109,114 @@
   box-sizing: border-box;
 }
 
+html {
+  background: var(--background-color);
+  scroll-behavior: smooth;
+}
+
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
-    Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  line-height: 1.6;
+  min-width: 320px;
+  min-height: 100vh;
+  background: var(--background-color);
   color: var(--text-color);
-  background-color: var(--background-color);
-  transition: all 0.3s ease;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  line-height: 1.65;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Navigation */
-.main-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
-  background-color: var(--primary-color);
-  color: white;
-
-  .logo a {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: white;
-    text-decoration: none;
-  }
-
-  .nav-links {
-    display: flex;
-    gap: 2rem;
-
-    a {
-      color: white;
-      text-decoration: none;
-      transition: color 0.3s ease;
-
-      &:hover {
-        color: var(--secondary-color);
-      }
-    }
-  }
+h1,
+h2,
+h3,
+h4 {
+  color: var(--text-color);
+  line-height: 1.15;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .main-nav {
-    flex-direction: column;
-    padding: 1rem;
-
-    .nav-links {
-      margin-top: 1rem;
-      flex-direction: column;
-      gap: 1rem;
-      text-align: center;
-    }
-  }
+a {
+  color: inherit;
 }
 
-/* Main Content */
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+:focus-visible {
+  outline: 2px solid var(--frost1);
+  outline-offset: 3px;
+}
+
 main {
-  min-height: calc(100vh - 120px);
-  padding: 2rem;
+  min-height: calc(100vh - 112px);
 }
 
-/* Footer */
-footer {
-  text-align: center;
-  padding: 1rem;
-  background-color: var(--primary-color);
-  color: white;
-}
-
-/* Global styles with Neomorphism */
+/* Shared Offbeat primitives. */
 .card {
-  background-color: var(--card-background);
-  border: none;
-  border-radius: 20px;
-  box-shadow: var(--neumorphic-shadow);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-
-  &:hover {
-    box-shadow: 12px 12px 24px var(--shadow-dark), -12px -12px 24px var(--shadow-light);
-    transform: translateY(-2px);
-  }
-
-  &.pressed {
-    box-shadow: var(--neumorphic-shadow-inset);
-  }
+  position: relative;
+  background: var(--card-background);
+  border: 2px solid var(--border-color);
+  border-radius: 0;
+  box-shadow: 4px 4px 0 var(--frost3);
 }
 
 .btn {
-  background-color: var(--card-background);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.15rem;
+  background: transparent;
   color: var(--text-color);
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 12px;
+  border: 2px solid var(--border-color);
+  border-radius: 0;
+  box-shadow: 4px 4px 0 color-mix(in srgb, var(--frost3) 70%, transparent);
   cursor: pointer;
-  box-shadow: var(--neumorphic-shadow-small);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  font-weight: 500;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s ease;
 
   &:hover {
-    box-shadow: 6px 6px 12px var(--shadow-dark), -6px -6px 12px var(--shadow-light);
-    transform: translateY(-1px);
+    border-color: var(--frost0);
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--frost3);
   }
 
   &:active {
-    box-shadow: var(--neumorphic-shadow-inset);
-    transform: translateY(0);
+    transform: translate(3px, 3px);
+    box-shadow: 1px 1px 0 var(--frost3);
   }
 
   &.btn-primary {
-    color: var(--primary-color);
-  }
-
-  &.btn-secondary {
-    color: var(--secondary-color);
-  }
-
-  &.btn-accent {
-    color: var(--accent-color);
+    background: var(--frost3);
+    color: var(--snow2);
+    border-color: var(--frost0);
+    box-shadow: 4px 4px 0 var(--frost2);
   }
 }
 
-input, textarea {
-  background-color: var(--input-background);
+input,
+textarea {
+  width: 100%;
+  padding: 0.72rem 0.9rem;
+  background: var(--input-background);
   color: var(--text-color);
-  border: none;
-  border-radius: 12px;
-  padding: 0.75rem 1rem;
-  box-shadow: var(--neumorphic-shadow-inset);
-  transition: all 0.3s ease;
+  border: 2px solid var(--border-color);
+  border-left: 4px solid var(--frost1);
+  border-radius: 0;
+  outline: none;
 
   &:focus {
-    box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light), 0 0 0 3px var(--primary-color-alpha);
-    outline: none;
+    border-color: var(--frost1);
   }
 
   &::placeholder {
@@ -208,8 +225,8 @@ input, textarea {
 }
 
 ::selection {
-  background-color: var(--primary-color);
-  color: var(--text-color);
+  background: var(--frost1);
+  color: var(--polar0);
 }
 
 ::-webkit-scrollbar {
@@ -217,24 +234,22 @@ input, textarea {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--surface-color);
+  background: var(--background-color);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--primary-color);
-  border-radius: 5px;
-
-  &:hover {
-    background: var(--secondary-color);
-  }
+  background: var(--polar3);
+  border: 2px solid var(--background-color);
 }
 
-@media (max-width: 768px) {
-  .card {
-    margin: 0.5rem;
-  }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
 
-  .btn {
-    padding: 0.75rem 1.5rem;
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

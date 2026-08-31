@@ -1,234 +1,222 @@
 .home-container {
   min-height: 100vh;
-  overflow-x: hidden;
+  background: var(--background-color);
 
-  // Hero Section with wave animation
   .hero-section {
-    min-height: calc(100vh - 64px);
+    min-height: calc(100vh - 50px);
+    width: min(100% - 2rem, var(--content-width));
+    margin: 0 auto;
+    padding: 6rem 0 4rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
-    background: var(--background-color);
-    text-align: center;
-    padding: 4rem 2rem;
-    position: relative;
+    align-items: flex-start;
+  }
 
-    .hero-title {
-      font-size: 5rem;
-      font-weight: 700;
-      color: var(--text-color);
-      margin-bottom: 1rem;
-      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color), var(--accent-color));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
+  .hero-kicker,
+  .section-label,
+  .section-index {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-weight: 700;
+  }
 
-    .hero-subtitle {
-      font-size: 1.8rem;
-      color: var(--text-secondary);
-      margin-bottom: 2rem;
-      font-weight: 300;
-      letter-spacing: 2px;
-    }
+  .hero-kicker {
+    color: var(--text-muted);
+    font-size: 0.72rem;
 
-    .hero-description {
-      font-size: 1.2rem;
-      color: var(--text-muted);
-      max-width: 700px;
-      line-height: 1.8;
-      opacity: 0.9;
+    span {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      margin-right: 0.5rem;
+      background: var(--aurora-green);
+      border: 1px solid var(--aurora-green);
+      vertical-align: middle;
     }
   }
 
-  // Lab Areas Section with neomorphic cards
-  .lab-areas-section {
-    padding: 6rem 2rem;
-    background: var(--surface-color);
+  .hero-title {
+    margin: 1rem 0 0.8rem;
+    color: var(--text-color);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: clamp(4rem, 13vw, 8rem);
+    font-weight: 900;
+    line-height: 0.92;
+    letter-spacing: -0.07em;
 
-    .section-title {
-      text-align: center;
-      font-size: 2.5rem;
-      color: var(--text-color);
-      margin-bottom: 4rem;
-      font-weight: 600;
+    &::after {
+      content: '_';
+      color: var(--frost1);
+    }
+  }
+
+  .hero-subtitle {
+    max-width: 780px;
+    color: var(--frost1);
+    font-size: clamp(1.3rem, 3vw, 2rem);
+    font-weight: 700;
+  }
+
+  .hero-description {
+    max-width: 680px;
+    margin-top: 1.2rem;
+    color: var(--text-muted);
+    font-size: 1rem;
+  }
+
+  .rhythm-line {
+    display: flex;
+    align-items: flex-end;
+    gap: 5px;
+    height: 52px;
+    margin-top: 2.5rem;
+    padding: 0.7rem 0.8rem;
+    background: var(--surface-color);
+    border: 2px solid var(--border-color);
+    box-shadow: 4px 4px 0 var(--frost3);
+
+    i {
+      width: 7px;
+      background: var(--frost1);
+      animation: home-rhythm 1.8s steps(2, end) infinite;
+
+      &:nth-child(1) { height: 16%; }
+      &:nth-child(2) { height: 46%; animation-delay: .1s; }
+      &:nth-child(3) { height: 82%; animation-delay: .2s; }
+      &:nth-child(4) { height: 52%; animation-delay: .3s; }
+      &:nth-child(5) { height: 68%; animation-delay: .4s; }
+      &:nth-child(6) { height: 31%; animation-delay: .5s; }
+      &:nth-child(7) { height: 18%; animation-delay: .6s; }
+    }
+  }
+
+  .lab-areas-section,
+  .philosophy-section {
+    width: min(100% - 2rem, var(--content-width));
+    margin: 0 auto;
+    padding: 4.5rem 0;
+    border-top: 2px solid var(--border-color);
+  }
+
+  .section-heading {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+  }
+
+  .section-index {
+    color: var(--frost1);
+    font-size: 0.7rem;
+  }
+
+  .section-label {
+    color: var(--text-muted);
+    font-size: 0.68rem;
+  }
+
+  .section-title,
+  .philosophy-content h2 {
+    margin-top: 0.25rem;
+    color: var(--text-color);
+    font-size: clamp(2rem, 5vw, 3.1rem);
+    font-weight: 900;
+  }
+
+  .lab-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.25rem;
+    padding: 0 8px 8px 0;
+  }
+
+  .lab-card,
+  .philosophy-content {
+    position: relative;
+    background: var(--card-background);
+    border: 2px solid var(--border-color);
+    border-radius: 0;
+    box-shadow: 4px 4px 0 var(--frost3);
+  }
+
+  .lab-card {
+    padding: 1.4rem;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+
+    &:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0 var(--frost3);
+    }
+
+    .card-icon {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 1.2rem;
+      background: var(--polar2);
+      border: 2px solid var(--border-color);
+      border-left: 4px solid var(--frost1);
+      color: var(--frost1);
+    }
+
+    .card-title {
+      margin-bottom: 0.5rem;
+      font-size: 1.15rem;
+      font-weight: 800;
+    }
+
+    .card-description {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+  }
+
+  .philosophy-content {
+    max-width: 900px;
+    padding: clamp(1.6rem, 5vw, 3rem);
+    border-left: 4px solid var(--frost1);
+
+    h2 {
+      margin-bottom: 1.4rem;
+    }
+
+    p:not(.section-label) {
+      max-width: 760px;
+      margin-top: 1rem;
+      color: var(--text-secondary);
+    }
+  }
+}
+
+@keyframes home-rhythm {
+  0%, 100% { transform: translateY(0); opacity: .6; }
+  50% { transform: translateY(-4px); opacity: 1; }
+}
+
+@media (max-width: 900px) {
+  .home-container .lab-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .home-container {
+    .hero-section,
+    .lab-areas-section,
+    .philosophy-section {
+      width: min(100% - 1rem, var(--content-width));
+    }
+
+    .hero-section {
+      min-height: 80vh;
+      padding: 4rem 0 3rem;
     }
 
     .lab-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 3rem;
-      max-width: 1200px;
-      margin: 0 auto;
-
-      .lab-card {
-        background: var(--card-background);
-        padding: 3rem 2rem;
-        border-radius: 24px;
-        box-shadow: var(--neumorphic-shadow);
-        text-align: center;
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        transform-origin: center;
-
-        &:hover {
-          box-shadow: 12px 12px 24px var(--shadow-dark), -12px -12px 24px var(--shadow-light);
-          transform: translateY(-5px);
-        }
-
-        .card-icon {
-          width: 80px;
-          height: 80px;
-          margin: 0 auto 1.5rem;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          border-radius: 50%;
-          background: var(--card-background);
-          box-shadow: var(--neumorphic-shadow-small);
-
-          i {
-            font-size: 2.5rem;
-            color: var(--primary-color);
-          }
-        }
-
-        .card-title {
-          font-size: 1.5rem;
-          color: var(--text-color);
-          margin-bottom: 1rem;
-          font-weight: 600;
-        }
-
-        .card-description {
-          color: var(--text-muted);
-          line-height: 1.6;
-          font-size: 1rem;
-        }
-      }
-    }
-  }
-
-  // Philosophy Section
-  .philosophy-section {
-    padding: 6rem 2rem;
-    background: var(--background-color);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    .philosophy-content {
-      max-width: 800px;
-      padding: 4rem;
-      background: var(--card-background);
-      border-radius: 24px;
-      box-shadow: var(--neumorphic-shadow);
-      text-align: center;
-
-      h2 {
-        font-size: 2.5rem;
-        color: var(--text-color);
-        margin-bottom: 2rem;
-        font-weight: 600;
-        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-      }
-
-      p {
-        font-size: 1.2rem;
-        color: var(--text-muted);
-        line-height: 1.8;
-        margin-bottom: 1.5rem;
-
-        &:last-child {
-          margin-bottom: 0;
-        }
-      }
-    }
-  }
-}
-
-// Responsive Design
-@media (max-width: 968px) {
-  .home-container {
-    .hero-section {
-      .hero-title {
-        font-size: 3.5rem;
-      }
-
-      .hero-subtitle {
-        font-size: 1.4rem;
-      }
-
-      .hero-description {
-        font-size: 1.1rem;
-      }
-    }
-
-    .lab-areas-section {
-      padding: 4rem 1.5rem;
-
-      .section-title {
-        font-size: 2rem;
-      }
-
-      .lab-grid {
-        gap: 2rem;
-      }
-    }
-
-    .philosophy-section {
-      padding: 4rem 1.5rem;
-
-      .philosophy-content {
-        padding: 3rem 2rem;
-
-        h2 {
-          font-size: 2rem;
-        }
-
-        p {
-          font-size: 1.1rem;
-        }
-      }
-    }
-  }
-}
-
-@media (max-width: 640px) {
-  .home-container {
-    .hero-section {
-      padding: 3rem 1.5rem;
-
-      .hero-title {
-        font-size: 2.5rem;
-      }
-
-      .hero-subtitle {
-        font-size: 1.2rem;
-      }
-
-      .hero-description {
-        font-size: 1rem;
-      }
-    }
-
-    .lab-areas-section {
-      padding: 3rem 1rem;
-
-      .lab-grid {
-        gap: 1.5rem;
-      }
-    }
-
-    .philosophy-section {
-      padding: 3rem 1rem;
-
-      .philosophy-content {
-        padding: 2rem 1.5rem;
-      }
+      grid-template-columns: 1fr;
     }
   }
 }
