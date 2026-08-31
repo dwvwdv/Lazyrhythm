@@ -39,7 +39,7 @@
           *ngIf="project.image"
           [src]="project.image"
           [alt]="project.title"
-          [style.object-fit]="project.imageFit"
+          [class.cover]="project.imageFit === 'cover'"
           loading="lazy" />
         <div *ngIf="!project.image" class="image-placeholder" aria-hidden="true">
           <span class="placeholder-wave"><i></i><i></i><i></i><i></i></span>
