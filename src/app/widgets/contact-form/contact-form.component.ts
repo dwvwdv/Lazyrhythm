@@ -22,7 +22,7 @@ export class ContactFormComponent {
   ) {
     this.contactForm = this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(120)]],
-      email: ['', [Validators.required, Validators.email, Validators.maxLength(320)]],
+      email: ['', [Validators.email, Validators.maxLength(320)]],
       subject: ['', Validators.maxLength(300)],
       message: ['', [Validators.required, Validators.maxLength(10000)]],
       amount: [null]
@@ -35,18 +35,27 @@ export class ContactFormComponent {
       return;
     }
 
+    const value = this.contactForm.getRawValue();
+    const name = value.name.trim();
+    const message = value.message.trim();
+    const email = value.email?.trim() || null;
+
+    if (!name || !message) {
+      this.contactForm.markAllAsTouched();
+      return;
+    }
+
     this.isSubmitting = true;
     this.submitted = false;
     this.submitError = false;
 
     try {
-      const value = this.contactForm.getRawValue();
       await this.websiteData.submitContract({
         form_type: this.formType,
-        name: value.name.trim(),
-        email: value.email.trim(),
+        name,
+        email,
         subject: value.subject?.trim() || null,
-        message: value.message.trim(),
+        message,
         amount: this.formType === 'sponsor' && value.amount !== null && value.amount !== ''
           ? Number(value.amount)
           : null
