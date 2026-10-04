@@ -1,6 +1,14 @@
 -- 文章區：團隊近況 / 開發日誌
 -- 只有登錄在 website.authors 的帳號可以撰寫、編輯、刪除；訪客僅能讀取已發布文章。
 
+-- 讓全新資料庫（supabase db reset）也能重建；在既有專案上為 no-op。
+create schema if not exists website;
+create schema if not exists website_private;
+
+revoke all on schema website_private from public;
+revoke all on schema website_private from anon, authenticated;
+grant usage on schema website to anon, authenticated;
+
 create table if not exists website.authors (
   user_id uuid primary key references auth.users(id) on delete cascade,
   display_name text not null check (char_length(btrim(display_name)) between 1 and 80),
