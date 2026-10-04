@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ContactFormComponent } from '../../widgets/contact-form/contact-form.component';
+import { TranslatePipe } from '../../i18n/translate.pipe';
 
 @Component({
     selector: 'app-sponsor',
-    imports: [CommonModule, ContactFormComponent],
+    imports: [CommonModule, ContactFormComponent, TranslatePipe],
     templateUrl: './sponsor.component.html',
     styleUrls: ['./sponsor.component.scss']
 })

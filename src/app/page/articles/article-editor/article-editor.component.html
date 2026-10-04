@@ -1,0 +1,76 @@
+<section class="lr-page">
+  <a routerLink="/articles/manage" class="lr-link">← {{ 'editor.back' | t }}</a>
+
+  <header class="editor-header">
+    <h1 class="lr-title">{{ (isNew ? 'editor.newTitle' : 'editor.editTitle') | t }}</h1>
+    <span *ngIf="!isNew" class="lr-badge" [class.is-draft]="status === 'draft'" [class.is-published]="status === 'published'">
+      {{ 'manage.status.' + status | t }}
+    </span>
+  </header>
+
+  <p class="lr-empty" *ngIf="isLoading">{{ 'articles.loading' | t }}</p>
+
+  <form *ngIf="!isLoading" class="editor" [formGroup]="form" (ngSubmit)="save(status)">
+    <div class="field wide">
+      <label for="ed-title">{{ 'editor.title' | t }}</label>
+      <input id="ed-title" type="text" formControlName="title" maxlength="200">
+    </div>
+
+    <div class="field">
+      <label for="ed-slug">{{ 'editor.slug' | t }}</label>
+      <input id="ed-slug" type="text" formControlName="slug" maxlength="120" (input)="markSlugTouched()" class="lr-mono">
+      <small [class.invalid]="form.controls['slug'].invalid && form.controls['slug'].touched">{{ 'editor.slugHint' | t }}</small>
+    </div>
+
+    <div class="field">
+      <label for="ed-lang">{{ 'editor.lang' | t }}</label>
+      <select id="ed-lang" formControlName="lang">
+        <option value="zh-TW">繁體中文</option>
+        <option value="en">English</option>
+      </select>
+    </div>
+
+    <div class="field wide">
+      <label for="ed-summary">{{ 'editor.summary' | t }}</label>
+      <textarea id="ed-summary" formControlName="summary" rows="2" maxlength="500"></textarea>
+    </div>
+
+    <div class="field">
+      <label for="ed-cover">{{ 'editor.cover' | t }}</label>
+      <input id="ed-cover" type="url" formControlName="cover_image_url" placeholder="https://">
+    </div>
+
+    <div class="field">
+      <label for="ed-tags">{{ 'editor.tags' | t }}</label>
+      <input id="ed-tags" type="text" formControlName="tags">
+      <small>{{ 'editor.tagsHint' | t }}</small>
+    </div>
+
+    <div class="field wide">
+      <div class="content-bar">
+        <label for="ed-content">{{ 'editor.content' | t }}</label>
+        <div class="tabs" role="tablist">
+          <button type="button" role="tab" [class.active]="mode === 'write'" [attr.aria-selected]="mode === 'write'" (click)="setMode('write')">{{ 'editor.write' | t }}</button>
+          <button type="button" role="tab" [class.active]="mode === 'preview'" [attr.aria-selected]="mode === 'preview'" (click)="setMode('preview')">{{ 'editor.preview' | t }}</button>
+        </div>
+      </div>
+      <textarea *ngIf="mode === 'write'" id="ed-content" formControlName="content" rows="22" class="lr-mono content"></textarea>
+      <div *ngIf="mode === 'preview'" class="card preview">
+        <div *ngIf="previewHtml; else emptyPreview" class="prose" [innerHTML]="previewHtml"></div>
+        <ng-template #emptyPreview><p class="lr-empty">{{ 'editor.emptyPreview' | t }}</p></ng-template>
+      </div>
+    </div>
+
+    <div class="actions wide">
+      <p *ngIf="messageKey" class="message" [class.error]="isError" role="status">{{ messageKey | t }}</p>
+      <ng-container *ngIf="status === 'draft'">
+        <button type="button" class="btn" [disabled]="isSaving" (click)="save('draft')">{{ (isSaving ? 'editor.saving' : 'editor.saveDraft') | t }}</button>
+        <button type="button" class="btn btn-primary" [disabled]="isSaving" (click)="save('published')">{{ 'editor.publish' | t }}</button>
+      </ng-container>
+      <ng-container *ngIf="status === 'published'">
+        <button type="button" class="btn" [disabled]="isSaving" (click)="save('draft')">{{ 'editor.unpublish' | t }}</button>
+        <button type="button" class="btn btn-primary" [disabled]="isSaving" (click)="save('published')">{{ (isSaving ? 'editor.saving' : 'editor.update') | t }}</button>
+      </ng-container>
+    </div>
+  </form>
+</section>

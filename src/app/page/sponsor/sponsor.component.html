@@ -1,24 +1,24 @@
 <section class="sponsor-container">
   <div class="sponsor-content">
     <div class="sponsor-info">
-      <h1>Support the Lab</h1>
-      <p>Your support helps keep the experiments running and new projects coming</p>
+      <h1>{{ 'sponsor.title' | t }}</h1>
+      <p>{{ 'sponsor.intro' | t }}</p>
 
       <div class="sponsor-methods">
         <div class="method">
-          <h3>BSC Wallet</h3>
+          <h3>{{ 'sponsor.bsc' | t }}</h3>
           <div class="bsc-address">
             <code>{{bscAddress}}</code>
-            <button (click)="copyBscAddress()" class="copy-btn">
+            <button (click)="copyBscAddress()" class="copy-btn" [attr.aria-label]="'sponsor.copy' | t">
               <i class="fas fa-copy"></i>
             </button>
           </div>
-          <img [src]="bscQRCode" alt="BSC Wallet QR Code" class="qr-code">
+          <img [src]="bscQRCode" [alt]="'sponsor.qrAlt' | t" class="qr-code">
         </div>
 
         <div class="method">
           <h3>Ko-fi</h3>
-          <p>Support through Ko-fi platform</p>
+          <p>{{ 'sponsor.kofi' | t }}</p>
           <a [href]="kofiLink" target="_blank" class="kofi-button">
             <img src="https://storage.ko-fi.com/cdn/kofi5.png" alt="Buy Me a Coffee at ko-fi.com">
           </a>
@@ -34,6 +34,6 @@
   <!-- Toast Notification -->
   <div class="toast-notification" [class.show]="showToast">
     <i class="fas fa-check-circle"></i>
-    <span>Address copied to clipboard!</span>
+    <span>{{ 'sponsor.copied' | t }}</span>
   </div>
 </section>

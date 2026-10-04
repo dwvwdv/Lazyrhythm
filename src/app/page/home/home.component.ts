@@ -2,10 +2,11 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { TranslatePipe } from '../../i18n/translate.pipe';
 
 @Component({
     selector: 'app-home',
-    imports: [CommonModule],
+    imports: [CommonModule, TranslatePipe],
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.scss']
 })
@@ -14,23 +15,23 @@ export class HomeComponent implements OnInit, AfterViewInit {
   labAreas = [
     {
       icon: 'fas fa-chart-line',
-      title: 'Financial Tech',
-      description: 'Trading bots, market analysis, and fintech applications'
+      title: 'home.area.finance.title',
+      description: 'home.area.finance.desc'
     },
     {
       icon: 'fas fa-gamepad',
-      title: 'Game Development',
-      description: 'Interactive experiences and experimental game mechanics'
+      title: 'home.area.gaming.title',
+      description: 'home.area.gaming.desc'
     },
     {
       icon: 'fas fa-shield-alt',
-      title: 'Security Tools',
-      description: 'Cybersecurity utilities and penetration testing tools'
+      title: 'home.area.security.title',
+      description: 'home.area.security.desc'
     },
     {
       icon: 'fas fa-robot',
-      title: 'Automation',
-      description: 'Workflow automation and productivity tools'
+      title: 'home.area.automation.title',
+      description: 'home.area.automation.desc'
     }
   ];
 

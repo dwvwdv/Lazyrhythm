@@ -32,3 +32,20 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+## i18n
+
+The site ships English and Traditional Chinese (`src/app/i18n`). The default language follows the visitor's browser languages (`zh-*` → 繁體中文, otherwise English); a manual choice from the navbar toggle is remembered in `localStorage`.
+
+## Articles (lab log)
+
+- Public list: `/articles`, article page: `/articles/:slug`
+- Author desk: `/articles/manage` (sign in with a Supabase Auth email/password account)
+- Schema & RLS: `supabase/migrations/20261004000000_create_website_articles.sql`
+
+Only accounts listed in `website.authors` can write. To register an author:
+
+```sql
+insert into website.authors (user_id, display_name)
+select id, 'your display name' from auth.users where email = 'author@example.com';
+```

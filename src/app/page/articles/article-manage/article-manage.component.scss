@@ -1,0 +1,101 @@
+.desk-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin: 2rem 0 2.5rem;
+}
+
+.desk-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.user {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+
+.login {
+  display: grid;
+  gap: 0.6rem;
+  max-width: 420px;
+  padding: 1.6rem;
+
+  h2 { font-size: 1.3rem; }
+  label { margin-top: 0.4rem; font-weight: 700; font-size: 0.85rem; }
+  .btn { margin-top: 0.8rem; justify-self: start; }
+}
+
+.hint {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.error {
+  color: var(--error-color);
+  font-size: 0.9rem;
+}
+
+.desk-list {
+  display: grid;
+  gap: 1rem;
+  padding: 0 8px 8px 0;
+  list-style: none;
+}
+
+.desk-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.2rem;
+}
+
+.row-main {
+  display: grid;
+  gap: 0.35rem;
+  min-width: 0;
+
+  h2 { font-size: 1.15rem; font-weight: 900; }
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.7rem;
+  color: var(--text-muted);
+  font-size: 0.7rem;
+}
+
+.slug {
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  overflow-wrap: anywhere;
+}
+
+.row-actions {
+  display: flex;
+  flex-shrink: 0;
+  gap: 1rem;
+
+  button {
+    padding: 0;
+    background: none;
+    border: 0;
+    cursor: pointer;
+  }
+
+  .danger { color: var(--aurora-red); }
+}
+
+@media (max-width: 640px) {
+  .desk-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

@@ -1,0 +1,31 @@
+<article class="lr-page detail">
+  <a routerLink="/articles" class="lr-link">← {{ 'articles.back' | t }}</a>
+
+  <p class="lr-empty" *ngIf="isLoading">{{ 'articles.loading' | t }}</p>
+  <p class="lr-empty is-error" *ngIf="loadError">{{ 'articles.error' | t }}</p>
+  <p class="lr-empty" *ngIf="!isLoading && !loadError && !article">{{ 'articles.notFound' | t }}</p>
+
+  <ng-container *ngIf="article">
+    <header class="detail-header">
+      <div class="meta lr-mono">
+        <time [attr.datetime]="article.published_at">{{ i18n.formatDate(article.published_at) }}</time>
+        <span class="lr-badge">{{ (article.lang === 'zh-TW' ? 'articles.langZh' : 'articles.langEn') | t }}</span>
+        <span *ngIf="article.author_name">{{ 'articles.by' | t }} {{ article.author_name }}</span>
+      </div>
+      <h1 class="lr-title" [attr.lang]="article.lang">{{ article.title }}</h1>
+      <p *ngIf="article.summary" class="lr-subtitle" [attr.lang]="article.lang">{{ article.summary }}</p>
+      <div class="tags" *ngIf="article.tags.length">
+        <span class="lr-tag" *ngFor="let tag of article.tags">#{{ tag }}</span>
+      </div>
+    </header>
+
+    <img *ngIf="article.cover_image_url" [src]="article.cover_image_url" alt="" class="cover">
+
+    <div class="prose" [attr.lang]="article.lang" [innerHTML]="html"></div>
+
+    <footer class="detail-footer lr-mono">
+      <span>{{ 'articles.updated' | t }} {{ i18n.formatDate(article.updated_at) }}</span>
+      <a routerLink="/articles" class="lr-link">← {{ 'articles.back' | t }}</a>
+    </footer>
+  </ng-container>
+</article>

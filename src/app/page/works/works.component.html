@@ -1,31 +1,29 @@
 <section class="works-container">
   <header class="works-header">
-    <div class="eyebrow"><span class="pulse-dot"></span> Selected experiments</div>
-    <h1 class="title">Projects moving at their own rhythm.</h1>
-    <p class="subtitle">
-      Tools, reading experiments, security utilities, and side projects built from curiosity rather than a roadmap.
-    </p>
+    <div class="eyebrow"><span class="pulse-dot"></span> {{ 'works.eyebrow' | t }}</div>
+    <h1 class="title">{{ 'works.title' | t }}</h1>
+    <p class="subtitle">{{ 'works.subtitle' | t }}</p>
   </header>
 
-  <div class="category-filter" aria-label="Project categories">
+  <div class="category-filter" [attr.aria-label]="'works.categories' | t">
     <button
       *ngFor="let category of categories"
       class="category-btn"
       [class.active]="selectedCategory === category.id"
       (click)="selectCategory(category.id)">
       <i [class]="category.icon"></i>
-      <span>{{ category.name }}</span>
+      <span>{{ category.name | t }}</span>
     </button>
   </div>
 
   <div class="empty-state" *ngIf="isLoading">
     <span class="empty-mark">~</span>
-    <p>Loading projects...</p>
+    <p>{{ 'works.loading' | t }}</p>
   </div>
 
   <div class="empty-state" *ngIf="loadError && !isLoading">
     <span class="empty-mark">!</span>
-    <p>Projects are temporarily unavailable.</p>
+    <p>{{ 'works.error' | t }}</p>
   </div>
 
   <div class="projects-grid" *ngIf="!isLoading && !loadError">
@@ -46,8 +44,8 @@
         </div>
 
         <div class="image-overlay">
-          <span class="category-badge">{{ project.category }}</span>
-          <span class="featured-badge" *ngIf="project.featured">featured</span>
+          <span class="category-badge">{{ 'works.cat.' + project.category | t }}</span>
+          <span class="featured-badge" *ngIf="project.featured">{{ 'works.featured' | t }}</span>
         </div>
       </div>
 
@@ -64,7 +62,7 @@
         </div>
 
         <div class="project-technologies">
-          <span class="tech-label">stack</span>
+          <span class="tech-label">{{ 'works.stack' | t }}</span>
           <span class="tech-item" *ngFor="let tech of project.technologies">{{ tech }}</span>
         </div>
 
@@ -73,7 +71,7 @@
           class="learn-more-btn"
           [attr.target]="project.link.startsWith('http') ? '_blank' : null"
           [attr.rel]="project.link.startsWith('http') ? 'noopener noreferrer' : null">
-          Open project <i class="fas fa-external-link-alt"></i>
+          {{ 'works.open' | t }} <i class="fas fa-external-link-alt"></i>
         </a>
       </div>
     </article>
@@ -81,6 +79,6 @@
 
   <div class="empty-state" *ngIf="!isLoading && !loadError && filteredProjects.length === 0">
     <span class="empty-mark">~</span>
-    <p>No projects found in this category.</p>
+    <p>{{ 'works.empty' | t }}</p>
   </div>
 </section>
