@@ -114,7 +114,7 @@ export class ArticleService {
   }
 
   private single<T>(rows: T[]): T {
-    // RLS 擋下時 PostgREST 會回傳空陣列而不是錯誤。
+    // RLS 擋下時 PostgREST 只會回傳空陣列，沒有錯誤碼。
     if (!rows.length) {
       throw new Error('No row affected');
     }
