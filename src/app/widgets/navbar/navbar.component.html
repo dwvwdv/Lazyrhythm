@@ -1,21 +1,25 @@
 <nav class="navbar">
-  <a routerLink="/" class="brand-link" aria-label="LazyRhythm home">
+  <a routerLink="/" class="brand-link" [attr.aria-label]="'nav.home' | t">
     <span class="brand-title">LAZYRHYTHM</span>
     <span class="brand-slash">//</span>
     <span class="brand-sub">OFFBEAT LAB</span>
   </a>
 
   <div class="nav-links" [class.show]="isMenuOpen">
-    <a routerLink="/works" routerLinkActive="active" (click)="closeMenu()">WORK</a>
-    <a routerLink="/about" routerLinkActive="active" (click)="closeMenu()">ABOUT</a>
-    <a routerLink="/contact" routerLinkActive="active" (click)="closeMenu()">CONTACT</a>
-    <a routerLink="/sponsor" routerLinkActive="active" (click)="closeMenu()">SUPPORT</a>
-    <button class="theme-toggle" (click)="toggleTheme()" [attr.aria-label]="isDarkMode ? 'Switch to light theme' : 'Switch to dark theme'">
-      <span>{{ isDarkMode ? '[LIGHT]' : '[DARK]' }}</span>
+    <a routerLink="/works" routerLinkActive="active" (click)="closeMenu()">{{ 'nav.work' | t }}</a>
+    <a routerLink="/articles" routerLinkActive="active" (click)="closeMenu()">{{ 'nav.articles' | t }}</a>
+    <a routerLink="/about" routerLinkActive="active" (click)="closeMenu()">{{ 'nav.about' | t }}</a>
+    <a routerLink="/contact" routerLinkActive="active" (click)="closeMenu()">{{ 'nav.contact' | t }}</a>
+    <a routerLink="/sponsor" routerLinkActive="active" (click)="closeMenu()">{{ 'nav.support' | t }}</a>
+    <button class="theme-toggle lang-toggle" (click)="toggleLang()" [attr.aria-label]="'nav.langLabel' | t">
+      <span>{{ 'nav.lang' | t }}</span>
+    </button>
+    <button class="theme-toggle" (click)="toggleTheme()" [attr.aria-label]="(isDarkMode ? 'nav.toLight' : 'nav.toDark') | t">
+      <span>{{ (isDarkMode ? 'nav.light' : 'nav.dark') | t }}</span>
     </button>
   </div>
 
-  <button class="menu-toggle" (click)="toggleMenu()" aria-label="Toggle navigation menu">
-    <span>{{ isMenuOpen ? '[X]' : '[MENU]' }}</span>
+  <button class="menu-toggle" (click)="toggleMenu()" [attr.aria-label]="'nav.toggleMenu' | t">
+    <span>{{ (isMenuOpen ? 'nav.close' : 'nav.menu') | t }}</span>
   </button>
 </nav>

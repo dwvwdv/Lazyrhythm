@@ -1,11 +1,9 @@
 <div class="home-container">
   <section class="hero-section">
-    <div class="hero-kicker"><span></span> Personal experimental laboratory</div>
+    <div class="hero-kicker"><span></span> {{ 'home.kicker' | t }}</div>
     <h1 class="hero-title">LazyRhythm</h1>
-    <p class="hero-subtitle">Build slowly. Explore deeply. Ship when it clicks.</p>
-    <p class="hero-description">
-      Independent experiments across reading, security, finance, automation, and interactive software — each project following its own tempo.
-    </p>
+    <p class="hero-subtitle">{{ 'home.subtitle' | t }}</p>
+    <p class="hero-description">{{ 'home.description' | t }}</p>
 
     <div class="rhythm-line" aria-hidden="true">
       <i></i><i></i><i></i><i></i><i></i><i></i><i></i>
@@ -16,16 +14,16 @@
     <div class="section-heading">
       <span class="section-index">01</span>
       <div>
-        <p class="section-label">Current directions</p>
-        <h2 class="section-title">Research areas</h2>
+        <p class="section-label">{{ 'home.areasLabel' | t }}</p>
+        <h2 class="section-title">{{ 'home.areasTitle' | t }}</h2>
       </div>
     </div>
 
     <div class="lab-grid">
       <div class="lab-card" *ngFor="let area of labAreas">
         <div class="card-icon"><i [class]="area.icon"></i></div>
-        <h3 class="card-title">{{ area.title }}</h3>
-        <p class="card-description">{{ area.description }}</p>
+        <h3 class="card-title">{{ area.title | t }}</h3>
+        <p class="card-description">{{ area.description | t }}</p>
       </div>
     </div>
   </section>
@@ -33,14 +31,10 @@
   <section class="philosophy-section">
     <div class="philosophy-content">
       <span class="section-index">02</span>
-      <p class="section-label">Operating principle</p>
-      <h2>Lazy. Rhythmic. Experimental.</h2>
-      <p>
-        The rhythm of innovation does not need to rush. Projects begin with curiosity, then evolve through testing, rebuilding, and using them for real.
-      </p>
-      <p>
-        LazyRhythm is the place where those experiments live — practical enough to use, weird enough to stay interesting.
-      </p>
+      <p class="section-label">{{ 'home.principleLabel' | t }}</p>
+      <h2>{{ 'home.principleTitle' | t }}</h2>
+      <p>{{ 'home.principleP1' | t }}</p>
+      <p>{{ 'home.principleP2' | t }}</p>
     </div>
   </section>
 </div>

@@ -1,0 +1,57 @@
+<section class="lr-page">
+  <a routerLink="/articles" class="lr-link">← {{ 'articles.back' | t }}</a>
+
+  <header class="desk-header">
+    <div>
+      <div class="lr-eyebrow">{{ 'articles.eyebrow' | t }}</div>
+      <h1 class="lr-title">{{ 'manage.title' | t }}</h1>
+      <p class="lr-subtitle">{{ 'manage.subtitle' | t }}</p>
+    </div>
+    <div class="desk-actions" *ngIf="auth.user">
+      <span class="lr-mono user">{{ auth.user.email }}</span>
+      <a *ngIf="isAuthor" routerLink="/articles/manage/new" class="btn btn-primary">+ {{ 'manage.new' | t }}</a>
+      <button type="button" class="btn" (click)="signOut()">{{ 'manage.signOut' | t }}</button>
+    </div>
+  </header>
+
+  <form *ngIf="!auth.user" class="card login" [formGroup]="loginForm" (ngSubmit)="signIn()">
+    <h2>{{ 'manage.loginTitle' | t }}</h2>
+    <p class="hint">{{ 'manage.loginHint' | t }}</p>
+    <label for="login-email">{{ 'manage.email' | t }}</label>
+    <input id="login-email" type="email" formControlName="email" autocomplete="username">
+    <label for="login-password">{{ 'manage.password' | t }}</label>
+    <input id="login-password" type="password" formControlName="password" autocomplete="current-password">
+    <p class="error" *ngIf="loginError" role="alert">{{ 'manage.loginError' | t }}</p>
+    <button type="submit" class="btn btn-primary" [disabled]="isSigningIn">
+      {{ (isSigningIn ? 'manage.signingIn' : 'manage.signIn') | t }}
+    </button>
+  </form>
+
+  <ng-container *ngIf="auth.user">
+    <p class="lr-empty" *ngIf="isLoading">{{ 'articles.loading' | t }}</p>
+    <p class="lr-empty is-error" *ngIf="errorKey">{{ errorKey | t }}</p>
+    <p class="lr-empty is-error" *ngIf="notAuthor && !isLoading">{{ 'manage.notAuthor' | t }}</p>
+    <p class="lr-empty" *ngIf="isAuthor && !isLoading && articles.length === 0">{{ 'manage.empty' | t }}</p>
+
+    <ul class="desk-list" *ngIf="isAuthor && articles.length">
+      <li *ngFor="let article of articles" class="card desk-row">
+        <div class="row-main">
+          <div class="meta lr-mono">
+            <span class="lr-badge" [class.is-draft]="article.status === 'draft'" [class.is-published]="article.status === 'published'">
+              {{ 'manage.status.' + article.status | t }}
+            </span>
+            <span class="lr-badge">{{ (article.lang === 'zh-TW' ? 'articles.langZh' : 'articles.langEn') | t }}</span>
+            <span>{{ 'articles.updated' | t }} {{ i18n.formatDate(article.updated_at) }}</span>
+          </div>
+          <h2>{{ article.title }}</h2>
+          <span class="lr-mono slug">/articles/{{ article.slug }}</span>
+        </div>
+        <div class="row-actions">
+          <a *ngIf="article.status === 'published'" [routerLink]="['/articles', article.slug]" class="lr-link">{{ 'manage.view' | t }}</a>
+          <a [routerLink]="['/articles/manage', article.id]" class="lr-link">{{ 'manage.edit' | t }}</a>
+          <button type="button" class="lr-link danger" (click)="remove(article)">{{ 'manage.delete' | t }}</button>
+        </div>
+      </li>
+    </ul>
+  </ng-container>
+</section>

@@ -75,6 +75,10 @@
       color: var(--frost0);
       border-left: 2px solid var(--border-color);
     }
+
+    .lang-toggle {
+      color: var(--aurora-purple);
+    }
   }
 
   .menu-toggle {
@@ -91,7 +95,7 @@
   }
 }
 
-@media (max-width: 760px) {
+@media (max-width: 900px) {
   .navbar {
     padding: 0 0.8rem;
 

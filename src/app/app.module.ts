@@ -9,7 +9,7 @@ import { NavbarComponent } from './widgets/navbar/navbar.component';
 import { CarouselComponent } from './widgets/carousel/carousel.component';
 import { ContactFormComponent } from './widgets/contact-form/contact-form.component';
 import { SnakeCursorComponent } from './widgets/snake-cursor/snake-cursor.component';
-import { ThemeService } from './services/theme.service';
+import { TranslatePipe } from './i18n/translate.pipe';
 
 @NgModule({
   declarations: [
@@ -24,7 +24,8 @@ import { ThemeService } from './services/theme.service';
     NavbarComponent,
     CarouselComponent,
     ContactFormComponent,
-    SnakeCursorComponent
+    SnakeCursorComponent,
+    TranslatePipe
   ],
   providers: [],
   bootstrap: [AppComponent]

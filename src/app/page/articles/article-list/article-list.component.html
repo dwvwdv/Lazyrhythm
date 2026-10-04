@@ -1,0 +1,35 @@
+<section class="lr-page">
+  <header class="list-header">
+    <div>
+      <div class="lr-eyebrow">{{ 'articles.eyebrow' | t }}</div>
+      <h1 class="lr-title">{{ 'articles.title' | t }}</h1>
+      <p class="lr-subtitle">{{ 'articles.subtitle' | t }}</p>
+    </div>
+    <a *ngIf="auth.user" routerLink="/articles/manage" class="btn">{{ 'articles.manage' | t }}</a>
+  </header>
+
+  <p class="lr-empty" *ngIf="isLoading">{{ 'articles.loading' | t }}</p>
+  <p class="lr-empty is-error" *ngIf="loadError">{{ 'articles.error' | t }}</p>
+  <p class="lr-empty" *ngIf="!isLoading && !loadError && articles.length === 0">{{ 'articles.empty' | t }}</p>
+
+  <ol class="article-feed" *ngIf="!isLoading && articles.length">
+    <li *ngFor="let article of articles; let i = index" class="card article-item" [class.has-cover]="article.cover_image_url">
+      <a [routerLink]="['/articles', article.slug]" class="article-link">
+        <img *ngIf="article.cover_image_url" [src]="article.cover_image_url" alt="" class="cover" loading="lazy">
+        <div class="article-body">
+          <div class="meta lr-mono">
+            <time [attr.datetime]="article.published_at">{{ i18n.formatDate(article.published_at) }}</time>
+            <span class="lr-badge">{{ (article.lang === 'zh-TW' ? 'articles.langZh' : 'articles.langEn') | t }}</span>
+            <span *ngIf="article.author_name">{{ 'articles.by' | t }} {{ article.author_name }}</span>
+          </div>
+          <h2>{{ article.title }}</h2>
+          <p *ngIf="article.summary" class="summary">{{ article.summary }}</p>
+          <div class="tags" *ngIf="article.tags.length">
+            <span class="lr-tag" *ngFor="let tag of article.tags">#{{ tag }}</span>
+          </div>
+          <span class="lr-link">{{ 'articles.read' | t }} →</span>
+        </div>
+      </a>
+    </li>
+  </ol>
+</section>

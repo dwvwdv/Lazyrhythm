@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { SUPABASE_ANON_KEY, SUPABASE_URL } from './supabase.config';
 
 export interface WebsiteProjectRow {
   slug: string;
@@ -25,8 +26,8 @@ export interface ContractPayload {
 
 @Injectable({ providedIn: 'root' })
 export class WebsiteDataService {
-  private readonly baseUrl = 'https://pwrwclutauqxbqsqfkjj.supabase.co/rest/v1';
-  private readonly anonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB3cndjbHV0YXVxeGJxc3Fma2pqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzQxNjk2OTEsImV4cCI6MjA0OTc0NTY5MX0.vuocg4yRU0Tvx1ylxN9AXRwwifKWDAuyCjaE7wb_KRg';
+  private readonly baseUrl = `${SUPABASE_URL}/rest/v1`;
+  private readonly anonKey = SUPABASE_ANON_KEY;
 
   async getProjects(): Promise<WebsiteProjectRow[]> {
     const response = await fetch(

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { WebsiteDataService } from '../../services/website-data.service';
+import { TranslatePipe } from '../../i18n/translate.pipe';
 
 interface Project {
   id: string;
@@ -17,7 +18,7 @@ interface Project {
 
 @Component({
   selector: 'app-works',
-  imports: [CommonModule],
+  imports: [CommonModule, TranslatePipe],
   templateUrl: './works.component.html',
   styleUrls: ['./works.component.scss']
 })
@@ -28,13 +29,13 @@ export class WorksComponent implements OnInit {
   loadError = false;
 
   categories = [
-    { id: 'all', name: 'All Projects', icon: 'fas fa-th-large' },
-    { id: 'reading', name: 'Reading & Knowledge', icon: 'fas fa-book-open' },
-    { id: 'finance', name: 'Financial Tech', icon: 'fas fa-chart-line' },
-    { id: 'gaming', name: 'Games', icon: 'fas fa-gamepad' },
-    { id: 'security', name: 'Security Tools', icon: 'fas fa-shield-alt' },
-    { id: 'automation', name: 'Automation', icon: 'fas fa-robot' },
-    { id: 'other', name: 'Other', icon: 'fas fa-code' }
+    { id: 'all', name: 'works.cat.all', icon: 'fas fa-th-large' },
+    { id: 'reading', name: 'works.cat.reading', icon: 'fas fa-book-open' },
+    { id: 'finance', name: 'works.cat.finance', icon: 'fas fa-chart-line' },
+    { id: 'gaming', name: 'works.cat.gaming', icon: 'fas fa-gamepad' },
+    { id: 'security', name: 'works.cat.security', icon: 'fas fa-shield-alt' },
+    { id: 'automation', name: 'works.cat.automation', icon: 'fas fa-robot' },
+    { id: 'other', name: 'works.cat.other', icon: 'fas fa-code' }
   ];
 
   constructor(private websiteData: WebsiteDataService) {}
