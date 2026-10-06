@@ -1,9 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { WebsiteDataService } from '../../services/website-data.service';
+import { Subscription } from 'rxjs';
+import { WebsiteDataService, WebsiteProjectRow } from '../../services/website-data.service';
+import { I18nService } from '../../i18n/i18n.service';
+import { Lang } from '../../i18n/translations';
 import { TranslatePipe } from '../../i18n/translate.pipe';
 
-interface Project {
+export interface Project {
   id: string;
   image: string;
   imageFit: 'contain' | 'cover';
@@ -22,11 +25,13 @@ interface Project {
   templateUrl: './works.component.html',
   styleUrls: ['./works.component.scss']
 })
-export class WorksComponent implements OnInit {
+export class WorksComponent implements OnInit, OnDestroy {
   selectedCategory = 'all';
   projects: Project[] = [];
   isLoading = true;
   loadError = false;
+  private rows: WebsiteProjectRow[] = [];
+  private sub?: Subscription;
 
   categories = [
     { id: 'all', name: 'works.cat.all', icon: 'fas fa-th-large' },
@@ -38,29 +43,26 @@ export class WorksComponent implements OnInit {
     { id: 'other', name: 'works.cat.other', icon: 'fas fa-code' }
   ];
 
-  constructor(private websiteData: WebsiteDataService) {}
+  constructor(
+    private websiteData: WebsiteDataService,
+    private i18n: I18nService
+  ) {}
 
   async ngOnInit(): Promise<void> {
     try {
-      const rows = await this.websiteData.getProjects();
-      this.projects = rows.map(row => ({
-        id: row.slug,
-        image: row.image_url ?? '',
-        imageFit: row.image_fit,
-        title: row.title,
-        description: row.description,
-        tags: row.tags,
-        category: row.category,
-        link: row.project_url,
-        technologies: row.technologies,
-        featured: row.featured
-      }));
+      this.rows = await this.websiteData.getProjects();
+      // 切換語系時直接換成對應的翻譯，不需重新抓資料。
+      this.sub = this.i18n.lang$.subscribe(lang => (this.projects = this.rows.map(row => localizeProject(row, lang))));
     } catch (error) {
       console.error('Unable to load projects from Supabase', error);
       this.loadError = true;
     } finally {
       this.isLoading = false;
     }
+  }
+
+  ngOnDestroy(): void {
+    this.sub?.unsubscribe();
   }
 
   get filteredProjects(): Project[] {
@@ -74,4 +76,20 @@ export class WorksComponent implements OnInit {
   selectCategory(categoryId: string): void {
     this.selectedCategory = categoryId;
   }
+}
+
+export function localizeProject(row: WebsiteProjectRow, lang: Lang): Project {
+  const translation = row.translations?.[lang] ?? {};
+  return {
+    id: row.slug,
+    image: row.image_url ?? '',
+    imageFit: row.image_fit,
+    title: translation.title || row.title,
+    description: translation.description || row.description,
+    tags: translation.tags?.length ? translation.tags : row.tags,
+    category: row.category,
+    link: row.project_url,
+    technologies: row.technologies,
+    featured: row.featured
+  };
 }

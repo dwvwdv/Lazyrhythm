@@ -19,6 +19,14 @@
   font-size: 0.75rem;
 }
 
+.fallback-note {
+  justify-self: start;
+  padding: 0.35rem 0.7rem;
+  border: 2px dashed var(--border-color);
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+}
+
 .lr-title {
   font-size: clamp(2rem, 5vw, 3.4rem);
 }

@@ -1,5 +1,12 @@
 import { Injectable } from '@angular/core';
 import { SUPABASE_ANON_KEY, SUPABASE_URL } from './supabase.config';
+import { Lang } from '../i18n/translations';
+
+export interface ProjectTranslation {
+  title?: string;
+  description?: string;
+  tags?: string[];
+}
 
 export interface WebsiteProjectRow {
   slug: string;
@@ -13,6 +20,8 @@ export interface WebsiteProjectRow {
   technologies: string[];
   featured: boolean;
   sort_order: number;
+  /** 英文以外的語系；缺少的欄位沿用英文原欄位。 */
+  translations: Partial<Record<Lang, ProjectTranslation>> | null;
 }
 
 export interface ContractPayload {
@@ -31,7 +40,7 @@ export class WebsiteDataService {
 
   async getProjects(): Promise<WebsiteProjectRow[]> {
     const response = await fetch(
-      `${this.baseUrl}/projects?select=slug,title,description,image_url,image_fit,project_url,category,tags,technologies,featured,sort_order&order=sort_order.asc`,
+      `${this.baseUrl}/projects?select=slug,title,description,image_url,image_fit,project_url,category,tags,technologies,featured,sort_order,translations&order=sort_order.asc`,
       { headers: this.headers('website') }
     );
 
