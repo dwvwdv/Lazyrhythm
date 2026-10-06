@@ -212,7 +212,7 @@ const zhTW: Record<TranslationKey, string> = {
   'home.principleLabel': '運作原則',
   'home.principleTitle': '悠閒・節奏・實驗。',
   'home.principleP1': '創新有自己的節奏。專案從好奇心出發，在測試、重寫與實際使用中慢慢成形。',
-  'home.principleP2': 'LazyRhythm（悠閒節奏）是放這些實驗的地方。每個專案都從自己的需求開始，先做出能用的版本，丟進日常用一陣子，卡住的地方再重寫。留在這裡的，都是我自己還在用的東西。',
+  'home.principleP2': '悠閒節奏是放這些實驗的地方。每個專案都從自己的需求開始，先做出能用的版本，丟進日常用一陣子，卡住的地方再重寫。留在這裡的，都是我自己還在用的東西。',
 
   'about.title': '關於 LazyRhythm',
   'about.subtitle': '一間個人實驗室',
@@ -330,8 +330,8 @@ const zhTW: Record<TranslationKey, string> = {
   'editor.editTitle': '編輯文章',
   'editor.back': '回到文章管理',
   'editor.title': '標題',
-  'editor.slug': '網址代稱（Slug）',
-  'editor.slugHint': '僅限小寫英文字母、數字與連字號。同一篇文章的不同語系版本共用同一個代稱。',
+  'editor.slug': 'Slug',
+  'editor.slugHint': '僅限小寫英文字母、數字與連字號。同一篇文章的不同語系版本共用同一個 Slug。',
   'editor.summary': '摘要',
   'editor.cover': '封面圖片網址',
   'editor.tags': '標籤',
@@ -346,7 +346,7 @@ const zhTW: Record<TranslationKey, string> = {
   'editor.update': '更新',
   'editor.saving': '儲存中...',
   'editor.saved': '已儲存。',
-  'editor.saveError': '儲存失敗，這個網址代稱在此語系可能已經有文章。',
+  'editor.saveError': '儲存失敗，這個 Slug 在此語系可能已經有文章。',
   'editor.invalid': '請填寫標題、有效的網址代稱；封面網址若有填寫須為 https。',
   'editor.loadError': '無法載入這篇文章。',
   'editor.emptyPreview': '目前沒有可預覽的內容。'
