@@ -347,7 +347,7 @@ const zhTW: Record<TranslationKey, string> = {
   'editor.saving': '儲存中...',
   'editor.saved': '已儲存。',
   'editor.saveError': '儲存失敗，這個 Slug 在此語系可能已經有文章。',
-  'editor.invalid': '請填寫標題、有效的網址代稱；封面網址若有填寫須為 https。',
+  'editor.invalid': '請填寫標題、有效的 Slug；封面網址若有填寫須為 https。',
   'editor.loadError': '無法載入這篇文章。',
   'editor.emptyPreview': '目前沒有可預覽的內容。'
 };
