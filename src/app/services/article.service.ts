@@ -51,11 +51,11 @@ export class ArticleService {
     );
   }
 
-  async getPublished(slug: string): Promise<Article | null> {
-    const rows = await this.request<Article[]>(
-      `articles?select=${FULL_COLUMNS}&status=eq.published&slug=eq.${encodeURIComponent(slug)}&limit=1`
+  /** 同一 slug 的所有已發布語系版本。 */
+  async getPublishedVersions(slug: string): Promise<Article[]> {
+    return this.request<Article[]>(
+      `articles?select=${FULL_COLUMNS}&status=eq.published&slug=eq.${encodeURIComponent(slug)}`
     );
-    return rows[0] ?? null;
   }
 
   // ---- 作者 ----

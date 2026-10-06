@@ -49,6 +49,7 @@
         <div class="row-actions">
           <a *ngIf="article.status === 'published'" [routerLink]="['/articles', article.slug]" class="lr-link">{{ 'manage.view' | t }}</a>
           <a [routerLink]="['/articles/manage', article.id]" class="lr-link">{{ 'manage.edit' | t }}</a>
+          <a *ngIf="!hasTranslation(article)" routerLink="/articles/manage/new" [queryParams]="{ translate: article.id }" class="lr-link">{{ 'manage.translate' | t }}</a>
           <button type="button" class="lr-link danger" (click)="remove(article)">{{ 'manage.delete' | t }}</button>
         </div>
       </li>

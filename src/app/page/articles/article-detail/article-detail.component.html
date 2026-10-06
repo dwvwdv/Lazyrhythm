@@ -12,6 +12,7 @@
         <span class="lr-badge">{{ (article.lang === 'zh-TW' ? 'articles.langZh' : 'articles.langEn') | t }}</span>
         <span *ngIf="article.author_name">{{ 'articles.by' | t }} {{ article.author_name }}</span>
       </div>
+      <p *ngIf="isFallback" class="fallback-note lr-mono" role="note">{{ 'articles.fallback.' + article.lang | t }}</p>
       <h1 class="lr-title" [attr.lang]="article.lang">{{ article.title }}</h1>
       <p *ngIf="article.summary" class="lr-subtitle" [attr.lang]="article.lang">{{ article.summary }}</p>
       <div class="tags" *ngIf="article.tags.length">

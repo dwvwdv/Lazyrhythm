@@ -87,6 +87,11 @@ export class ArticleEditorComponent implements OnInit, OnDestroy {
         this.load(id);
       }
     }));
+
+    const translateFrom = this.route.snapshot.queryParamMap.get('translate');
+    if (this.isNew && translateFrom) {
+      this.loadTranslationSource(translateFrom);
+    }
   }
 
   ngOnDestroy(): void {
@@ -159,6 +164,34 @@ export class ArticleEditorComponent implements OnInit, OnDestroy {
       this.apply(article);
     } catch (error) {
       console.error('Unable to load article', error);
+      this.showMessage('editor.loadError', true);
+    } finally {
+      this.isLoading = false;
+    }
+  }
+
+  /** 新增翻譯版本：沿用原文的 slug 與內容當作起點，語系切到另一種。 */
+  private async loadTranslationSource(id: string): Promise<void> {
+    this.isLoading = true;
+
+    try {
+      const source = await this.articleService.getById(id);
+      if (!source) {
+        throw new Error('Article not found');
+      }
+
+      this.slugTouched = true;
+      this.form.reset({
+        title: source.title,
+        slug: source.slug,
+        summary: source.summary,
+        cover_image_url: source.cover_image_url ?? '',
+        tags: source.tags.join(', '),
+        lang: source.lang === 'zh-TW' ? 'en' : 'zh-TW',
+        content: source.content
+      }, { emitEvent: false });
+    } catch (error) {
+      console.error('Unable to load translation source', error);
       this.showMessage('editor.loadError', true);
     } finally {
       this.isLoading = false;
