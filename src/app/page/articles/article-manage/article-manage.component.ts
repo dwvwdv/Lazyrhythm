@@ -42,6 +42,11 @@ export class ArticleManageComponent implements OnInit {
     }
   }
 
+  /** 另一個語系的版本已存在時不再提供「翻譯」。 */
+  hasTranslation(article: ArticleSummary): boolean {
+    return this.articles.some(item => item.slug === article.slug && item.lang !== article.lang);
+  }
+
   async signIn(): Promise<void> {
     if (this.loginForm.invalid || this.isSigningIn) {
       this.loginForm.markAllAsTouched();

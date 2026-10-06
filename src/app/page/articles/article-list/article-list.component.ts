@@ -28,10 +28,12 @@ export class ArticleListComponent implements OnInit, OnDestroy {
   ) {}
 
   async ngOnInit(): Promise<void> {
+    // 先訂閱再 await，避免元件在載入期間被銷毀後才建立訂閱。
+    this.sub = this.i18n.lang$.subscribe(() => this.localize());
+
     try {
       this.all = await this.articleService.listPublished();
-      // 每篇文章只列一次：有目前語系的版本就用它，否則退回其他語系。
-      this.sub = this.i18n.lang$.subscribe(lang => (this.articles = pickVersionsBy(this.all, article => article.slug, lang)));
+      this.localize();
     } catch (error) {
       console.error('Unable to load articles', error);
       this.loadError = true;
@@ -42,5 +44,10 @@ export class ArticleListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.sub?.unsubscribe();
+  }
+
+  // 每篇文章只列一次：有目前語系的版本就用它，否則退回其他語系。
+  private localize(): void {
+    this.articles = pickVersionsBy(this.all, article => article.slug, this.i18n.lang);
   }
 }

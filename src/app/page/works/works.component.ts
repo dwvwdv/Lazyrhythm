@@ -49,10 +49,12 @@ export class WorksComponent implements OnInit, OnDestroy {
   ) {}
 
   async ngOnInit(): Promise<void> {
+    // 切換語系時直接換成對應的翻譯，不需重新抓資料；先訂閱再 await，避免元件銷毀後才建立訂閱。
+    this.sub = this.i18n.lang$.subscribe(() => this.localize());
+
     try {
       this.rows = await this.websiteData.getProjects();
-      // 切換語系時直接換成對應的翻譯，不需重新抓資料。
-      this.sub = this.i18n.lang$.subscribe(lang => (this.projects = this.rows.map(row => localizeProject(row, lang))));
+      this.localize();
     } catch (error) {
       console.error('Unable to load projects from Supabase', error);
       this.loadError = true;
@@ -63,6 +65,10 @@ export class WorksComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.sub?.unsubscribe();
+  }
+
+  private localize(): void {
+    this.projects = this.rows.map(row => localizeProject(row, this.i18n.lang));
   }
 
   get filteredProjects(): Project[] {
