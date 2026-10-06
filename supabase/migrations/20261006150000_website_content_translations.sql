@@ -25,22 +25,22 @@ begin
   from (values
     ('seamless-track', jsonb_build_object(
       'title', '無感記帳',
-      'description', '本地優先的 Android 記帳 App，把金融通知自動轉成交易紀錄。自訂擷取規則、多帳戶管理、統計分析、定期記帳，以及可選的加密 Google Drive 備份，讓日常記帳保持有用，也不再是每天的苦差事。',
+      'description', '本地優先的 Android 記帳 App，把金融通知自動轉成交易紀錄。支援自訂擷取規則、多帳戶、統計分析、定期記帳，以及可選的加密 Google Drive 備份。',
       'tags', jsonb_build_array('自動記帳', '本地優先', 'Android'))),
     ('driftread', jsonb_build_object(
-      'description', '一個 RSS 探索與閱讀平台，核心想法很簡單：幫你找到還不認識、但很可能會喜歡的來源。瀏覽、閱讀全文、訂閱、匯入 OPML、探索新的 feed，閱讀不必變成另一條吵雜的時間軸。',
+      'description', 'RSS 探索與閱讀平台，找出你還沒看過、但可能會喜歡的來源。支援全文閱讀、訂閱、OPML 匯入與 feed 探索。',
       'tags', jsonb_build_array('RSS', '探索', '閱讀'))),
     ('cotime-book', jsonb_build_object(
-      'description', '為想要遠端一起讀書的人設計的協作 EPUB 閱讀 App。建立房間、分享六碼代碼，閱讀進度即時同步，大家都停在同一頁。',
+      'description', '遠端共讀用的 EPUB 閱讀 App。建立房間、分享六碼代碼，閱讀進度即時同步。',
       'tags', jsonb_build_array('共讀', 'EPUB', '即時同步'))),
     ('hitcon-crawl', jsonb_build_object(
-      'description', '在終端機瀏覽 HITCON 漏洞揭露的快速 TUI 工具。給資安研究者一個有效率的命令列介面，快速查閱已公開揭露的漏洞。',
+      'description', '在終端機瀏覽 HITCON 漏洞揭露的 TUI 工具，用命令列快速查閱已公開的漏洞。',
       'tags', jsonb_build_array('Python', 'TUI', '資安研究'))),
     ('hookfy', jsonb_build_object(
-      'description', '支援 webhook 的 Android 通知監聽 App。即時轉發與追蹤通知，強化行動裝置上的工作流程自動化。',
+      'description', '支援 webhook 的 Android 通知監聽 App，即時轉發通知，串接手機上的自動化流程。',
       'tags', jsonb_build_array('Flutter', '行動裝置', 'Webhooks'))),
     ('lazyembed', jsonb_build_object(
-      'description', '收錄各種網頁開發小工具的靜態網頁工具箱，用簡單的介面處理常見的網頁開發雜事。',
+      'description', '收錄網頁開發小工具的靜態網頁工具箱。',
       'tags', jsonb_build_array('HTML', 'JavaScript', '網頁工具')))
   ) as t(slug, zh)
   where p.slug = t.slug;
