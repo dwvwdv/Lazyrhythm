@@ -36,7 +36,7 @@ const en = {
   'home.principleLabel': 'Operating principle',
   'home.principleTitle': 'Lazy. Rhythmic. Experimental.',
   'home.principleP1': 'Innovation keeps its own tempo. Projects begin with curiosity, then take shape through testing, rebuilding, and real everyday use.',
-  'home.principleP2': 'These experiments live at LazyRhythm. Each starts from a need of my own: build a working version, use it daily, rewrite what gets in the way. What stays, I still use.',
+  'home.principleP2': 'LazyRhythm collects these experiments. Each one solves a need of my own first, goes into daily use once it works, and gets rewritten when it gets in the way.',
 
   'about.title': 'About LazyRhythm',
   'about.subtitle': 'A Personal Experimental Laboratory',
@@ -212,7 +212,7 @@ const zhTW: Record<TranslationKey, string> = {
   'home.principleLabel': '運作原則',
   'home.principleTitle': '悠閒・節奏・實驗。',
   'home.principleP1': '創新有自己的節奏。專案從好奇心出發，在測試、重寫與實際使用中慢慢成形。',
-  'home.principleP2': '這些實驗都放在悠閒節奏。專案從自己的需求出發，先做出能用的版本，日常用一陣子，卡住就重寫。留下來的，我都還在用。',
+  'home.principleP2': '悠閒節奏收錄這些實驗。專案先解決自己的需求，做出能用的版本後放進日常使用，卡住就重寫。',
 
   'about.title': '關於 LazyRhythm',
   'about.subtitle': '一間個人實驗室',
