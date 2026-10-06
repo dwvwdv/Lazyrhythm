@@ -45,11 +45,6 @@
     font-weight: 900;
     line-height: 0.92;
     letter-spacing: -0.07em;
-
-    &::after {
-      content: '_';
-      color: var(--frost1);
-    }
   }
 
   .hero-subtitle {
