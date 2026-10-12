@@ -35,12 +35,14 @@ function noiseBuffer(ac: BaseAudioContext): AudioBuffer {
   return buffer;
 }
 
-function noise(ac: BaseAudioContext, when: number, duration: number, loop = false): AudioBufferSourceNode {
+/** White noise from a random point in the shared buffer; `endless` runs until stopped. */
+function noise(ac: BaseAudioContext, when: number, duration: number, endless = false): AudioBufferSourceNode {
   const src = ac.createBufferSource();
   src.buffer = noiseBuffer(ac);
-  src.loop = loop;
+  // Always loop so a long burst (the 1.2s whoosh) never runs off the end of the 2s buffer.
+  src.loop = true;
   src.start(when, Math.random() * 1.5);
-  if (!loop) src.stop(when + duration + 0.05);
+  if (!endless) src.stop(when + duration + 0.05);
   return src;
 }
 
