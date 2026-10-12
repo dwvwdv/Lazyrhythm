@@ -41,6 +41,7 @@
   --text-color: var(--snow0);
   --text-secondary: var(--snow0);
   --text-muted: var(--dim);
+  --accent-text: var(--frost1);
   --border-color: var(--polar3);
   --border-strong: var(--frost0);
   --success-color: var(--aurora-green);
@@ -70,6 +71,7 @@
     --text-color: var(--polar0);
     --text-secondary: var(--polar1);
     --text-muted: #596273;
+    --accent-text: #456A8F; /* frost3 deepened: 4.9:1 on snow2 */
     --border-color: var(--polar3);
     --border-strong: var(--frost3);
   }
@@ -87,6 +89,7 @@
   --text-color: var(--polar0);
   --text-secondary: var(--polar1);
   --text-muted: #596273;
+  --accent-text: #456A8F; /* frost3 deepened: 4.9:1 on snow2 */
   --border-color: var(--polar3);
   --border-strong: var(--frost3);
 }
@@ -101,6 +104,7 @@
   --text-color: var(--snow0);
   --text-secondary: var(--snow0);
   --text-muted: var(--dim);
+  --accent-text: var(--frost1);
   --border-color: var(--polar3);
   --border-strong: var(--frost0);
 }
