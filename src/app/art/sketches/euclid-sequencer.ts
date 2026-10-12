@@ -1,15 +1,19 @@
 import type p5 from 'p5';
-import { SketchFactory, euclid, offsetBlock, rgba, swungClock } from '../offbeat-sketch';
+import { SketchFactory, beatsBetween, euclid, offsetBlock, rgba, swungClock } from '../offbeat-sketch';
+import { DrumKit, createDrumKit } from '../audio/instruments';
 
 /* SYNCOPATION — a 16-step sequencer that plays rotated Euclidean rhythms.
  * Active steps are raised blocks; when the swung playhead hits one it is
  * pressed flat into its shadow, like a key on an Offbeat button.
  * Click a cell to toggle it.
+ * Sound: every track is its own seeded drum voice (kick, hat, snare, rim,
+ * tom or FM blip); hits on the swung offbeats are accented.
  */
 
 const STEPS = 16;
 const BPM = 84;
 const SWING = 0.64;
+const LOOKAHEAD_MS = 90;
 
 interface Track {
   pulses: number;
@@ -33,6 +37,30 @@ export const euclidSequencer: SketchFactory = (p: p5, ctx) => {
   let lastStep = -1;
   let layout = { x: 0, y: 0, cell: 0, gap: 0, label: 0 };
   let hover: [number, number] | null = null;
+  let kit: DrumKit | null = null;
+  let scheduledTo = -1;
+
+  const drums = (): DrumKit | null => {
+    if (!ctx.audio.active) return null;
+    return (kit ??= createDrumKit(ctx.audio.ac, ctx.audio.out, ctx.audio.rng, tracks.length));
+  };
+
+  // Queue hits slightly ahead on the audio clock so they land exactly on the swung grid.
+  const schedule = (now: number) => {
+    const drum = drums();
+    if (!drum || ctx.reducedMotion) {
+      scheduledTo = now;
+      return;
+    }
+    if (scheduledTo < 0 || now - scheduledTo > 250) scheduledTo = now;
+    for (const beat of beatsBetween(scheduledTo, now + LOOKAHEAD_MS, BPM, SWING)) {
+      const step = beat.step % STEPS;
+      tracks.forEach((track, r) => {
+        if (track.pattern[step]) drum.hit(r, ctx.audio.at(beat.at), beat.offbeat);
+      });
+    }
+    scheduledTo = now + LOOKAHEAD_MS;
+  };
 
   const computeLayout = () => {
     const pad = Math.max(16, Math.min(p.width, p.height) * 0.07);
@@ -91,10 +119,13 @@ export const euclidSequencer: SketchFactory = (p: p5, ctx) => {
       track.pattern[hit[1]] = !track.pattern[hit[1]];
       track.pulses = track.pattern.filter(Boolean).length;
       track.edited = true;
+      // Audition the voice when a step is switched on.
+      if (track.pattern[hit[1]]) drums()?.hit(hit[0], ctx.audio.ac.currentTime, hit[1] % 2 === 1);
     },
 
     draw() {
       const pal = ctx.palette();
+      schedule(ctx.now());
       const beat = swungClock(ctx.now(), BPM, SWING);
       const step = beat.step % STEPS;
       const dt = Math.min(p.deltaTime || 16, 64);

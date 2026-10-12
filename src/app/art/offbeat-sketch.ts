@@ -30,6 +30,23 @@ export interface SketchPointer {
   inside: boolean;
 }
 
+/**
+ * A sketch's own sound channel. Every sketch gets an independent bus, so the
+ * four studies can play at once and be muted one by one.
+ */
+export interface SketchAudio {
+  /** True while sound is on, this channel is unmuted and the sketch is on screen. */
+  readonly active: boolean;
+  /** The shared AudioContext; only valid while `active`. */
+  readonly ac: AudioContext;
+  /** This sketch's bus; only valid while `active`. */
+  readonly out: AudioNode;
+  /** Seeded random stream for sound design, separate from the visuals' stream. */
+  readonly rng: () => number;
+  /** Convert a time on the sketch clock (ms) into AudioContext time. */
+  at(ms: number): number;
+}
+
 export interface SketchContext {
   seed: number;
   reducedMotion: boolean;
@@ -37,6 +54,7 @@ export interface SketchContext {
   palette(): OffbeatPalette;
   /** Milliseconds since start; frozen at a fixed moment under reduced motion. */
   now(): number;
+  audio: SketchAudio;
 }
 
 export interface SketchHooks {
@@ -45,6 +63,8 @@ export interface SketchHooks {
   resize?(): void;
   press?(x: number, y: number): void;
   themeChanged?(): void;
+  /** Release long-running sound sources before the sketch is torn down. */
+  dispose?(): void;
 }
 
 export type SketchFactory = (p: p5, ctx: SketchContext) => SketchHooks;
@@ -155,6 +175,42 @@ export function swungClock(ms: number, bpm: number, swing = 0.62): BeatPosition 
     return { step: pairIndex * 2, phase: within / swing, offbeat: false };
   }
   return { step: pairIndex * 2 + 1, phase: (within - swing) / (1 - swing), offbeat: true };
+}
+
+export interface ScheduledBeat {
+  step: number;
+  /** Sketch-clock time (ms) the sixteenth starts. */
+  at: number;
+  offbeat: boolean;
+}
+
+/**
+ * Every swung sixteenth that starts in (fromMs, toMs]. Used to schedule
+ * audio slightly ahead of the frame that draws it, so hits land on time
+ * instead of on the next animation frame.
+ */
+export function beatsBetween(fromMs: number, toMs: number, bpm: number, swing = 0.62): ScheduledBeat[] {
+  const pair = 60000 / bpm / 2;
+  const startOf = (step: number) => Math.floor(step / 2) * pair + (step % 2 ? swing * pair : 0);
+  const beats: ScheduledBeat[] = [];
+  let step = Math.max(0, Math.floor(fromMs / pair) * 2);
+  while (startOf(step) <= fromMs) step++;
+  for (; startOf(step) <= toMs; step++) {
+    beats.push({ step, at: startOf(step), offbeat: step % 2 === 1 });
+  }
+  return beats;
+}
+
+/** Small seeded PRNG (mulberry32), returning floats in [0, 1). */
+export function seededRandom(seed: number): () => number {
+  let a = seed >>> 0;
+  return () => {
+    a = (a + 0x6d2b79f5) >>> 0;
+    let t = a;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
 }
 
 /** A solid block with the signature Offbeat hard shadow. `lift` 0 = pressed flat. */

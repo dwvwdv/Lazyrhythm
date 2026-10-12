@@ -1,4 +1,5 @@
-import { euclid, mix, rgba, swungClock } from './offbeat-sketch';
+import { beatsBetween, euclid, mix, rgba, seededRandom, swungClock } from './offbeat-sketch';
+import { scaleHz } from './audio/instruments';
 
 describe('offbeat-sketch helpers', () => {
   it('spreads Euclidean pulses evenly', () => {
@@ -25,5 +26,29 @@ describe('offbeat-sketch helpers', () => {
   it('formats Nord colours for p5', () => {
     expect(rgba('#88C0D0', 0.5)).toBe('rgba(136,192,208,0.500)');
     expect(mix('#000000', '#FFFFFF', 0.5)).toBe('#808080');
+  });
+
+  it('lists swung sixteenths inside a window', () => {
+    // 60 BPM, 66% swing: steps start at 0, 330, 500, 830, 1000ms.
+    const beats = beatsBetween(0, 1000, 60, 0.66);
+    expect(beats.map(b => b.step)).toEqual([1, 2, 3, 4]);
+    expect(beats.map(b => b.at)).toEqual([330, 500, 830, 1000]);
+    expect(beats.map(b => b.offbeat)).toEqual([true, false, true, false]);
+    // Contiguous windows never schedule a step twice.
+    const split = [...beatsBetween(0, 600, 60, 0.66), ...beatsBetween(600, 1000, 60, 0.66)];
+    expect(split.map(b => b.step)).toEqual([1, 2, 3, 4]);
+  });
+
+  it('keeps the sound seed stream deterministic', () => {
+    const a = seededRandom(42);
+    const b = seededRandom(42);
+    expect([a(), a(), a()]).toEqual([b(), b(), b()]);
+    expect(seededRandom(43)()).not.toBe(seededRandom(42)());
+  });
+
+  it('maps scale degrees onto D minor pentatonic', () => {
+    expect(scaleHz(0)).toBeCloseTo(146.83, 1);
+    expect(scaleHz(5)).toBeCloseTo(293.66, 1); // one octave up
+    expect(scaleHz(3)).toBeCloseTo(220, 0); // A3, the fifth
   });
 });
