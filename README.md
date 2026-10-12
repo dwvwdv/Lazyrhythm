@@ -37,6 +37,16 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 The site ships English and Traditional Chinese (`src/app/i18n`). The default language follows the visitor's browser languages (`zh-*` → 繁體中文, otherwise English); a manual choice from the navbar toggle is remembered in `localStorage`.
 
+## Generative art (p5.js)
+
+Offbeat-styled p5.js sketches live in `src/app/art/sketches` and share helpers from `src/app/art/offbeat-sketch.ts` (live Nord palette from CSS tokens, offset-shadow blocks, a swung beat clock, Euclidean rhythms).
+
+- Gallery: `/art` — Syncopation, Offset Drift, Lazy Waveform and Offbeat Tiles, each with reroll and PNG export
+- Home hero backdrop: the `field` sketch
+- Host widget: `<app-p5-canvas sketch="drift" [seed]="42">` lazy-loads p5 (its own chunk, not in the initial bundle), runs outside the Angular zone, pauses off screen, follows the theme toggle, and draws a single still frame under `prefers-reduced-motion`
+
+To add a sketch, write a `SketchFactory` and register it in `src/app/art/sketches/index.ts`.
+
 ## Articles (lab log)
 
 - Public list: `/articles`, article page: `/articles/:slug`

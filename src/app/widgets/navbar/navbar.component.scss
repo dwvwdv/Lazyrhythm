@@ -114,6 +114,9 @@
       left: 0.8rem;
       right: 0.8rem;
       height: auto;
+      // Short landscape screens: scroll inside the menu instead of clipping it.
+      max-height: calc(100dvh - 60px);
+      overflow-y: auto;
       flex-direction: column;
       background: var(--surface-color);
       border: 2px solid var(--border-color);

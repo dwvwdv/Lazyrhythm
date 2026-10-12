@@ -32,7 +32,13 @@
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "allowedCommonJsDependencies": [
+              "@japont/unicode-range",
+              "escodegen",
+              "libtess",
+              "omggif"
+            ]
           },
           "configurations": {
             "production": {

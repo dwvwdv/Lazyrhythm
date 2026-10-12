@@ -1,0 +1,38 @@
+<div class="art-container">
+  <header class="art-header">
+    <p class="eyebrow"><span class="beat-dot"></span>{{ 'art.kicker' | t }}</p>
+    <h1 class="title">{{ 'art.title' | t }}</h1>
+    <p class="subtitle">{{ 'art.description' | t }}</p>
+    <p class="hint">&gt; {{ 'art.hint' | t }}</p>
+  </header>
+
+  <div class="studies-grid">
+    <article class="study-card" *ngFor="let study of studies; let i = index">
+      <div class="study-bar">
+        <span class="study-index">{{ (i + 1).toString().padStart(2, '0') }}</span>
+        <span class="study-tempo">{{ study.tempo }}</span>
+      </div>
+
+      <app-p5-canvas
+        #canvas
+        class="study-canvas"
+        [sketch]="study.id"
+        [seed]="study.seed"
+        [attr.aria-label]="('art.canvasLabel' | t) + ': ' + (('art.' + study.id + '.title') | t)">
+      </app-p5-canvas>
+
+      <div class="study-body">
+        <h2 class="study-title">{{ ('art.' + study.id + '.title') | t }}</h2>
+        <p class="study-desc">{{ ('art.' + study.id + '.desc') | t }}</p>
+      </div>
+
+      <div class="study-actions">
+        <span class="seed">{{ 'art.seed' | t }} <b>{{ hex(study.seed) }}</b></span>
+        <div class="buttons">
+          <button type="button" class="btn ghost" [disabled]="!canvas.ready" (click)="canvas.save()">[{{ 'art.save' | t }}]</button>
+          <button type="button" class="btn" (click)="reroll(study)">[{{ 'art.reroll' | t }}]</button>
+        </div>
+      </div>
+    </article>
+  </div>
+</div>
