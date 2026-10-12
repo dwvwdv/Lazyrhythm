@@ -1,16 +1,21 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { TranslatePipe } from '../../i18n/translate.pipe';
+import { P5CanvasComponent } from '../../widgets/p5-canvas/p5-canvas.component';
 
 @Component({
     selector: 'app-home',
-    imports: [CommonModule, TranslatePipe],
+    imports: [CommonModule, RouterModule, TranslatePipe, P5CanvasComponent],
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit, AfterViewInit {
+  // Generative backdrop for the hero; a new composition on every visit.
+  heroSeed = Math.floor(Math.random() * 0xffffff);
+
   // Main feature areas of the experimental lab
   labAreas = [
     {
