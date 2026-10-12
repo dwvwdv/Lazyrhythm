@@ -67,6 +67,8 @@ export const lazyWaveform: SketchFactory = (p: p5, ctx) => {
 
     press() {
       tune();
+      // Resample every bar on the next frame; under reduced motion the frozen clock never advances a step.
+      lastStep = -1;
     },
 
     draw() {

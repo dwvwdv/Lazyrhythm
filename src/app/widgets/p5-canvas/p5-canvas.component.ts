@@ -42,18 +42,21 @@ export class P5CanvasComponent implements AfterViewInit, OnChanges, OnDestroy {
   private destroyed = false;
   private generation = 0;
   private readonly pointer = { x: -1, y: -1, inside: false };
-  private readonly reducedMotion = typeof matchMedia === 'function' &&
-    matchMedia('(prefers-reduced-motion: reduce)').matches;
+  private reducedMotion = false;
+  /** True once p5 has loaded and the canvas exists. */
+  ready = false;
 
   private resizeObserver?: ResizeObserver;
   private intersectionObserver?: IntersectionObserver;
   private themeObserver?: MutationObserver;
   private colorScheme?: MediaQueryList;
+  private motionQuery?: MediaQueryList;
 
   constructor(private host: ElementRef<HTMLElement>, private zone: NgZone) {}
 
   ngAfterViewInit(): void {
     this.viewReady = true;
+    this.motionQuery = matchMedia('(prefers-reduced-motion: reduce)');
     this.zone.runOutsideAngular(() => {
       this.observe();
       void this.mount();
@@ -74,6 +77,7 @@ export class P5CanvasComponent implements AfterViewInit, OnChanges, OnDestroy {
     this.intersectionObserver?.disconnect();
     this.themeObserver?.disconnect();
     this.colorScheme?.removeEventListener('change', this.onThemeChange);
+    this.motionQuery?.removeEventListener('change', this.onMotionChange);
     window.removeEventListener('pointermove', this.onPointerMove);
     this.host.nativeElement.removeEventListener('pointerdown', this.onPointerDown);
     this.host.nativeElement.removeEventListener('pointerleave', this.onPointerLeave);
@@ -90,6 +94,7 @@ export class P5CanvasComponent implements AfterViewInit, OnChanges, OnDestroy {
     if (this.destroyed || generation !== this.generation) return;
 
     this.unmount();
+    this.reducedMotion = this.motionQuery?.matches ?? false;
     (P5 as unknown as { disableFriendlyErrors: boolean }).disableFriendlyErrors = true;
 
     const el = this.host.nativeElement;
@@ -120,12 +125,19 @@ export class P5CanvasComponent implements AfterViewInit, OnChanges, OnDestroy {
 
       p.draw = () => this.hooks?.draw();
     }, el);
+    this.setReady(true);
   }
 
   private unmount(): void {
     this.instance?.remove();
     this.instance = null;
     this.hooks = null;
+    this.setReady(false);
+  }
+
+  // p5 runs outside the zone; re-enter it so bindings like [disabled] update.
+  private setReady(ready: boolean): void {
+    if (this.ready !== ready) this.zone.run(() => (this.ready = ready));
   }
 
   private observe(): void {
@@ -157,11 +169,17 @@ export class P5CanvasComponent implements AfterViewInit, OnChanges, OnDestroy {
     });
     this.colorScheme = matchMedia('(prefers-color-scheme: light)');
     this.colorScheme.addEventListener('change', this.onThemeChange);
+    this.motionQuery?.addEventListener('change', this.onMotionChange);
 
     window.addEventListener('pointermove', this.onPointerMove, { passive: true });
     el.addEventListener('pointerleave', this.onPointerLeave);
     el.addEventListener('pointerdown', this.onPointerDown);
   }
+
+  // Remount so the sketch switches between animating and a single still frame.
+  private onMotionChange = (): void => {
+    void this.mount();
+  };
 
   private onThemeChange = (): void => {
     this.palette = readPalette(this.host.nativeElement);

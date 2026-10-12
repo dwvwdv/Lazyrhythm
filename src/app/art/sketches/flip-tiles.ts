@@ -50,6 +50,11 @@ export const flipTiles: SketchFactory = (p: p5, ctx) => {
     tile.from = tile.turn;
     tile.turn = tile.turn + 1;
     tile.start = now;
+    // Reduced motion: land on the final orientation instead of animating to it.
+    if (ctx.reducedMotion) {
+      tile.from = tile.turn;
+      tile.start = -1e9;
+    }
   };
 
   const indexAt = (x: number, y: number) => {

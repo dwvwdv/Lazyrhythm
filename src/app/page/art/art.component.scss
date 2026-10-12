@@ -37,6 +37,7 @@ $mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 .btn:hover { transform: translate(-1px, -1px); box-shadow: 5px 5px 0 var(--frost2); }
 .btn:active { transform: translate(4px, 4px); box-shadow: 0 0 0 var(--frost2); }
 .btn.ghost { background: transparent; color: var(--text-color); border-color: var(--border-color); box-shadow: 4px 4px 0 color-mix(in srgb, var(--polar2) 70%, transparent); }
+.btn:disabled { opacity: .5; cursor: wait; transform: none; }
 .btn:focus-visible { outline: 2px solid var(--frost1); outline-offset: 3px; }
 
 @keyframes art-beat {
