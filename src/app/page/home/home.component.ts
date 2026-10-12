@@ -1,6 +1,5 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ElementRef, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { TranslatePipe } from '../../i18n/translate.pipe';
@@ -8,11 +7,11 @@ import { P5CanvasComponent } from '../../widgets/p5-canvas/p5-canvas.component';
 
 @Component({
     selector: 'app-home',
-    imports: [CommonModule, RouterModule, TranslatePipe, P5CanvasComponent],
+    imports: [CommonModule, TranslatePipe, P5CanvasComponent],
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit, AfterViewInit {
+export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   // Generative backdrop for the hero; a new composition on every visit.
   heroSeed = Math.floor(Math.random() * 0xffffff);
 
@@ -40,7 +39,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
   ];
 
-  constructor() {
+  private animations?: gsap.Context;
+  private refreshFrame = 0;
+
+  constructor(private host: ElementRef<HTMLElement>) {
     gsap.registerPlugin(ScrollTrigger);
   }
 
@@ -49,15 +51,26 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.initRhythmicAnimations();
+    // Scope every tween and ScrollTrigger to this page so they can all be reverted on leave.
+    this.animations = gsap.context(() => this.initRhythmicAnimations(), this.host.nativeElement);
+    // When arriving from another route, the previous page is still in the DOM while this runs,
+    // so trigger positions are measured against the wrong layout. Re-measure once it is gone.
+    this.refreshFrame = requestAnimationFrame(() => {
+      this.refreshFrame = requestAnimationFrame(() => ScrollTrigger.refresh());
+    });
+  }
+
+  ngOnDestroy() {
+    cancelAnimationFrame(this.refreshFrame);
+    this.animations?.revert();
   }
 
   // LazyRhythm themed animations - slow, rhythmic, wave-based
   private initRhythmicAnimations() {
     // Rhythmic pulse animation for lab area cards
-    const cards = gsap.utils.toArray('.lab-card');
+    const cards = gsap.utils.toArray<HTMLElement>('.lab-card');
 
-    cards.forEach((card: any, i) => {
+    cards.forEach((card, i) => {
       // Slow fade-in on scroll
       gsap.from(card, {
         opacity: 0,
@@ -83,7 +96,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     });
 
     // Wave animation for hero section
-    const heroTitle = document.querySelector('.hero-title');
+    const heroTitle = this.host.nativeElement.querySelector('.hero-title');
     if (heroTitle) {
       // Gentle wave motion
       gsap.to(heroTitle, {

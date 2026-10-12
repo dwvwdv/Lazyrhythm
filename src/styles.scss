@@ -61,7 +61,7 @@
 /* Offbeat light mode: Snow Storm surfaces, Polar Night text. */
 @media (prefers-color-scheme: light) {
   :root:not([data-theme]) {
-    color-scheme: light;
+    color-scheme: only light;
     --background-color: var(--snow2);
     --surface-color: var(--snow1);
     --elevated-surface: var(--snow0);
@@ -76,7 +76,9 @@
 }
 
 :root[data-theme='light'] {
-  color-scheme: light;
+  /* "only" stops mobile browsers' forced dark mode from repainting the light theme
+     (it darkens the DOM but not canvas pixels, which broke the p5 hero). */
+  color-scheme: only light;
   --background-color: var(--snow2);
   --surface-color: var(--snow1);
   --elevated-surface: var(--snow0);
@@ -109,9 +111,10 @@
   box-sizing: border-box;
 }
 
+/* No smooth scroll-behavior: it turned the router's jump-to-top on page change into an
+   animation that GSAP ScrollTrigger then cancelled, leaving pages opened mid-scroll. */
 html {
   background: var(--background-color);
-  scroll-behavior: smooth;
 }
 
 body {
@@ -373,8 +376,6 @@ select {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-
   *,
   *::before,
   *::after {
