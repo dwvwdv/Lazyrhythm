@@ -1,5 +1,6 @@
 import type p5 from 'p5';
 import { SketchFactory, rgba, swungClock } from '../offbeat-sketch';
+import { Wind, createWind } from '../audio/instruments';
 
 /* OFFSET DRIFT — a lazy flow field quantised to 45° turns.
  * Every trail is drawn twice: once as a frost3 shadow pushed down-right,
@@ -8,6 +9,9 @@ import { SketchFactory, rgba, swungClock } from '../offbeat-sketch';
  * Trails are kept as short polylines and redrawn every frame, so the
  * canvas never smears and theme switches repaint cleanly.
  * Move the pointer to part the flow; click to reseed the field.
+ * Sound: two bands of stereo wind plus a faint whistle tuned to the shared
+ * scale. The wind's pitch flutters with the offbeat kinks, moving the
+ * pointer whips up a gust, and a reseed blows through as a whoosh.
  */
 
 const BPM = 72;
@@ -25,6 +29,23 @@ interface Walker {
 export const offsetDrift: SketchFactory = (p: p5, ctx) => {
   let walkers: Walker[] = [];
   let zOffset = 0;
+  let wind: Wind | null = null;
+  let gust = 0;
+  let lastPointer = { x: 0, y: 0 };
+
+  const air = (): Wind | null => {
+    if (!ctx.audio.active) return null;
+    return (wind ??= createWind(ctx.audio.ac, ctx.audio.out, ctx.audio.rng));
+  };
+
+  // Faster pointer movement inside the canvas means a stronger gust.
+  const steerWind = (kink: number) => {
+    const { x, y, inside } = ctx.pointer;
+    const speed = inside ? Math.hypot(x - lastPointer.x, y - lastPointer.y) : 0;
+    lastPointer = { x, y };
+    gust += (Math.min(1, speed / 30) - gust) * 0.12;
+    air()?.steer(gust, kink !== 0);
+  };
 
   const spawn = (w: Walker) => {
     const x = p.random(p.width);
@@ -89,7 +110,13 @@ export const offsetDrift: SketchFactory = (p: p5, ctx) => {
     setup: () => populate(),
     resize: () => populate(),
 
+    dispose() {
+      wind?.stop();
+    },
+
     press() {
+      const w = air();
+      if (w) w.whoosh(ctx.audio.ac.currentTime);
       p.noiseSeed(Math.floor(p.random(1e9)));
       zOffset += 10;
       populate();
@@ -101,7 +128,9 @@ export const offsetDrift: SketchFactory = (p: p5, ctx) => {
 
       if (!ctx.reducedMotion) {
         const beat = swungClock(t, BPM, 0.66);
-        advance(t, beat.offbeat ? Math.PI / 8 : 0);
+        const kink = beat.offbeat ? Math.PI / 8 : 0;
+        advance(t, kink);
+        steerWind(kink);
       }
 
       p.background(pal.bg);

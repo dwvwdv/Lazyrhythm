@@ -1,11 +1,15 @@
 import type p5 from 'p5';
 import { SketchFactory, offsetBlock, rgba, swungClock } from '../offbeat-sketch';
+import { Plucker, createPlucker } from '../audio/instruments';
 
 /* LAZY WAVEFORM — a stepped equaliser that refuses to move together.
  * Targets are sampled from slow, detuned sines, but even bars only listen
  * on the downbeat and odd bars only on the swung offbeat. Each bar then
  * eases toward its target lazily, and its peak cap falls under weak gravity.
  * The pointer acts as a lens that lifts nearby bars; click to retune.
+ * Sound: the bars that jump highest on each step pluck a note (taller bar,
+ * higher pitch) in a seeded timbre — plucked string, marimba or FM bell —
+ * over a soft, syncopated bass.
  */
 
 const BPM = 90;
@@ -24,6 +28,26 @@ export const lazyWaveform: SketchFactory = (p: p5, ctx) => {
   let peak: number[] = [];
   let peakVel: number[] = [];
   let lastStep = -1;
+  let plucker: Plucker | null = null;
+
+  const voice = (): Plucker | null => {
+    if (!ctx.audio.active) return null;
+    return (plucker ??= createPlucker(ctx.audio.ac, ctx.audio.out, ctx.audio.rng));
+  };
+
+  /** Pluck the (at most two) bars that bounced up the most on this step. */
+  const pluckJumps = (jumps: { height: number; jump: number }[], step: number) => {
+    const synth = voice();
+    if (!synth) return;
+    const t = ctx.audio.ac.currentTime;
+    jumps
+      .filter(j => j.jump >= 2 / 12)
+      .sort((a, b) => b.jump - a.jump)
+      .slice(0, 2)
+      .forEach((j, k) => synth.pluck(t + k * 0.03, j.height, 0.35 + j.jump * 2));
+    if (step % 16 === 0) synth.bass(t, false);
+    if (step % 16 === 6) synth.bass(t, true);
+  };
 
   const tune = () => {
     voices = Array.from({ length: 3 }, (_, i) => ({
@@ -69,6 +93,8 @@ export const lazyWaveform: SketchFactory = (p: p5, ctx) => {
       tune();
       // Resample every bar on the next frame; under reduced motion the frozen clock never advances a step.
       lastStep = -1;
+      const synth = voice();
+      if (synth) synth.sweep(ctx.audio.ac.currentTime);
     },
 
     draw() {
@@ -81,7 +107,13 @@ export const lazyWaveform: SketchFactory = (p: p5, ctx) => {
       if (beat.step !== lastStep) {
         const first = lastStep < 0;
         lastStep = beat.step;
-        for (let i = first ? 0 : beat.offbeat ? 1 : 0; i < n; i += first ? 1 : 2) target[i] = sample(i, n, t);
+        const jumps: { height: number; jump: number }[] = [];
+        for (let i = first ? 0 : beat.offbeat ? 1 : 0; i < n; i += first ? 1 : 2) {
+          const next = sample(i, n, t);
+          jumps.push({ height: next, jump: next - target[i] });
+          target[i] = next;
+        }
+        if (!first && !ctx.reducedMotion) pluckJumps(jumps, beat.step);
       }
 
       const pad = Math.max(14, p.width * 0.04);

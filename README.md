@@ -47,6 +47,22 @@ Offbeat-styled p5.js sketches live in `src/app/art/sketches` and share helpers f
 
 To add a sketch, write a `SketchFactory` and register it in `src/app/art/sketches/index.ts`.
 
+### Sound
+
+The gallery sketches are also instruments, synthesised live with Web Audio (no audio files):
+
+| Sketch | Sound | Trigger |
+|---|---|---|
+| Syncopation | seeded drum kit, one voice per track (kick, hat, snare, rim, tom, FM blip) | every step, scheduled ahead on the audio clock; offbeats accented |
+| Offset Drift | stereo wind + a faint tuned whistle | continuous; flutters on the offbeat, gusts with pointer speed, whoosh on reseed |
+| Lazy Waveform | pluck / marimba / bell + soft bass | the bars that jump highest on each step |
+| Offbeat Tiles | wood / glass / metal clack | every flip; diagonal waves ripple into arpeggios |
+
+- Each sketch plays on its own bus (`SketchAudio` in `offbeat-sketch.ts`), so all four run at once and can be muted per card.
+- Pitched sounds share D minor pentatonic, so any combination stays in key; each sketch's seed also rerolls its timbre, register and stereo spread.
+- Sound starts off (browsers need a gesture), is audible only while a sketch is on screen, and switches off when you leave `/art`.
+- Instruments live in `src/app/art/audio/instruments.ts`; the shared `AudioContext` and master compressor in `offbeat-audio.service.ts`.
+
 ## Articles (lab log)
 
 - Public list: `/articles`, article page: `/articles/:slug`

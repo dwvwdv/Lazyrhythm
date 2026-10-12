@@ -9,14 +9,25 @@ import {
   SimpleChanges
 } from '@angular/core';
 import type p5 from 'p5';
-import { OffbeatPalette, SketchContext, SketchHooks, readPalette } from '../../art/offbeat-sketch';
+import { Subscription } from 'rxjs';
+import {
+  OffbeatPalette,
+  SketchAudio,
+  SketchContext,
+  SketchHooks,
+  readPalette,
+  seededRandom
+} from '../../art/offbeat-sketch';
 import { SKETCHES, SketchId } from '../../art/sketches';
+import { OffbeatAudioService } from '../../art/audio/offbeat-audio.service';
 
 /* Hosts one Offbeat p5 sketch in instance mode.
  * p5 is loaded on demand so it never weighs on the initial bundle, runs
  * outside Angular's zone so 60fps draws do not trigger change detection,
  * pauses while off screen, follows the site theme, and renders a single
  * still frame for visitors who prefer reduced motion.
+ * Each host also owns an independent sound bus, audible only while sound
+ * is on, the channel is unmuted and the sketch is on screen.
  */
 @Component({
   selector: 'app-p5-canvas',
@@ -33,6 +44,8 @@ export class P5CanvasComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() fps = 60;
   /** Whether clicks reach the sketch (the hero backdrop ignores them). */
   @Input() interactive = true;
+  /** Silences this sketch's channel without touching the others. */
+  @Input() muted = false;
 
   private instance: p5 | null = null;
   private hooks: SketchHooks | null = null;
@@ -51,8 +64,14 @@ export class P5CanvasComponent implements AfterViewInit, OnChanges, OnDestroy {
   private themeObserver?: MutationObserver;
   private colorScheme?: MediaQueryList;
   private motionQuery?: MediaQueryList;
+  private bus: GainNode | null = null;
+  private audioSub?: Subscription;
 
-  constructor(private host: ElementRef<HTMLElement>, private zone: NgZone) {}
+  constructor(
+    private host: ElementRef<HTMLElement>,
+    private zone: NgZone,
+    private audio: OffbeatAudioService
+  ) {}
 
   ngAfterViewInit(): void {
     this.viewReady = true;
@@ -61,6 +80,7 @@ export class P5CanvasComponent implements AfterViewInit, OnChanges, OnDestroy {
       this.observe();
       void this.mount();
     });
+    this.audioSub = this.audio.enabled$.subscribe(() => this.applyGain());
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -68,11 +88,13 @@ export class P5CanvasComponent implements AfterViewInit, OnChanges, OnDestroy {
     if (changes['sketch'] || changes['seed']) {
       this.zone.runOutsideAngular(() => void this.mount());
     }
+    if (changes['muted']) this.applyGain();
   }
 
   ngOnDestroy(): void {
     this.destroyed = true;
     this.unmount();
+    this.audioSub?.unsubscribe();
     this.resizeObserver?.disconnect();
     this.intersectionObserver?.disconnect();
     this.themeObserver?.disconnect();
@@ -107,7 +129,8 @@ export class P5CanvasComponent implements AfterViewInit, OnChanges, OnDestroy {
       reducedMotion: this.reducedMotion,
       pointer: this.pointer,
       palette: () => this.palette!,
-      now: () => (this.reducedMotion ? 4200 : performance.now() - start)
+      now: () => (this.reducedMotion ? 4200 : performance.now() - start),
+      audio: this.createChannel(() => ctx.now())
     };
 
     this.instance = new P5((p: p5) => {
@@ -129,10 +152,56 @@ export class P5CanvasComponent implements AfterViewInit, OnChanges, OnDestroy {
   }
 
   private unmount(): void {
+    this.hooks?.dispose?.();
     this.instance?.remove();
     this.instance = null;
     this.hooks = null;
+    this.bus?.disconnect();
+    this.bus = null;
     this.setReady(false);
+  }
+
+  private get audible(): boolean {
+    return this.audio.enabled && !this.muted && this.visible && !this.destroyed;
+  }
+
+  /** The sketch-facing view of this host's sound bus. The bus is built lazily on first use. */
+  private createChannel(now: () => number): SketchAudio {
+    const host = this;
+    const rng = seededRandom(this.seed ^ 0x5eed);
+    return {
+      get active() {
+        return host.audible && host.audio.ac !== null;
+      },
+      get ac() {
+        return host.audio.ac!;
+      },
+      get out() {
+        return host.ensureBus();
+      },
+      rng,
+      at(ms: number) {
+        const ac = host.audio.ac!;
+        return ac.currentTime + Math.max(0, (ms - now()) / 1000);
+      }
+    };
+  }
+
+  private ensureBus(): GainNode {
+    if (!this.bus) {
+      const ac = this.audio.ac!;
+      this.bus = ac.createGain();
+      this.bus.gain.value = this.audible ? 1 : 0;
+      this.bus.connect(this.audio.input!);
+    }
+    return this.bus;
+  }
+
+  // Short ramps so muting or scrolling away fades instead of clicking.
+  private applyGain(): void {
+    const ac = this.audio.ac;
+    if (!this.bus || !ac) return;
+    this.bus.gain.setTargetAtTime(this.audible ? 1 : 0, ac.currentTime, 0.06);
   }
 
   // p5 runs outside the zone; re-enter it so bindings like [disabled] update.
@@ -155,6 +224,7 @@ export class P5CanvasComponent implements AfterViewInit, OnChanges, OnDestroy {
 
     this.intersectionObserver = new IntersectionObserver(([entry]) => {
       this.visible = entry.isIntersecting;
+      this.applyGain();
       if (!this.instance || this.reducedMotion) return;
       if (this.visible) this.instance.loop();
       else this.instance.noLoop();

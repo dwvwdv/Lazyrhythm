@@ -1,15 +1,19 @@
 import type p5 from 'p5';
 import { SketchFactory, easeOutBack, rgba, swungClock } from '../offbeat-sketch';
+import { Clacker, createClacker } from '../audio/instruments';
 
 /* OFFBEAT TILES — a brutalist Truchet floor that rearranges itself on the beat.
  * Each tile is half solid, half void. On downbeats a diagonal wave of tiles
  * flips a quarter turn; on swung offbeats a few strays flip on their own.
  * A flipping tile lifts off its frost3 shadow and drops back down.
  * Hover to nudge a tile; click to flip a cross of them.
+ * Sound: every landing tile clacks in a seeded material (wood, glass or
+ * metal). A diagonal wave ripples down row by row, so it plays as an arpeggio.
  */
 
 const BPM = 76;
 const FLIP_MS = 320;
+const RIPPLE_MS = 28;
 
 interface Tile {
   turn: number;
@@ -28,6 +32,13 @@ export const flipTiles: SketchFactory = (p: p5, ctx) => {
   let lastStep = -1;
   let lastHover = -1;
   let wave = 0;
+  let clacker: Clacker | null = null;
+
+  const clack = (when: number, degree: number, vel: number) => {
+    if (!ctx.audio.active) return;
+    clacker ??= createClacker(ctx.audio.ac, ctx.audio.out, ctx.audio.rng);
+    clacker.clack(ctx.audio.at(when), degree, vel);
+  };
 
   const build = () => {
     size = Math.max(36, Math.min(72, Math.min(p.width, p.height) / 7));
@@ -44,12 +55,14 @@ export const flipTiles: SketchFactory = (p: p5, ctx) => {
     tiles.forEach(tile => (tile.from = tile.turn));
   };
 
-  const flip = (index: number, now: number) => {
+  /** Flip a tile `delay` ms from now and clack as it lands; `degree` picks the note. */
+  const flip = (index: number, now: number, degree: number, vel: number, delay = 0) => {
     const tile = tiles[index];
     if (!tile || now - tile.start < FLIP_MS) return;
     tile.from = tile.turn;
     tile.turn = tile.turn + 1;
-    tile.start = now;
+    tile.start = now + delay;
+    clack(now + delay, degree, vel);
     // Reduced motion: land on the final orientation instead of animating to it.
     if (ctx.reducedMotion) {
       tile.from = tile.turn;
@@ -73,10 +86,10 @@ export const flipTiles: SketchFactory = (p: p5, ctx) => {
       const now = ctx.now();
       const c = i % cols;
       const r = Math.floor(i / cols);
-      [[0, 0], [1, 0], [-1, 0], [0, 1], [0, -1]].forEach(([dc, dr]) => {
+      [[0, 0], [1, 0], [-1, 0], [0, 1], [0, -1]].forEach(([dc, dr], k) => {
         const cc = c + dc;
         const rr = r + dr;
-        if (cc >= 0 && cc < cols && rr >= 0 && rr < rows) flip(rr * cols + cc, now);
+        if (cc >= 0 && cc < cols && rr >= 0 && rr < rows) flip(rr * cols + cc, now, (r + c) % 5 + k * 2, 0.9, k * 40);
       });
     },
 
@@ -93,19 +106,20 @@ export const flipTiles: SketchFactory = (p: p5, ctx) => {
           const d = wave % diagonals;
           for (let r = 0; r < rows; r++) {
             const c = d - r;
-            if (c >= 0 && c < cols) flip(r * cols + c, now);
+            if (c >= 0 && c < cols) flip(r * cols + c, now, r, 0.75, r * RIPPLE_MS);
           }
           wave += Math.floor(p.random(1, 4));
         } else if (beat.offbeat) {
           for (let k = 0; k < Math.max(1, Math.floor(tiles.length / 40)); k++) {
-            flip(Math.floor(p.random(tiles.length)), now);
+            const i = Math.floor(p.random(tiles.length));
+            flip(i, now, (i * 7) % 10, 0.45);
           }
         }
       }
 
       if (ctx.pointer.inside) {
         const i = indexAt(ctx.pointer.x, ctx.pointer.y);
-        if (i !== lastHover && i >= 0) flip(i, now);
+        if (i !== lastHover && i >= 0) flip(i, now, (i * 3) % 10, 0.35);
         lastHover = i;
       } else {
         lastHover = -1;
@@ -119,9 +133,9 @@ export const flipTiles: SketchFactory = (p: p5, ctx) => {
       for (let r = 0; r < rows; r++) {
         for (let c = 0; c < cols; c++) {
           const tile = tiles[r * cols + c];
-          const k = Math.min(1, (now - tile.start) / FLIP_MS);
+          const k = Math.max(0, Math.min(1, (now - tile.start) / FLIP_MS));
           const angle = (tile.from + (tile.turn - tile.from) * easeOutBack(k)) * p.HALF_PI;
-          const lift = k < 1 ? Math.sin(k * Math.PI) : 0;
+          const lift = k > 0 && k < 1 ? Math.sin(k * Math.PI) : 0;
           const cx = ox + c * size + size / 2;
           const cy = oy + r * size + size / 2;
           const solid = tile.tone < 0.08 ? pal.yellow : (r + c) % 2 ? pal.frost3 : pal.frost1;

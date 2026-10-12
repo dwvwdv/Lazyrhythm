@@ -4,6 +4,18 @@
     <h1 class="title">{{ 'art.title' | t }}</h1>
     <p class="subtitle">{{ 'art.description' | t }}</p>
     <p class="hint">&gt; {{ 'art.hint' | t }}</p>
+
+    <div class="sound-row" *ngIf="audio.supported">
+      <button
+        type="button"
+        class="btn sound-toggle"
+        [class.on]="audio.enabled$ | async"
+        [attr.aria-pressed]="audio.enabled$ | async"
+        (click)="toggleSound()">
+        [♪ {{ ((audio.enabled$ | async) ? 'art.soundOn' : 'art.soundOff') | t }}]
+      </button>
+      <span class="sound-hint">{{ 'art.soundHint' | t }}</span>
+    </div>
   </header>
 
   <div class="studies-grid">
@@ -11,6 +23,15 @@
       <div class="study-bar">
         <span class="study-index">{{ (i + 1).toString().padStart(2, '0') }}</span>
         <span class="study-tempo">{{ study.tempo }}</span>
+        <button
+          type="button"
+          class="channel"
+          [class.live]="!study.muted && (audio.enabled$ | async)"
+          [attr.aria-pressed]="!study.muted"
+          [attr.aria-label]="('art.channelLabel' | t) + ': ' + (('art.' + study.id + '.title') | t)"
+          (click)="study.muted = !study.muted">
+          ♪ {{ (study.muted ? 'art.channelOff' : 'art.channelOn') | t }}
+        </button>
       </div>
 
       <app-p5-canvas
@@ -18,12 +39,14 @@
         class="study-canvas"
         [sketch]="study.id"
         [seed]="study.seed"
+        [muted]="study.muted"
         [attr.aria-label]="('art.canvasLabel' | t) + ': ' + (('art.' + study.id + '.title') | t)">
       </app-p5-canvas>
 
       <div class="study-body">
         <h2 class="study-title">{{ ('art.' + study.id + '.title') | t }}</h2>
         <p class="study-desc">{{ ('art.' + study.id + '.desc') | t }}</p>
+        <p class="study-sound">♪ {{ ('art.' + study.id + '.sound') | t }}</p>
       </div>
 
       <div class="study-actions">
