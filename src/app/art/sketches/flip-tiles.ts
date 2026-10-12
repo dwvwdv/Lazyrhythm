@@ -55,14 +55,15 @@ export const flipTiles: SketchFactory = (p: p5, ctx) => {
     tiles.forEach(tile => (tile.from = tile.turn));
   };
 
-  /** Flip a tile `delay` ms from now and clack as it lands; `degree` picks the note. */
+  /** Flip a tile `delay` ms from now and clack as it lands back on its shadow; `degree` picks the note. */
   const flip = (index: number, now: number, degree: number, vel: number, delay = 0) => {
     const tile = tiles[index];
     if (!tile || now - tile.start < FLIP_MS) return;
     tile.from = tile.turn;
     tile.turn = tile.turn + 1;
     tile.start = now + delay;
-    clack(now + delay, degree, vel);
+    // The tile drops back onto its shadow at the end of the flip; that is the impact we hear.
+    clack(now + delay + (ctx.reducedMotion ? 0 : FLIP_MS), degree, vel);
     // Reduced motion: land on the final orientation instead of animating to it.
     if (ctx.reducedMotion) {
       tile.from = tile.turn;
