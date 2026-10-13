@@ -52,7 +52,8 @@ export const routes: Routes = [
 ]; 
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  // Start each page at the top; back/forward restores the previous position.
+  imports: [RouterModule.forRoot(routes, { scrollPositionRestoration: 'enabled' })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

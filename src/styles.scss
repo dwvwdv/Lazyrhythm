@@ -41,6 +41,7 @@
   --text-color: var(--snow0);
   --text-secondary: var(--snow0);
   --text-muted: var(--dim);
+  --accent-text: var(--frost1);
   --border-color: var(--polar3);
   --border-strong: var(--frost0);
   --success-color: var(--aurora-green);
@@ -61,7 +62,7 @@
 /* Offbeat light mode: Snow Storm surfaces, Polar Night text. */
 @media (prefers-color-scheme: light) {
   :root:not([data-theme]) {
-    color-scheme: light;
+    color-scheme: only light;
     --background-color: var(--snow2);
     --surface-color: var(--snow1);
     --elevated-surface: var(--snow0);
@@ -70,13 +71,16 @@
     --text-color: var(--polar0);
     --text-secondary: var(--polar1);
     --text-muted: #596273;
+    --accent-text: #456A8F; /* frost3 deepened: 4.9:1 on snow2 */
     --border-color: var(--polar3);
     --border-strong: var(--frost3);
   }
 }
 
 :root[data-theme='light'] {
-  color-scheme: light;
+  /* "only" stops mobile browsers' forced dark mode from repainting the light theme
+     (it darkens the DOM but not canvas pixels, which broke the p5 hero). */
+  color-scheme: only light;
   --background-color: var(--snow2);
   --surface-color: var(--snow1);
   --elevated-surface: var(--snow0);
@@ -85,6 +89,7 @@
   --text-color: var(--polar0);
   --text-secondary: var(--polar1);
   --text-muted: #596273;
+  --accent-text: #456A8F; /* frost3 deepened: 4.9:1 on snow2 */
   --border-color: var(--polar3);
   --border-strong: var(--frost3);
 }
@@ -99,6 +104,7 @@
   --text-color: var(--snow0);
   --text-secondary: var(--snow0);
   --text-muted: var(--dim);
+  --accent-text: var(--frost1);
   --border-color: var(--polar3);
   --border-strong: var(--frost0);
 }
@@ -109,9 +115,10 @@
   box-sizing: border-box;
 }
 
+/* No smooth scroll-behavior: it turned the router's jump-to-top on page change into an
+   animation that GSAP ScrollTrigger then cancelled, leaving pages opened mid-scroll. */
 html {
   background: var(--background-color);
-  scroll-behavior: smooth;
 }
 
 body {
@@ -373,8 +380,6 @@ select {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-
   *,
   *::before,
   *::after {

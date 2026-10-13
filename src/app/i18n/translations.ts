@@ -38,7 +38,6 @@ const en = {
   'home.principleTitle': 'Lazy. Rhythmic. Experimental.',
   'home.principleP1': 'Innovation keeps its own tempo. Projects begin with curiosity, then take shape through testing, rebuilding, and real everyday use.',
   'home.principleP2': 'LazyRhythm collects these experiments. Each one solves a need of my own first, goes into daily use once it works, and gets rewritten when it gets in the way.',
-  'home.artLink': 'Offbeat studies',
 
   'art.kicker': 'Generative sketches · p5.js',
   'art.title': 'Offbeat Studies',
@@ -243,7 +242,6 @@ const zhTW: Record<TranslationKey, string> = {
   'home.principleTitle': '悠閒・節奏・實驗。',
   'home.principleP1': '創新有自己的節奏。專案從好奇心出發，在測試、重寫與實際使用中慢慢成形。',
   'home.principleP2': '悠閒節奏收錄這些實驗。專案先解決自己的需求，做出能用的版本後放進日常使用，卡住就重寫。',
-  'home.artLink': '反拍習作',
 
   'art.kicker': '生成藝術 · p5.js',
   'art.title': '反拍習作',
