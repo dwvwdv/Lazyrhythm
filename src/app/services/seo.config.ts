@@ -1,7 +1,7 @@
 import { TranslationKey } from '../i18n/translations';
 
 /** Keep this origin in sync with the deployed site's canonical host. */
-export const SITE_URL = 'https://www.lazyrhythm.com';
+export const SITE_URL = 'https://lazyrhythm.com';
 export const SITE_NAME = 'LazyRhythm';
 export const SITE_IMAGE = `${SITE_URL}/assets/logo.png`;
 

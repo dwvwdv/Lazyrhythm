@@ -11,7 +11,7 @@
 - `/assets/logo.png` 回應 200 `image/png`，可用作絕對 OG 圖片網址。
 - GitHub 最新 Production deployment 由 Vercel 建立，對應提交 `2177181c9a4a4243123aa6a102b5b80901ddc20f`。
 
-因此 canonical origin 採 `https://www.lazyrhythm.com`。這些證據確認程式碼缺口，無法直接證明 Google 未顯示摘要的原因。
+上述轉址是調整前的歷史狀態。依品牌擁有者指定，canonical origin 統一採 `https://lazyrhythm.com`；部署時須同步將正式網域設定改為 apex，不能保留 apex 轉向 www。這些證據確認程式碼缺口，無法直接證明 Google 未顯示摘要的原因。
 
 ## 本次程式碼範圍
 
@@ -35,18 +35,25 @@ CHROME_BIN=/path/to/chrome npm test -- --watch=false --browsers=ChromeHeadless
 
 Vercel 須採本次 `vercel.json` 的建置命令及 rewrites，避免 Angular preset 只執行 `ng build`。公開頁面回傳預渲染 HTML，動態文章與管理頁使用 `csr.html`；不要將所有路徑 rewrite 至首頁。
 
+網域切換須在 Vercel Project → Settings → Domains 完成：
+
+1. 將 `lazyrhythm.com` 設為直接連接此專案的 Production 網域，移除既有轉向 www 的規則。
+2. 將 `www.lazyrhythm.com` 設為永久轉址（308）至 `lazyrhythm.com`，保留路徑與 query string；若 Cloudflare 另有相反轉址規則，也須移除。
+3. 先確認 apex 可直接回應 200，再啟用 www 轉址並部署本次 canonical 更新，避免來回轉址。此環境未連接 Vercel／Cloudflare 管理權限，尚未修改這些正式設定。
+
 部署後檢查公開網址，而非只驗證 repository：
 
 ```sh
-curl -fsSL -D /tmp/home.headers https://www.lazyrhythm.com/ -o /tmp/home.html
-curl -fsSL -D /tmp/robots.headers https://www.lazyrhythm.com/robots.txt
-curl -fsSL -D /tmp/sitemap.headers https://www.lazyrhythm.com/sitemap.xml
-curl -sS -D - -o /dev/null https://www.lazyrhythm.com/articles/manage
-curl -sS -D - -o /dev/null https://www.lazyrhythm.com/articles/PUBLISHED_SLUG
-curl -sS -D - -o /dev/null https://www.lazyrhythm.com/unknown-page
+curl -sS -D - -o /dev/null https://www.lazyrhythm.com/about?source=domain-check
+curl -fsSL -D /tmp/home.headers https://lazyrhythm.com/ -o /tmp/home.html
+curl -fsSL -D /tmp/robots.headers https://lazyrhythm.com/robots.txt
+curl -fsSL -D /tmp/sitemap.headers https://lazyrhythm.com/sitemap.xml
+curl -sS -D - -o /dev/null https://lazyrhythm.com/articles/manage
+curl -sS -D - -o /dev/null https://lazyrhythm.com/articles/PUBLISHED_SLUG
+curl -sS -D - -o /dev/null https://lazyrhythm.com/unknown-page
 ```
 
-需確認首頁及 `/about`、`/works` 的初始 metadata 與正文正確；robots 為文字、sitemap 為 XML；公開頁與已發布文章沒有意外 `X-Robots-Tag: noindex`、`nosnippet` 或 `max-snippet:0`。管理頁須有 noindex，未知一般路徑須回 404。另以瀏覽器確認文章成功後解除 noindex、失敗時保留 noindex，並測試語系切換、返回首頁、p5 重抽及聲音。
+需確認 apex 直接回應 200，www 以 308 轉向 apex 且保留路徑及查詢參數，HTTP 最終轉向 HTTPS apex，沒有轉址迴圈。另確認首頁及 `/about`、`/works` 的初始 metadata 與正文正確；robots 為文字、sitemap 為 XML；公開頁與已發布文章沒有意外 `X-Robots-Tag: noindex`、`nosnippet` 或 `max-snippet:0`。管理頁須有 noindex，未知一般路徑須回 404。另以瀏覽器確認文章成功後解除 noindex、失敗時保留 noindex，並測試語系切換、返回首頁、p5 重抽及聲音。
 
 ## Search Console：部署後由有權限者完成
 
@@ -55,7 +62,7 @@ curl -sS -D - -o /dev/null https://www.lazyrhythm.com/unknown-page
 1. 對正式首頁執行「網址審查」，記錄索引狀態、使用者宣告及 Google 選定的 canonical。
 2. 執行「測試線上網址」，確認可檢索、允許索引，並檢查 Googlebot HTML／渲染結果可讀到品牌介紹。
 3. 同樣抽查 `/about`、`/works` 與一篇已發布文章；文章必須在 Googlebot 執行 JavaScript 後顯示真實內容與 metadata。
-4. 提交 `https://www.lazyrhythm.com/sitemap.xml`，對首頁要求重新建立索引，記錄日期與結果。
+4. 提交 `https://lazyrhythm.com/sitemap.xml`，對首頁要求重新建立索引，記錄日期與結果。
 5. 重新檢索後觀察品牌搜尋。摘要是否顯示及採用哪段文字由 Google 決定，不作為程式碼可保證的結果。
 
 未完成正式部署與上述線上測試前，不應將 issue 的 Search Console 驗收項目標記為完成。

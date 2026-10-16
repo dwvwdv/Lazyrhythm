@@ -3,7 +3,7 @@ import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
 const output = process.argv[2] ?? 'dist/lazyrhythm';
-const origin = 'https://www.lazyrhythm.com';
+const origin = 'https://lazyrhythm.com';
 const paths = ['/', '/about', '/works', '/art', '/articles', '/contact', '/sponsor'];
 const titles = new Set();
 const descriptions = new Set();
@@ -11,6 +11,7 @@ const attribute = (tag, name) => tag.match(new RegExp(`\\b${name}=(["'])([\\s\\S
 
 for (const path of paths) {
   const html = await readFile(join(output, path === '/' ? 'index.html' : `${path.slice(1)}/index.html`), 'utf8');
+  assert.doesNotMatch(html, /https:\/\/www\.lazyrhythm\.com\b/i, `${path}: all metadata and structured data use the apex domain`);
   const tags = html.match(/<(?:meta|link)\b[^>]*>/gi) ?? [];
   const meta = (key) => tags.filter(tag => attribute(tag, 'name') === key || attribute(tag, 'property') === key);
   const value = (key) => {
@@ -51,7 +52,7 @@ assert.match(sitemap, /<urlset xmlns="http:\/\/www.sitemaps.org\/schemas\/sitema
 assert.deepEqual([...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(match => match[1]).sort(), paths.map(path => `${origin}${path}`).sort());
 const robots = await readFile(join(output, 'robots.txt'), 'utf8');
 assert.match(robots, /User-agent:\s*\*/);
-assert.match(robots, /Sitemap: https:\/\/www.lazyrhythm.com\/sitemap.xml/);
+assert.ok(robots.includes(`Sitemap: ${origin}/sitemap.xml`));
 assert.doesNotMatch(robots, /Disallow:\s*\/\s*$/m);
 const shell = await readFile(join(output, 'csr.html'), 'utf8');
 assert.doesNotMatch(shell, /rel="canonical"|property="og:url"|application\/ld\+json|noindex/i, 'Dynamic shell must not inherit home canonical or an initial noindex');
