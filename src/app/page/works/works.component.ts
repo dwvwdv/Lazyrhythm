@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { WebsiteDataService, WebsiteProjectRow } from '../../services/website-data.service';
 import { I18nService } from '../../i18n/i18n.service';
@@ -45,10 +45,13 @@ export class WorksComponent implements OnInit, OnDestroy {
 
   constructor(
     private websiteData: WebsiteDataService,
-    private i18n: I18nService
+    private i18n: I18nService,
+    @Inject(PLATFORM_ID) private readonly platformId: string
   ) {}
 
   async ngOnInit(): Promise<void> {
+    // Prerender the page introduction; live project data is loaded in the browser.
+    if (!isPlatformBrowser(this.platformId)) return;
     // 切換語系時直接換成對應的翻譯，不需重新抓資料；先訂閱再 await，避免元件銷毀後才建立訂閱。
     this.sub = this.i18n.lang$.subscribe(() => this.localize());
 

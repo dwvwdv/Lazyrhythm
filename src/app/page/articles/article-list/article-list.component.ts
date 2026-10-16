@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ArticleService, ArticleSummary } from '../../../services/article.service';
@@ -24,10 +24,13 @@ export class ArticleListComponent implements OnInit, OnDestroy {
   constructor(
     private articleService: ArticleService,
     readonly auth: AuthService,
-    readonly i18n: I18nService
+    readonly i18n: I18nService,
+    @Inject(PLATFORM_ID) private readonly platformId: string
   ) {}
 
   async ngOnInit(): Promise<void> {
+    // Public article content remains live; the static build needs no database access.
+    if (!isPlatformBrowser(this.platformId)) return;
     // 先訂閱再 await，避免元件在載入期間被銷毀後才建立訂閱。
     this.sub = this.i18n.lang$.subscribe(() => this.localize());
 

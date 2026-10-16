@@ -1,5 +1,5 @@
-import { AfterViewInit, Component, ElementRef, HostListener, OnDestroy, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { AfterViewInit, Component, ElementRef, HostListener, Inject, OnDestroy, PLATFORM_ID, ViewChild } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 
 interface TrailPoint {
   x: number;
@@ -23,7 +23,14 @@ export class SnakeCursorComponent implements AfterViewInit, OnDestroy {
   private pointer: TrailPoint = { x: -100, y: -100 };
   private trail: TrailPoint[] = Array.from({ length: 5 }, () => ({ x: -100, y: -100 }));
 
+  constructor(@Inject(PLATFORM_ID) private readonly platformId: string) {}
+
   ngAfterViewInit(): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      this.enabled = false;
+      this.canvasRef.nativeElement.hidden = true;
+      return;
+    }
     this.enabled = window.matchMedia('(pointer: fine)').matches &&
       !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -38,7 +45,7 @@ export class SnakeCursorComponent implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    cancelAnimationFrame(this.animationFrameId);
+    if (isPlatformBrowser(this.platformId)) cancelAnimationFrame(this.animationFrameId);
   }
 
   @HostListener('window:mousemove', ['$event'])

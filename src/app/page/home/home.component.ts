@@ -1,5 +1,5 @@
-import { Component, OnInit, AfterViewInit, ElementRef, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, AfterViewInit, ElementRef, OnDestroy, Inject, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { TranslatePipe } from '../../i18n/translate.pipe';
@@ -42,8 +42,11 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   private animations?: gsap.Context;
   private refreshFrame = 0;
 
-  constructor(private host: ElementRef<HTMLElement>) {
-    gsap.registerPlugin(ScrollTrigger);
+  constructor(
+    private host: ElementRef<HTMLElement>,
+    @Inject(PLATFORM_ID) private readonly platformId: string
+  ) {
+    if (isPlatformBrowser(this.platformId)) gsap.registerPlugin(ScrollTrigger);
   }
 
   ngOnInit() {
@@ -51,6 +54,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
+    if (!isPlatformBrowser(this.platformId)) return;
     // Scope every tween and ScrollTrigger to this page so they can all be reverted on leave.
     this.animations = gsap.context(() => this.initRhythmicAnimations(), this.host.nativeElement);
     // When arriving from another route, the previous page is still in the DOM while this runs,
@@ -61,7 +65,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    cancelAnimationFrame(this.refreshFrame);
+    if (isPlatformBrowser(this.platformId)) cancelAnimationFrame(this.refreshFrame);
     this.animations?.revert();
   }
 

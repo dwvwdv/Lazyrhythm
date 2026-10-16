@@ -19,7 +19,9 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 ## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Run `npm run build` to build and prerender the public pages, then verify their SEO metadata. Deploy `dist/lazyrhythm`; no Node server is needed. Vercel uses the build command, output directory, and route mappings in `vercel.json`.
+
+See [static prerendering](docs/prerender.md) for rendering boundaries and [SEO verification](docs/seo.md) for deployment and Search Console checks. `ng build` alone only builds the browser app and skips prerendering.
 
 ## Running unit tests
 

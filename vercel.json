@@ -1,0 +1,31 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist/lazyrhythm",
+  "trailingSlash": false,
+  "redirects": [
+    { "source": "/index.html", "destination": "/", "permanent": true },
+    { "source": "/:page(about|works|art|articles|contact|sponsor)/index.html", "destination": "/:page", "permanent": true }
+  ],
+  "headers": [
+    {
+      "source": "/csr.html",
+      "headers": [{ "key": "X-Robots-Tag", "value": "noindex, follow" }]
+    },
+    {
+      "source": "/articles/manage/:path*",
+      "headers": [{ "key": "X-Robots-Tag", "value": "noindex, follow" }]
+    }
+  ],
+  "rewrites": [
+    { "source": "/about", "destination": "/about/index.html" },
+    { "source": "/works", "destination": "/works/index.html" },
+    { "source": "/art", "destination": "/art/index.html" },
+    { "source": "/articles", "destination": "/articles/index.html" },
+    { "source": "/contact", "destination": "/contact/index.html" },
+    { "source": "/sponsor", "destination": "/sponsor/index.html" },
+    { "source": "/articles/manage/:path*", "destination": "/csr.html" },
+    { "source": "/articles/:slug", "destination": "/csr.html" }
+  ]
+}

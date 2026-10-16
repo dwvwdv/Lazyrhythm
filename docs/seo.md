@@ -1,0 +1,61 @@
+# SEO 驗證與部署（Issue #14）
+
+## 已查證的正式站狀態
+
+2026-10-16 部署前檢查：
+
+- `https://www.lazyrhythm.com/` 回應 200。
+- `https://lazyrhythm.com/` 以 308 轉向 www；HTTP 先以 301 轉向 HTTPS。
+- 首頁初始 HTML 只有 Angular root，缺少 description、canonical 與 OG；未見 `X-Robots-Tag` 或禁止摘要的指令。
+- `/robots.txt` 與 `/sitemap.xml` 當時回應 200 `text/html`，內容與首頁相同，屬於 SPA fallback。
+- `/assets/logo.png` 回應 200 `image/png`，可用作絕對 OG 圖片網址。
+- GitHub 最新 Production deployment 由 Vercel 建立，對應提交 `2177181c9a4a4243123aa6a102b5b80901ddc20f`。
+
+因此 canonical origin 採 `https://www.lazyrhythm.com`。這些證據確認程式碼缺口，無法直接證明 Google 未顯示摘要的原因。
+
+## 本次程式碼範圍
+
+- 七個公開頁面具備各自的初始 HTML、title、description、canonical、OG 與品牌 JSON-LD；瀏覽器導覽及語系切換會同步更新。
+- `SeoService` 集中管理 head，去除重複標籤；文章採實際已發布版本的標題、摘要、封面與語系。Article JSON-LD 僅填存在的作者與有效日期。
+- 文章載入中、錯誤、不存在、草稿及管理頁使用 `noindex, follow`，避免沿用上一頁文章資訊。現有公開文章查詢仍僅讀取 published；未更動 Auth、資料庫或 RLS。
+- sitemap 只列七個可索引的 canonical URL，不列管理頁、草稿或無法在建置時確認存在的文章 URL。文章仍可透過公開文章列表的連結被探索。
+- 單 URL 維持中英文切換；預渲染固定英文，瀏覽器啟動後套用使用者偏好，不宣告不存在的語系 URL 或 hreflang。
+- 文章詳情維持 CSR，初始 `csr.html` 無首頁 canonical 或初始 noindex。未執行 JavaScript 的社群爬蟲無法取得文章專屬分享資訊；若要支援，需另加發布時文章預渲染及重建機制，或文章 SSR。
+- 靜態主機無法判斷文章是否存在：未知 slug 回應 200，再由瀏覽器設定 noindex；真正的文章 HTTP 404 需由 server 層判斷。其他未知路徑不再回首頁假 200。
+
+## 建置與部署驗證
+
+```sh
+npm ci
+npm run build
+CHROME_BIN=/path/to/chrome npm test -- --watch=false --browsers=ChromeHeadless
+```
+
+`npm run build` 會驗證七頁初始 metadata、h1、首頁品牌正文、JSON-LD、robots、sitemap 與中性 CSR shell。產物留在 `dist/lazyrhythm`，暫存 server bundle 不需部署。產物是建置結果；repository 原有 dist 不代表正式站。
+
+Vercel 須採本次 `vercel.json` 的建置命令及 rewrites，避免 Angular preset 只執行 `ng build`。公開頁面回傳預渲染 HTML，動態文章與管理頁使用 `csr.html`；不要將所有路徑 rewrite 至首頁。
+
+部署後檢查公開網址，而非只驗證 repository：
+
+```sh
+curl -fsSL -D /tmp/home.headers https://www.lazyrhythm.com/ -o /tmp/home.html
+curl -fsSL -D /tmp/robots.headers https://www.lazyrhythm.com/robots.txt
+curl -fsSL -D /tmp/sitemap.headers https://www.lazyrhythm.com/sitemap.xml
+curl -sS -D - -o /dev/null https://www.lazyrhythm.com/articles/manage
+curl -sS -D - -o /dev/null https://www.lazyrhythm.com/articles/PUBLISHED_SLUG
+curl -sS -D - -o /dev/null https://www.lazyrhythm.com/unknown-page
+```
+
+需確認首頁及 `/about`、`/works` 的初始 metadata 與正文正確；robots 為文字、sitemap 為 XML；公開頁與已發布文章沒有意外 `X-Robots-Tag: noindex`、`nosnippet` 或 `max-snippet:0`。管理頁須有 noindex，未知一般路徑須回 404。另以瀏覽器確認文章成功後解除 noindex、失敗時保留 noindex，並測試語系切換、返回首頁、p5 重抽及聲音。
+
+## Search Console：部署後由有權限者完成
+
+此修正尚未替代正式部署驗收，也未執行 Search Console 操作。需要有該網域資源權限的 Google 帳號：
+
+1. 對正式首頁執行「網址審查」，記錄索引狀態、使用者宣告及 Google 選定的 canonical。
+2. 執行「測試線上網址」，確認可檢索、允許索引，並檢查 Googlebot HTML／渲染結果可讀到品牌介紹。
+3. 同樣抽查 `/about`、`/works` 與一篇已發布文章；文章必須在 Googlebot 執行 JavaScript 後顯示真實內容與 metadata。
+4. 提交 `https://www.lazyrhythm.com/sitemap.xml`，對首頁要求重新建立索引，記錄日期與結果。
+5. 重新檢索後觀察品牌搜尋。摘要是否顯示及採用哪段文字由 Google 決定，不作為程式碼可保證的結果。
+
+未完成正式部署與上述線上測試前，不應將 issue 的 Search Console 驗收項目標記為完成。
