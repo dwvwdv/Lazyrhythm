@@ -1,5 +1,5 @@
 <section class="lr-page">
-  <a routerLink="/articles" class="lr-link">← {{ 'articles.back' | t }}</a>
+  <a [routerLink]="'/articles' | localize" class="lr-link">← {{ 'articles.back' | t }}</a>
 
   <header class="desk-header">
     <div>
@@ -9,7 +9,7 @@
     </div>
     <div class="desk-actions" *ngIf="auth.user">
       <span class="lr-mono user">{{ auth.user.email }}</span>
-      <a *ngIf="isAuthor" routerLink="/articles/manage/new" class="btn btn-primary">+ {{ 'manage.new' | t }}</a>
+      <a *ngIf="isAuthor" [routerLink]="'/articles/manage/new' | localize" class="btn btn-primary">+ {{ 'manage.new' | t }}</a>
       <button type="button" class="btn" (click)="signOut()">{{ 'manage.signOut' | t }}</button>
     </div>
   </header>
@@ -47,9 +47,9 @@
           <span class="lr-mono slug">/articles/{{ article.slug }}</span>
         </div>
         <div class="row-actions">
-          <a *ngIf="article.status === 'published'" [routerLink]="['/articles', article.slug]" class="lr-link">{{ 'manage.view' | t }}</a>
-          <a [routerLink]="['/articles/manage', article.id]" class="lr-link">{{ 'manage.edit' | t }}</a>
-          <a *ngIf="!hasTranslation(article)" routerLink="/articles/manage/new" [queryParams]="{ translate: article.id }" class="lr-link">{{ 'manage.translate' | t }}</a>
+          <a *ngIf="article.status === 'published'" [routerLink]="['/articles', article.slug] | localize" class="lr-link">{{ 'manage.view' | t }}</a>
+          <a [routerLink]="['/articles/manage', article.id] | localize" class="lr-link">{{ 'manage.edit' | t }}</a>
+          <a *ngIf="!hasTranslation(article)" [routerLink]="'/articles/manage/new' | localize" [queryParams]="{ translate: article.id }" class="lr-link">{{ 'manage.translate' | t }}</a>
           <button type="button" class="lr-link danger" (click)="remove(article)">{{ 'manage.delete' | t }}</button>
         </div>
       </li>

@@ -4,6 +4,7 @@
 
 const SITE_URL = 'https://lazyrhythm.com';
 const CACHE = 'public, max-age=600, s-maxage=600';
+const PREFIX: Record<string, string> = { 'zh-TW': '', en: '/en' };
 
 function publicKey(): string {
   try {
@@ -15,7 +16,7 @@ function publicKey(): string {
   return Deno.env.get('SUPABASE_ANON_KEY') ?? '';
 }
 
-const escape = (value: string) =>
+const xmlEscape = (value: string) =>
   value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
 Deno.serve(async (request: Request) => {
@@ -29,7 +30,7 @@ Deno.serve(async (request: Request) => {
   if (key.startsWith('eyJ')) headers.Authorization = `Bearer ${key}`;
 
   const response = await fetch(
-    `${Deno.env.get('SUPABASE_URL')}/rest/v1/articles?select=slug,published_at,updated_at&status=eq.published`,
+    `${Deno.env.get('SUPABASE_URL')}/rest/v1/articles?select=slug,lang,published_at,updated_at&status=eq.published`,
     { headers }
   );
   if (!response.ok) {
@@ -38,19 +39,28 @@ Deno.serve(async (request: Request) => {
     return new Response('Sitemap temporarily unavailable', { status: 503, headers: { 'Retry-After': '600' } });
   }
 
-  // Language versions share one URL per slug; lastmod is the newest version's update time.
-  const lastmod = new Map<string, number>();
-  for (const { slug, published_at, updated_at } of await response.json()) {
+  // 中文 articles live at /articles/<slug> and English ones at /en/articles/<slug>. Each language
+  // version is its own entry; when both exist they name each other, with 中文 as x-default.
+  const versions = new Map<string, Map<string, number>>();
+  for (const { slug, lang, published_at, updated_at } of await response.json()) {
     const time = Date.parse(updated_at ?? published_at);
-    if (!slug || !Number.isFinite(time)) continue;
-    lastmod.set(slug, Math.max(lastmod.get(slug) ?? 0, time));
+    if (!slug || !(lang in PREFIX) || !Number.isFinite(time)) continue;
+    const byLang = versions.get(slug) ?? new Map<string, number>();
+    byLang.set(lang, Math.max(byLang.get(lang) ?? 0, time));
+    versions.set(slug, byLang);
   }
 
-  const entries = [...lastmod]
-    .sort(([a], [b]) => a.localeCompare(b))
-    .map(([slug, time]) =>
-      `  <url><loc>${escape(`${SITE_URL}/articles/${encodeURIComponent(slug)}`)}</loc><lastmod>${new Date(time).toISOString()}</lastmod></url>`);
-  const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${entries.join('\n')}\n</urlset>\n`;
+  const url = (slug: string, lang: string) => xmlEscape(`${SITE_URL}${PREFIX[lang]}/articles/${encodeURIComponent(slug)}`);
+  const entries = [...versions].sort(([a], [b]) => a.localeCompare(b)).flatMap(([slug, byLang]) => {
+    const langs = Object.keys(PREFIX).filter(lang => byLang.has(lang));
+    const alternates = langs.length < 2 ? '' : [
+      ...langs.map(lang => `<xhtml:link rel="alternate" hreflang="${lang}" href="${url(slug, lang)}"/>`),
+      `<xhtml:link rel="alternate" hreflang="x-default" href="${url(slug, langs.includes('zh-TW') ? 'zh-TW' : langs[0])}"/>`
+    ].join('');
+    return langs.map(lang =>
+      `  <url><loc>${url(slug, lang)}</loc><lastmod>${new Date(byLang.get(lang)!).toISOString()}</lastmod>${alternates}</url>`);
+  });
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${entries.join('\n')}\n</urlset>\n`;
 
   return new Response(request.method === 'HEAD' ? null : xml, {
     headers: { 'Content-Type': 'application/xml; charset=utf-8', 'Cache-Control': CACHE }

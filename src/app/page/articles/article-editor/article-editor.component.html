@@ -1,5 +1,5 @@
 <section class="lr-page">
-  <a routerLink="/articles/manage" class="lr-link">← {{ 'editor.back' | t }}</a>
+  <a [routerLink]="'/articles/manage' | localize" class="lr-link">← {{ 'editor.back' | t }}</a>
 
   <header class="editor-header">
     <h1 class="lr-title">{{ (isNew ? 'editor.newTitle' : 'editor.editTitle') | t }}</h1>

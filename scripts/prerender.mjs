@@ -19,7 +19,9 @@ const shell = template
   .replace(/<script\b(?=[^>]*\btype=["']application\/ld\+json["'])[^>]*>[\s\S]*?<\/script>/gi, '');
 await writeFile(join(output, 'csr.html'), shell);
 
-const routes = ['/', '/about', '/works', '/art', '/contact', '/sponsor', '/articles'];
+// 中文 pages live at the root and the English versions under /en.
+const pages = ['/', '/about', '/works', '/art', '/contact', '/sponsor', '/articles'];
+const routes = ['', '/en'].flatMap(prefix => pages.map(page => prefix && page === '/' ? prefix : prefix + page));
 for (const route of routes) {
   const html = await prerender(template, `${SITE_URL}${route}`);
   if (!/<h1\b[\s\S]*?<\/h1>/.test(html)) {

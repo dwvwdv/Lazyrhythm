@@ -6,7 +6,9 @@
   "trailingSlash": false,
   "redirects": [
     { "source": "/index.html", "destination": "/", "permanent": true },
-    { "source": "/:page(about|works|art|articles|contact|sponsor)/index.html", "destination": "/:page", "permanent": true }
+    { "source": "/:page(about|works|art|articles|contact|sponsor)/index.html", "destination": "/:page", "permanent": true },
+    { "source": "/en/index.html", "destination": "/en", "permanent": true },
+    { "source": "/en/:page(about|works|art|articles|contact|sponsor)/index.html", "destination": "/en/:page", "permanent": true }
   ],
   "headers": [
     {
@@ -15,6 +17,10 @@
     },
     {
       "source": "/articles/manage/:path*",
+      "headers": [{ "key": "X-Robots-Tag", "value": "noindex, follow" }]
+    },
+    {
+      "source": "/en/articles/manage/:path*",
       "headers": [{ "key": "X-Robots-Tag", "value": "noindex, follow" }]
     },
     {
@@ -31,7 +37,12 @@
     { "source": "/sponsor", "destination": "/sponsor/index.html" },
     { "source": "/articles/manage/:path*", "destination": "/csr.html" },
     { "source": "/articles/:slug", "destination": "/csr.html" },
+    { "source": "/en", "destination": "/en/index.html" },
+    { "source": "/en/:page(about|works|art|articles|contact|sponsor)", "destination": "/en/:page/index.html" },
+    { "source": "/en/articles/manage/:path*", "destination": "/csr.html" },
+    { "source": "/en/articles/:slug", "destination": "/csr.html" },
     { "source": "/sitemap-articles.xml", "destination": "https://pwrwclutauqxbqsqfkjj.supabase.co/functions/v1/sitemap-articles" },
+    { "source": "/en/(.*)", "destination": "/en/index.html" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }

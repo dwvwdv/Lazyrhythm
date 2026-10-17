@@ -4,10 +4,11 @@ import { RouterModule } from '@angular/router';
 import { ThemeService } from '../../services/theme.service';
 import { I18nService } from '../../i18n/i18n.service';
 import { TranslatePipe } from '../../i18n/translate.pipe';
+import { LocalizePipe } from '../../i18n/localize.pipe';
 
 @Component({
     selector: 'app-navbar',
-    imports: [CommonModule, RouterModule, TranslatePipe],
+    imports: [CommonModule, RouterModule, TranslatePipe, LocalizePipe],
     templateUrl: './navbar.component.html',
     styleUrls: ['./navbar.component.scss']
 })

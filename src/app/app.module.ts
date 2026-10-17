@@ -9,6 +9,7 @@ import { NavbarComponent } from './widgets/navbar/navbar.component';
 import { CarouselComponent } from './widgets/carousel/carousel.component';
 import { ContactFormComponent } from './widgets/contact-form/contact-form.component';
 import { SnakeCursorComponent } from './widgets/snake-cursor/snake-cursor.component';
+import { LangSuggestComponent } from './widgets/lang-suggest/lang-suggest.component';
 import { TranslatePipe } from './i18n/translate.pipe';
 
 @NgModule({
@@ -25,6 +26,7 @@ import { TranslatePipe } from './i18n/translate.pipe';
     CarouselComponent,
     ContactFormComponent,
     SnakeCursorComponent,
+    LangSuggestComponent,
     TranslatePipe
   ],
   // Reuse the prerendered DOM instead of discarding and re-rendering it on startup.

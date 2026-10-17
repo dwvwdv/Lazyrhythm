@@ -7,6 +7,8 @@ import { Article, ArticleLang, ArticlePayload, ArticleService, ArticleStatus } f
 import { renderMarkdown } from '../../../services/markdown';
 import { I18nService } from '../../../i18n/i18n.service';
 import { TranslatePipe } from '../../../i18n/translate.pipe';
+import { LocalizePipe } from '../../../i18n/localize.pipe';
+import { localizePath } from '../../../i18n/lang-path';
 
 const SLUG_PATTERN = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 const MAX_TAGS = 12;
@@ -32,7 +34,7 @@ export function parseTags(raw: string): string[] {
 
 @Component({
   selector: 'app-article-editor',
-  imports: [CommonModule, ReactiveFormsModule, RouterModule, TranslatePipe],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, TranslatePipe, LocalizePipe],
   templateUrl: './article-editor.component.html',
   styleUrls: ['./article-editor.component.scss']
 })
@@ -139,7 +141,7 @@ export class ArticleEditorComponent implements OnInit, OnDestroy {
     try {
       if (this.isNew) {
         const created = await this.articleService.create(payload);
-        await this.router.navigate(['/articles/manage', created.id], { replaceUrl: true });
+        await this.router.navigate([localizePath('/articles/manage', this.i18n.lang), created.id], { replaceUrl: true });
       } else {
         this.apply(await this.articleService.update(this.articleId!, payload));
       }

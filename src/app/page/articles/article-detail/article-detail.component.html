@@ -1,5 +1,5 @@
 <article class="lr-page detail">
-  <a routerLink="/articles" class="lr-link">← {{ 'articles.back' | t }}</a>
+  <a [routerLink]="'/articles' | localize" class="lr-link">← {{ 'articles.back' | t }}</a>
 
   <p class="lr-empty" *ngIf="isLoading">{{ 'articles.loading' | t }}</p>
   <p class="lr-empty is-error" *ngIf="loadError">{{ 'articles.error' | t }}</p>
@@ -26,7 +26,7 @@
 
     <footer class="detail-footer lr-mono">
       <span>{{ 'articles.updated' | t }} {{ i18n.formatDate(article.updated_at) }}</span>
-      <a routerLink="/articles" class="lr-link">← {{ 'articles.back' | t }}</a>
+      <a [routerLink]="'/articles' | localize" class="lr-link">← {{ 'articles.back' | t }}</a>
     </footer>
   </ng-container>
 </article>

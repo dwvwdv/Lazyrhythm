@@ -3,6 +3,8 @@ import { Inject, Injectable, OnDestroy } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Subscription, filter } from 'rxjs';
 import { I18nService } from '../i18n/i18n.service';
+import { DEFAULT_LANG, languageVersions, localizePath } from '../i18n/lang-path';
+import { Lang, SUPPORTED_LANGS } from '../i18n/translations';
 import { Article } from './article.service';
 import { PAGE_SEO, SITE_IMAGE, SITE_IMAGE_SIZE, SITE_NAME, SITE_URL, SeoPage } from './seo.config';
 
@@ -10,7 +12,7 @@ import { PAGE_SEO, SITE_IMAGE, SITE_IMAGE_SIZE, SITE_NAME, SITE_URL, SeoPage } f
 export class SeoService implements OnDestroy {
   private readonly subscriptions = new Subscription();
   private started = false;
-  private articleContext: { slug: string; article: Article | null } | null = null;
+  private articleContext: { slug: string; article: Article | null; langs: Lang[] } | null = null;
 
   constructor(
     @Inject(DOCUMENT) private readonly document: Document,
@@ -33,14 +35,17 @@ export class SeoService implements OnDestroy {
   }
 
   setArticlePending(slug: string): void {
-    this.articleContext = { slug, article: null };
+    this.articleContext = { slug, article: null, langs: [] };
     this.update();
   }
 
-  setArticle(article: Article | null): void {
+  /** `langs` lists every published language version, so hreflang only names pages that exist. */
+  setArticle(article: Article | null, langs: string[] = article ? [article.lang] : []): void {
     if (!this.articleContext) return;
     // A draft or a stale response must never become public metadata.
-    this.articleContext.article = article?.status === 'published' && article.slug === this.articleContext.slug ? article : null;
+    const current = article?.status === 'published' && article.slug === this.articleContext.slug ? article : null;
+    this.articleContext.article = current;
+    this.articleContext.langs = current ? SUPPORTED_LANGS.filter(lang => langs.includes(lang)) : [];
     this.update();
   }
 
@@ -61,13 +66,18 @@ export class SeoService implements OnDestroy {
     const article = this.articleContext?.article;
     const title = `${article?.title || config.title[this.i18n.lang]} | ${SITE_NAME}`;
     const description = article?.summary?.trim() || this.i18n.t(config.description);
+    const lang = (article?.lang as Lang | undefined) ?? this.i18n.lang;
+    // An article shown in its fallback language is canonical at that language's URL.
     const path = this.articleContext
-      ? `/articles/${encodeURIComponent(this.articleContext.slug)}`
+      ? localizePath(`/articles/${encodeURIComponent(this.articleContext.slug)}`, lang)
       : (this.router.url.split(/[?#]/)[0].replace(/\/+$/, '') || '/');
-    const canonical = `${SITE_URL}/${path.replace(/^\/+/, '')}`;
+    const canonical = this.absolute(path);
     const cover = this.imageUrl(article?.cover_image_url);
     const image = cover ?? SITE_IMAGE;
-    const lang = article?.lang ?? this.i18n.lang;
+    const indexable = !config.noindex || !!article;
+    const versions = !indexable ? []
+      : article ? languageVersions(path).filter(version => this.articleContext!.langs.includes(version.lang))
+      : languageVersions(path);
 
     this.document.title = title;
     this.meta('name', 'description', description);
@@ -77,7 +87,7 @@ export class SeoService implements OnDestroy {
     this.meta('property', 'og:type', article ? 'article' : 'website');
     this.meta('property', 'og:url', canonical);
     this.meta('property', 'og:site_name', SITE_NAME);
-    this.meta('property', 'og:locale', lang === 'zh-TW' ? 'zh_TW' : 'en_US');
+    this.meta('property', 'og:locale', this.locale(lang));
     this.meta('property', 'og:image', image);
     // Cover dimensions are unknown, so only the logo declares its size.
     const size = cover ? null : String(SITE_IMAGE_SIZE);
@@ -88,6 +98,7 @@ export class SeoService implements OnDestroy {
     this.meta('name', 'twitter:description', description);
     this.meta('name', 'twitter:image', image);
     this.link('canonical', canonical);
+    this.alternates(versions.length > 1 ? versions : [], lang);
 
     const organization = { '@type': 'Organization', '@id': `${SITE_URL}/#organization`, name: SITE_NAME, url: `${SITE_URL}/`, logo: SITE_IMAGE };
     const website = { '@type': 'WebSite', '@id': `${SITE_URL}/#website`, name: SITE_NAME, url: `${SITE_URL}/`, publisher: { '@id': organization['@id'] } };
@@ -127,6 +138,35 @@ export class SeoService implements OnDestroy {
     node.setAttribute('rel', rel);
     node.setAttribute('href', href);
     if (!node.parentNode) this.document.head.appendChild(node);
+  }
+
+  /** hreflang links for every language version plus x-default (the root language). */
+  private alternates(versions: Array<{ lang: Lang; path: string }>, current: Lang): void {
+    this.document.head.querySelectorAll('link[rel="alternate"][hreflang]').forEach(node => node.remove());
+    this.document.head.querySelectorAll('meta[property="og:locale:alternate"]').forEach(node => node.remove());
+    if (!versions.length) return;
+    const fallback = versions.find(version => version.lang === DEFAULT_LANG) ?? versions[0];
+    for (const { lang, path } of [...versions, { lang: 'x-default', path: fallback.path }]) {
+      const node = this.document.createElement('link');
+      node.setAttribute('rel', 'alternate');
+      node.setAttribute('hreflang', lang);
+      node.setAttribute('href', this.absolute(path));
+      this.document.head.appendChild(node);
+    }
+    for (const { lang } of versions.filter(version => version.lang !== current)) {
+      const node = this.document.createElement('meta');
+      node.setAttribute('property', 'og:locale:alternate');
+      node.setAttribute('content', this.locale(lang));
+      this.document.head.appendChild(node);
+    }
+  }
+
+  private absolute(path: string): string {
+    return `${SITE_URL}/${path.replace(/^\/+/, '')}`;
+  }
+
+  private locale(lang: Lang): string {
+    return lang === 'zh-TW' ? 'zh_TW' : 'en_US';
   }
 
   private jsonLd(value: object): void {
