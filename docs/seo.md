@@ -25,7 +25,7 @@
 - 預渲染 HTML 不寫入主題，由 CSS 跟隨系統配色，`index.html` 的 inline script 在首次繪製前套用已儲存的主題；瀏覽器以 hydration 重用靜態 DOM，不會整頁重畫。
 - 預設分享圖為 1024×1024 logo，使用 `summary` 卡片並宣告尺寸；只有文章具封面圖時才用 `summary_large_image`。About 與 Art 使用專用的短描述，避免搜尋摘要被截斷。
 - 文章詳情維持 CSR，初始 `csr.html` 無首頁 canonical 或初始 noindex。未執行 JavaScript 的社群爬蟲無法取得文章專屬分享資訊；若要支援，需另加發布時文章預渲染及重建機制，或文章 SSR。
-- 靜態主機無法判斷文章是否存在：未知 slug 回應 200，再由瀏覽器設定 noindex；真正的文章 HTTP 404 需由 server 層判斷。其他未知路徑沿用 Vercel 專案的 Angular 預設，回應首頁（200，canonical 指向首頁）；這是刻意保留的行為，Search Console 可能將其列為軟 404，不需處理。
+- 靜態主機無法判斷文章是否存在：未知 slug 回應 200，再由瀏覽器設定 noindex；真正的文章 HTTP 404 需由 server 層判斷。其他未知路徑由 `vercel.json` 最後一條 rewrite 回應首頁（200，canonical 指向首頁）；這是刻意保留的行為，Search Console 可能將其列為軟 404，不需處理。
 
 ## 建置與部署驗證
 

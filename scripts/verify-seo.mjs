@@ -60,6 +60,8 @@ assert.deepEqual([...pagesSitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(match =>
 const vercel = JSON.parse(await readFile('vercel.json', 'utf8'));
 assert.ok(vercel.rewrites.some(rule => rule.source === '/sitemap-articles.xml' && /\/functions\/v1\/sitemap-articles$/.test(rule.destination)),
   'Article sitemap is served from the Edge Function');
+assert.deepEqual(vercel.rewrites.at(-1), { source: '/(.*)', destination: '/index.html' },
+  'Unknown paths fall back to the home page only after every specific rewrite');
 const robots = await readFile(join(output, 'robots.txt'), 'utf8');
 assert.match(robots, /User-agent:\s*\*/);
 assert.ok(robots.includes(`Sitemap: ${origin}/sitemap.xml`));

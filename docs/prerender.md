@@ -29,8 +29,8 @@ state, not an empty-data claim or a stale database snapshot. The build reads no 
 (`supabase/functions/sitemap-articles`), which lists published articles on each request,
 so crawlers find a newly published article without a rebuild or the list's JavaScript.
 Supabase serves function responses as `text/plain`, so `vercel.json` sets the XML content
-type for that path. Deploy the function with `verify_jwt` off: crawlers send no key, and it
-only reads public rows. Article detail pages and
+type for that path. `supabase/config.toml` keeps the function's `verify_jwt` off for every
+deployment: crawlers send no key, and it only reads public rows. Article detail pages and
 author tools remain client rendered. Full article-content prerendering would require a
 separate published-article build data pipeline and rebuild policy.
 
@@ -38,9 +38,10 @@ separate published-article build data pipeline and rebuild policy.
 canonical, Open Graph URL, or home structured data. Keep the deployment rewrites in
 `vercel.json`: serve the seven prerendered paths explicitly and use `csr.html` for article
 detail and author routes, so those pages never start with the home canonical and
-structured data. Other unknown URLs fall back to the home page (HTTP 200, home canonical)
-through the Vercel project's Angular framework preset. This is intentional: the canonical
-consolidates them into the home page, and Search Console may list them as soft 404s.
+structured data. The last rewrite sends every other unmatched URL to the home page (HTTP 200,
+home canonical); existing files are served first, so assets are unaffected. This is
+intentional: the canonical consolidates them into the home page, and Search Console may
+list them as soft 404s.
 
 `npm start` and `npm run watch` retain the normal browser development workflow.
 `npm run verify:seo` checks an existing production build without rebuilding it.

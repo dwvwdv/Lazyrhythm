@@ -1,6 +1,6 @@
 // Serves https://lazyrhythm.com/sitemap-articles.xml (via a Vercel rewrite) from the published
 // articles, so a newly published article is listed without redeploying the site.
-// Deploy with verify_jwt = false: crawlers send no key, and only public rows are read.
+// verify_jwt is off in supabase/config.toml: crawlers send no key, and only public rows are read.
 
 const SITE_URL = 'https://lazyrhythm.com';
 const CACHE = 'public, max-age=600, s-maxage=600';

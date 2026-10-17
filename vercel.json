@@ -31,6 +31,7 @@
     { "source": "/sponsor", "destination": "/sponsor/index.html" },
     { "source": "/articles/manage/:path*", "destination": "/csr.html" },
     { "source": "/articles/:slug", "destination": "/csr.html" },
-    { "source": "/sitemap-articles.xml", "destination": "https://pwrwclutauqxbqsqfkjj.supabase.co/functions/v1/sitemap-articles" }
+    { "source": "/sitemap-articles.xml", "destination": "https://pwrwclutauqxbqsqfkjj.supabase.co/functions/v1/sitemap-articles" },
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
