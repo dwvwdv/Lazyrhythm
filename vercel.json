@@ -25,7 +25,10 @@
     },
     {
       "source": "/sitemap-articles.xml",
-      "headers": [{ "key": "Content-Type", "value": "application/xml; charset=utf-8" }]
+      "headers": [
+        { "key": "Content-Type", "value": "application/xml; charset=utf-8" },
+        { "key": "x-vercel-enable-rewrite-caching", "value": "1" }
+      ]
     }
   ],
   "rewrites": [

@@ -36,7 +36,8 @@ state, not an empty-data claim or a stale database snapshot. The build reads no 
 (`supabase/functions/sitemap-articles`), which lists published articles on each request,
 so crawlers find a newly published article without a rebuild or the list's JavaScript.
 Supabase serves function responses as `text/plain`, so `vercel.json` sets the XML content
-type for that path. `supabase/config.toml` keeps the function's `verify_jwt` off for every
+type for that path and opts it into Vercel's external-rewrite caching (required for projects
+created before April 2026), so the function's 10-minute `Cache-Control` is honoured. `supabase/config.toml` keeps the function's `verify_jwt` off for every
 deployment: crawlers send no key, and it only reads public rows. It lists each article
 language version at its own URL (`/articles/<slug>` or `/en/articles/<slug>`) and, when both
 exist, names the other as an alternate. The function is deployed separately from the site, so
