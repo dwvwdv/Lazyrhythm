@@ -41,17 +41,53 @@ describe('SeoService', () => {
   });
   afterEach(() => service.ngOnDestroy());
 
-  it('updates each route, strips query/hash from canonical, and responds to language changes without inventing hreflang URLs', () => {
-    navigate('works', '/works/?filter=security#projects');
+  function hreflang(): Record<string, string> {
+    return Object.fromEntries(Array.from(doc.head.querySelectorAll('link[rel="alternate"][hreflang]'))
+      .map(node => [node.getAttribute('hreflang')!, node.getAttribute('href')!]));
+  }
+
+  it('gives each language its own canonical, strips query/hash, and links both versions with 中文 as x-default', () => {
+    navigate('works', '/en/works/?filter=security#projects');
     expect(doc.title).toBe('Projects | LazyRhythm');
-    expect(doc.head.querySelector('link[rel="canonical"]')?.getAttribute('href')).toBe(`${SITE_URL}/works`);
-    expect(meta('og:url')).toBe(`${SITE_URL}/works`);
+    expect(doc.head.querySelector('link[rel="canonical"]')?.getAttribute('href')).toBe(`${SITE_URL}/en/works`);
+    expect(meta('og:url')).toBe(`${SITE_URL}/en/works`);
+    expect(meta('og:locale')).toBe('en_US');
+    expect(meta('og:locale:alternate')).toBe('zh_TW');
+    const versions = { 'zh-TW': `${SITE_URL}/works`, en: `${SITE_URL}/en/works`, 'x-default': `${SITE_URL}/works` };
+    expect(hreflang()).toEqual(versions);
+
     lang.next('zh-TW');
+    navigate('works', '/works');
     expect(doc.title).toBe('作品 | LazyRhythm');
     expect(meta('description')).toBe(TRANSLATIONS['zh-TW']['works.subtitle']);
     expect(meta('og:locale')).toBe('zh_TW');
-    expect(doc.head.querySelector('link[hreflang]')).toBeNull();
+    expect(doc.head.querySelector('link[rel="canonical"]')?.getAttribute('href')).toBe(`${SITE_URL}/works`);
+    expect(hreflang()).toEqual(versions);
+    expect(doc.head.querySelectorAll('link[hreflang]').length).toBe(3);
     expect(graph().map(node => node['@type'])).toEqual(['Organization', 'WebSite']);
+
+    lang.next('en');
+    navigate('home', '/en');
+    expect(hreflang()).toEqual({ 'zh-TW': `${SITE_URL}/`, en: `${SITE_URL}/en`, 'x-default': `${SITE_URL}/` });
+  });
+
+  it('names only the article languages that exist and canonicalises a fallback to its own language', () => {
+    navigate('article', '/en/articles/hello', 'hello');
+    service.setArticlePending('hello');
+    service.setArticle(article({ lang: 'en' }), ['zh-TW', 'en']);
+    expect(doc.head.querySelector('link[rel="canonical"]')?.getAttribute('href')).toBe(`${SITE_URL}/en/articles/hello`);
+    expect(hreflang()).toEqual({
+      'zh-TW': `${SITE_URL}/articles/hello`, en: `${SITE_URL}/en/articles/hello`, 'x-default': `${SITE_URL}/articles/hello`
+    });
+
+    // Only a 中文 version: the English URL shows it, so it points search engines at the 中文 URL.
+    service.setArticle(article({ lang: 'zh-TW' }), ['zh-TW']);
+    expect(doc.head.querySelector('link[rel="canonical"]')?.getAttribute('href')).toBe(`${SITE_URL}/articles/hello`);
+    expect(meta('og:locale')).toBe('zh_TW');
+    expect(doc.head.querySelector('link[hreflang]')).toBeNull();
+
+    navigate('manage', '/en/articles/manage');
+    expect(doc.head.querySelector('link[hreflang]')).toBeNull();
   });
 
   it('replaces stale article metadata for pending, missing, draft, management and subsequent public routes', () => {
@@ -78,7 +114,7 @@ describe('SeoService', () => {
     expect(meta('og:image:height')).toBe('1024');
     expect(meta('twitter:card')).toBe('summary');
     expect(graph().some(node => node['@type'] === 'Article')).toBeFalse();
-    expect(meta('og:url')).toBe(`${SITE_URL}/articles/missing`);
+    expect(meta('og:url')).toBe(`${SITE_URL}/en/articles/missing`);
     service.setArticle(article({ slug: 'missing', status: 'draft' }));
     expect(meta('robots')).toBe('noindex, follow');
     service.setArticle(article()); // Previous slug cannot replace the current page.

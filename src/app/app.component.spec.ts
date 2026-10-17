@@ -5,10 +5,11 @@ import { TranslatePipe } from './i18n/translate.pipe';
 import { NavbarComponent } from './widgets/navbar/navbar.component';
 import { SnakeCursorComponent } from './widgets/snake-cursor/snake-cursor.component';
 import { SeoService } from './services/seo.service';
+import { LangSuggestComponent } from './widgets/lang-suggest/lang-suggest.component';
 
 describe('AppComponent', () => {
   beforeEach(() => TestBed.configureTestingModule({
-    imports: [RouterTestingModule, TranslatePipe, NavbarComponent, SnakeCursorComponent],
+    imports: [RouterTestingModule, TranslatePipe, NavbarComponent, SnakeCursorComponent, LangSuggestComponent],
     declarations: [AppComponent]
   }));
 

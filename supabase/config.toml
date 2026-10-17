@@ -1,0 +1,11 @@
+# Only settings this repository depends on; everything else uses the Supabase CLI defaults.
+project_id = "lazyrhythm"
+
+# The site and the sitemap function read the website schema through the REST API.
+[api]
+schemas = ["public", "graphql_public", "website"]
+
+# Crawlers fetch /sitemap-articles.xml (rewritten by vercel.json) without a key,
+# and the function only reads published articles, so it must stay public.
+[functions.sitemap-articles]
+verify_jwt = false

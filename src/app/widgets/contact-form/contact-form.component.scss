@@ -1,45 +1,31 @@
+// The host page provides the surrounding card; the form itself stays unframed.
 .contact-form {
   width: 100%;
-  background-color: var(--surface-color);
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px var(--shadow-color);
-  
+
   h2 {
-    font-size: 1.8rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
     color: var(--text-color);
-    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 900;
+    letter-spacing: -0.02em;
   }
 
   .form-group {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.15rem;
 
     label {
       display: block;
-      margin-bottom: 0.5rem;
-      color: var(--text-color);
-      font-weight: 500;
+      margin-bottom: 0.45rem;
+      color: var(--text-muted);
+      font: 700 0.7rem/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
     }
 
-    input, textarea {
-      width: 100%;
-      padding: 0.8rem;
-      border: 2px solid var(--border-color);
-      border-radius: 8px;
-      background-color: var(--background-color);
-      color: var(--text-color);
-      transition: all 0.3s ease;
-
-      &:focus {
-        outline: none;
-        border-color: var(--primary-color);
-        box-shadow: 0 0 0 2px var(--primary-color-alpha);
-      }
-
-      &.ng-invalid.ng-touched {
-        border-color: var(--error-color, #dc3545);
-      }
+    // Inputs use the global Offbeat field style; only the invalid state is added here.
+    input.ng-invalid.ng-touched,
+    textarea.ng-invalid.ng-touched {
+      border-color: var(--error-color);
     }
 
     textarea {
@@ -48,37 +34,21 @@
     }
   }
 
+  .form-status {
+    margin-bottom: 1rem;
+    font: 700 0.78rem/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+    &.is-success { color: color-mix(in srgb, var(--aurora-green) 70%, var(--text-color)); }
+    &.is-error { color: color-mix(in srgb, var(--aurora-red) 75%, var(--text-color)); }
+  }
+
   button {
     width: 100%;
-    padding: 1rem;
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
-
-    &:hover {
-      background-color: var(--secondary-color);
-      transform: translateY(-2px);
-    }
 
     &:disabled {
-      background-color: var(--disabled-color, #ccc);
+      opacity: 0.55;
       cursor: not-allowed;
       transform: none;
     }
   }
 }
-
-// 暗黑模式樣式
-[data-theme='dark'] {
-  .contact-form {
-    input, textarea {
-      --input-background: #2a2a2a;
-      --border-color: #444;
-    }
-  }
-} 

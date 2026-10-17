@@ -7,10 +7,11 @@ import { AuthService } from '../../../services/auth.service';
 import { I18nService } from '../../../i18n/i18n.service';
 import { pickVersionsBy } from '../../../i18n/localize';
 import { TranslatePipe } from '../../../i18n/translate.pipe';
+import { LocalizePipe } from '../../../i18n/localize.pipe';
 
 @Component({
   selector: 'app-article-list',
-  imports: [CommonModule, RouterModule, TranslatePipe],
+  imports: [CommonModule, RouterModule, TranslatePipe, LocalizePipe],
   templateUrl: './article-list.component.html',
   styleUrls: ['./article-list.component.scss']
 })

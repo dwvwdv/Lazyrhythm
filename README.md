@@ -37,7 +37,7 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 ## i18n
 
-The site ships English and Traditional Chinese (`src/app/i18n`). The default language follows the visitor's browser languages (`zh-*` → 繁體中文, otherwise English); a manual choice from the navbar toggle is remembered in `localStorage`.
+The site ships Traditional Chinese and English (`src/app/i18n`), each at its own URLs: 繁體中文 at the root and English under `/en`. The URL decides the language; the navbar toggle opens the same page in the other language and remembers the choice, and a dismissible card offers the other language when the saved choice or browser language differs. See [static prerendering](docs/prerender.md) for the SEO details.
 
 ## Generative art (p5.js)
 

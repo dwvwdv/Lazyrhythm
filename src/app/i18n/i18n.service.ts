@@ -1,53 +1,61 @@
-import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { DOCUMENT, isPlatformBrowser, PlatformLocation } from '@angular/common';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { NavigationStart, Router } from '@angular/router';
+import { BehaviorSubject, filter } from 'rxjs';
+import { langFromPath, localizePath } from './lang-path';
 import { Lang, SUPPORTED_LANGS, TRANSLATIONS, TranslationKey } from './translations';
 
 const STORAGE_KEY = 'lang';
 
+/**
+ * The URL decides the language (中文 at the root, English under /en), so the server and the
+ * browser render the same text and every language has its own indexable URL.
+ */
 @Injectable({ providedIn: 'root' })
 export class I18nService {
-  private readonly langSubject = new BehaviorSubject<Lang>(this.initialLang());
+  private readonly langSubject = new BehaviorSubject<Lang>(langFromPath(this.location.pathname));
   readonly lang$ = this.langSubject.asObservable();
 
   constructor(
     @Inject(PLATFORM_ID) private readonly platformId: string,
-    @Inject(DOCUMENT) private readonly document: Document
+    @Inject(DOCUMENT) private readonly document: Document,
+    private readonly location: PlatformLocation,
+    private readonly router: Router
   ) {
     this.applyDocumentLang(this.lang);
-    if (!isPlatformBrowser(this.platformId)) return;
-
-    // 使用者沒手動選過語系時，跟著瀏覽器語言變化。
-    window.addEventListener('languagechange', () => {
-      if (this.readStored() === null) {
-        this.setLang(this.detectBrowserLang(), false);
-      }
-    });
+    // Switch before the next page renders so it never shows the previous language.
+    this.router.events.pipe(filter(event => event instanceof NavigationStart))
+      .subscribe(event => this.apply(langFromPath(event.url)));
   }
 
   get lang(): Lang {
     return this.langSubject.value;
   }
 
-  setLang(lang: Lang, persist = true): void {
-    if (persist && isPlatformBrowser(this.platformId)) {
+  /** Opens the current page in another language and remembers the choice for suggestions. */
+  setLang(lang: Lang): Promise<boolean> {
+    if (isPlatformBrowser(this.platformId)) {
       try {
         localStorage.setItem(STORAGE_KEY, lang);
       } catch {
         // 無法寫入 storage 時只影響本次瀏覽。
       }
     }
-
-    this.applyDocumentLang(lang);
-    this.langSubject.next(lang);
+    return this.router.navigateByUrl(localizePath(this.router.url, lang));
   }
 
-  toggle(): void {
-    this.setLang(this.lang === 'zh-TW' ? 'en' : 'zh-TW');
+  toggle(): Promise<boolean> {
+    return this.setLang(this.lang === 'zh-TW' ? 'en' : 'zh-TW');
   }
 
-  t(key: TranslationKey | string): string {
-    const table = TRANSLATIONS[this.lang] as Record<string, string>;
+  /** The language a visitor likely wants: their last manual choice, else the browser's. */
+  preferredLang(): Lang | null {
+    if (!isPlatformBrowser(this.platformId)) return null;
+    return this.readStored() ?? this.detectBrowserLang();
+  }
+
+  t(key: TranslationKey | string, lang: Lang = this.lang): string {
+    const table = TRANSLATIONS[lang] as Record<string, string>;
     return table[key] ?? (TRANSLATIONS.en as Record<string, string>)[key] ?? key;
   }
 
@@ -60,12 +68,13 @@ export class I18nService {
       .format(new Date(value));
   }
 
-  private initialLang(): Lang {
-    return this.readStored() ?? this.detectBrowserLang();
+  private apply(lang: Lang): void {
+    if (lang === this.lang) return;
+    this.applyDocumentLang(lang);
+    this.langSubject.next(lang);
   }
 
   private readStored(): Lang | null {
-    if (!isPlatformBrowser(this.platformId)) return null;
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
       return SUPPORTED_LANGS.includes(stored as Lang) ? stored as Lang : null;
@@ -74,9 +83,7 @@ export class I18nService {
     }
   }
 
-  private detectBrowserLang(): Lang {
-    // Static HTML uses one predictable language; browser preferences apply after bootstrap.
-    if (!isPlatformBrowser(this.platformId)) return 'en';
+  private detectBrowserLang(): Lang | null {
     const candidates = navigator.languages?.length ? navigator.languages : [navigator.language];
 
     for (const candidate of candidates) {
@@ -89,7 +96,7 @@ export class I18nService {
       }
     }
 
-    return 'en';
+    return null;
   }
 
   private applyDocumentLang(lang: Lang): void {

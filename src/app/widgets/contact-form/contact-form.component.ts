@@ -12,6 +12,8 @@ import { TranslatePipe } from '../../i18n/translate.pipe';
 })
 export class ContactFormComponent {
   @Input() formType: 'contact' | 'sponsor' = 'contact';
+  /** Hosts that label the form themselves can hide the built-in heading. */
+  @Input() showTitle = true;
   contactForm: FormGroup;
   isSubmitting = false;
   submitted = false;

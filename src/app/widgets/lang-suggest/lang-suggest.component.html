@@ -1,0 +1,9 @@
+@if (suggestion(); as lang) {
+  <aside class="lang-suggest card" [attr.lang]="lang" role="region" [attr.aria-label]="text('langSuggest.label')">
+    <p>{{ text('langSuggest.text') }}</p>
+    <div class="actions">
+      <button type="button" class="btn btn-primary" (click)="switchLanguage()">{{ text('langSuggest.switch') }}</button>
+      <button type="button" class="btn dismiss" (click)="dismiss()" [attr.aria-label]="text('langSuggest.dismiss')">×</button>
+    </div>
+  </aside>
+}

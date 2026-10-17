@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { authorGuard } from './services/author.guard';
 
-export const routes: Routes = [
+const pages: Routes = [
   {
     path: '',
     data: { seo: 'home' },
@@ -59,8 +59,16 @@ export const routes: Routes = [
     path: 'sponsor',
     data: { seo: 'sponsor' },
     loadComponent: () => import('./page/sponsor/sponsor.component').then(m => m.SponsorComponent)
-  }
-]; 
+  },
+  // Unknown paths go to the home page of their language (the host serves that page for them too).
+  { path: '**', redirectTo: '' }
+];
+
+// The same pages in each language: 中文 at the site root, English under /en.
+export const routes: Routes = [
+  { path: 'en', children: pages },
+  { path: '', children: pages }
+];
 
 @NgModule({
   // Start each page at the top; back/forward restores the previous position.

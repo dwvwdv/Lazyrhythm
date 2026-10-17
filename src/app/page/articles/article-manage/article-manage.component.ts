@@ -6,10 +6,11 @@ import { ArticleService, ArticleSummary } from '../../../services/article.servic
 import { AuthService } from '../../../services/auth.service';
 import { I18nService } from '../../../i18n/i18n.service';
 import { TranslatePipe } from '../../../i18n/translate.pipe';
+import { LocalizePipe } from '../../../i18n/localize.pipe';
 
 @Component({
   selector: 'app-article-manage',
-  imports: [CommonModule, ReactiveFormsModule, RouterModule, TranslatePipe],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, TranslatePipe, LocalizePipe],
   templateUrl: './article-manage.component.html',
   styleUrls: ['./article-manage.component.scss']
 })

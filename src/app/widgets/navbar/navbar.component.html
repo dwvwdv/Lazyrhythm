@@ -1,17 +1,17 @@
 <nav class="navbar">
-  <a routerLink="/" class="brand-link" [attr.aria-label]="'nav.home' | t">
+  <a [routerLink]="'/' | localize" class="brand-link" [attr.aria-label]="'nav.home' | t">
     <span class="brand-title">LAZYRHYTHM</span>
     <span class="brand-slash">//</span>
     <span class="brand-sub">OFFBEAT LAB</span>
   </a>
 
   <div class="nav-links" [class.show]="isMenuOpen">
-    <a routerLink="/works" routerLinkActive="active" (click)="closeMenu()">{{ 'nav.work' | t }}</a>
-    <a routerLink="/articles" routerLinkActive="active" (click)="closeMenu()">{{ 'nav.articles' | t }}</a>
-    <a routerLink="/art" routerLinkActive="active" (click)="closeMenu()">{{ 'nav.art' | t }}</a>
-    <a routerLink="/about" routerLinkActive="active" (click)="closeMenu()">{{ 'nav.about' | t }}</a>
-    <a routerLink="/contact" routerLinkActive="active" (click)="closeMenu()">{{ 'nav.contact' | t }}</a>
-    <a routerLink="/sponsor" routerLinkActive="active" (click)="closeMenu()">{{ 'nav.support' | t }}</a>
+    <a [routerLink]="'/works' | localize" routerLinkActive="active" (click)="closeMenu()">{{ 'nav.work' | t }}</a>
+    <a [routerLink]="'/articles' | localize" routerLinkActive="active" (click)="closeMenu()">{{ 'nav.articles' | t }}</a>
+    <a [routerLink]="'/art' | localize" routerLinkActive="active" (click)="closeMenu()">{{ 'nav.art' | t }}</a>
+    <a [routerLink]="'/about' | localize" routerLinkActive="active" (click)="closeMenu()">{{ 'nav.about' | t }}</a>
+    <a [routerLink]="'/contact' | localize" routerLinkActive="active" (click)="closeMenu()">{{ 'nav.contact' | t }}</a>
+    <a [routerLink]="'/sponsor' | localize" routerLinkActive="active" (click)="closeMenu()">{{ 'nav.support' | t }}</a>
     <button class="theme-toggle lang-toggle" (click)="toggleLang()" [attr.aria-label]="'nav.langLabel' | t">
       <span>{{ 'nav.lang' | t }}</span>
     </button>

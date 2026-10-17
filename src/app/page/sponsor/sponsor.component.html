@@ -1,39 +1,63 @@
 <section class="sponsor-container">
-  <div class="sponsor-content">
-    <div class="sponsor-info">
-      <h1>{{ 'sponsor.title' | t }}</h1>
-      <p>{{ 'sponsor.intro' | t }}</p>
+  <header class="sponsor-header">
+    <p class="lr-eyebrow">{{ 'sponsor.eyebrow' | t }}</p>
+    <h1 class="lr-title">{{ 'sponsor.title' | t }}</h1>
+    <p class="lr-subtitle">{{ 'sponsor.intro' | t }}</p>
+  </header>
 
-      <div class="sponsor-methods">
-        <div class="method">
-          <h3>{{ 'sponsor.bsc' | t }}</h3>
-          <div class="bsc-address">
-            <code>{{bscAddress}}</code>
-            <button (click)="copyBscAddress()" class="copy-btn" [attr.aria-label]="'sponsor.copy' | t">
-              <i class="fas fa-copy"></i>
+  <div class="sponsor-layout">
+    <div class="channels">
+      <article class="channel card">
+        <header class="channel-bar">
+          <span class="channel-index">01</span>
+          <h2 class="channel-name">{{ 'sponsor.bsc' | t }}</h2>
+        </header>
+
+        <div class="channel-body bsc">
+          <figure class="qr">
+            <img [src]="bscQRCode" [alt]="'sponsor.qrAlt' | t" width="180" height="180" loading="lazy">
+            <figcaption>{{ 'sponsor.scan' | t }}</figcaption>
+          </figure>
+
+          <div class="address">
+            <code #address class="address-value">{{ bscAddress }}</code>
+            <button type="button" class="btn" (click)="copyBscAddress()" [class.is-copied]="copyState === 'copied'">
+              <i class="fas" [class.fa-copy]="copyState !== 'copied'" [class.fa-check]="copyState === 'copied'" aria-hidden="true"></i>
+              {{ (copyState === 'copied' ? 'sponsor.copiedShort' : 'sponsor.copy') | t }}
             </button>
+            <p class="copy-status" role="status" aria-live="polite" [class.is-failed]="copyState === 'failed'">
+              <ng-container *ngIf="copyState === 'copied'">{{ 'sponsor.copied' | t }}</ng-container>
+              <ng-container *ngIf="copyState === 'failed'">{{ 'sponsor.copyFailed' | t }}</ng-container>
+            </p>
           </div>
-          <img [src]="bscQRCode" [alt]="'sponsor.qrAlt' | t" class="qr-code">
         </div>
+      </article>
 
-        <div class="method">
-          <h3>Ko-fi</h3>
+      <article class="channel card">
+        <header class="channel-bar">
+          <span class="channel-index">02</span>
+          <h2 class="channel-name">Ko-fi</h2>
+        </header>
+
+        <div class="channel-body kofi">
           <p>{{ 'sponsor.kofi' | t }}</p>
-          <a [href]="kofiLink" target="_blank" class="kofi-button">
-            <img src="https://storage.ko-fi.com/cdn/kofi5.png" alt="Buy Me a Coffee at ko-fi.com">
+          <a class="btn btn-primary" [href]="kofiLink" target="_blank" rel="noopener noreferrer">
+            <i class="fas fa-mug-hot" aria-hidden="true"></i>
+            {{ 'sponsor.kofiCta' | t }}
+            <i class="fas fa-external-link-alt external" aria-hidden="true"></i>
           </a>
         </div>
+      </article>
+    </div>
+
+    <article class="channel card note">
+      <header class="channel-bar">
+        <span class="channel-index">03</span>
+        <h2 class="channel-name">{{ 'form.supportTitle' | t }}</h2>
+      </header>
+      <div class="channel-body">
+        <app-contact-form formType="sponsor" [showTitle]="false"></app-contact-form>
       </div>
-    </div>
-
-    <div class="sponsor-form-wrapper">
-      <app-contact-form formType="sponsor"></app-contact-form>
-    </div>
-  </div>
-
-  <!-- Toast Notification -->
-  <div class="toast-notification" [class.show]="showToast">
-    <i class="fas fa-check-circle"></i>
-    <span>{{ 'sponsor.copied' | t }}</span>
+    </article>
   </div>
 </section>
