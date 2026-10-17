@@ -40,8 +40,8 @@ const en = {
   'home.principleP2': 'LazyRhythm collects these experiments. Each one solves a need of my own first, goes into daily use once it works, and gets rewritten when it gets in the way.',
 
   'art.kicker': 'Generative sketches · p5.js',
-  'art.title': 'Offbeat Studies',
-  'art.description': 'Small generative pieces drawn in the site\'s own language: Nord colour, square corners, hard offset shadows, and time that runs on a lazy, swung beat — nothing lands squarely on the downbeat.',
+  'art.title': 'Visual Beats',
+  'art.description': 'Time runs on a lazy, swung beat',
   'art.hint': 'Hover to disturb, click to play. Every seed is a different piece.',
   'art.seed': 'Seed',
   'art.reroll': 'Reroll',
@@ -117,9 +117,9 @@ const en = {
 
   'sponsor.title': 'Support the Lab',
   'sponsor.intro': 'Your support helps keep the experiments running and new projects coming',
-  'sponsor.bsc': 'BSC Wallet',
+  'sponsor.bsc': 'BSC Address',
   'sponsor.copy': 'Copy address',
-  'sponsor.qrAlt': 'BSC Wallet QR Code',
+  'sponsor.qrAlt': 'BSC address QR code',
   'sponsor.kofi': 'Support through Ko-fi platform',
   'sponsor.copied': 'Address copied to clipboard!',
 
@@ -247,8 +247,8 @@ const zhTW: Record<TranslationKey, string> = {
   'home.principleP2': '悠閒節奏收錄這些實驗。專案先解決自己的需求，做出能用的版本後放進日常使用，卡住就重寫。',
 
   'art.kicker': '生成藝術 · p5.js',
-  'art.title': '反拍習作',
-  'art.description': '用網站本身的設計語言畫成的小型生成作品：Nord 色票、直角、硬偏移陰影，時間走在慵懶的搖擺節拍上——沒有一拍落在正拍。',
+  'art.title': '視覺節拍',
+  'art.description': '時間走在慵懶的搖擺節拍上',
   'art.hint': '游標移入會擾動畫面，點擊可以互動。每個種子都是不同的作品。',
   'art.seed': '種子',
   'art.reroll': '重抽',
@@ -300,7 +300,7 @@ const zhTW: Record<TranslationKey, string> = {
   'about.cat.os': '作業系統',
 
   'works.eyebrow': '精選實驗',
-  'works.title': '以自己的節奏前進的專案。',
+  'works.title': '以自己節奏前進的專案',
   'works.subtitle': '工具、閱讀實驗、資安小工具與 side project，每一個都源自好奇心。',
   'works.categories': '專案分類',
   'works.cat.all': '全部專案',
@@ -317,15 +317,15 @@ const zhTW: Record<TranslationKey, string> = {
   'works.stack': '技術',
   'works.open': '開啟專案',
 
-  'contact.title': '與我們聯絡',
+  'contact.title': '與我聯絡',
   'contact.intro': '有問題、點子或合作機會嗎？歡迎隨時聯絡。',
   'contact.email': '電子郵件',
 
   'sponsor.title': '支持實驗室',
   'sponsor.intro': '你的支持能讓實驗持續運轉，也讓新專案得以誕生',
-  'sponsor.bsc': 'BSC 錢包',
+  'sponsor.bsc': 'BSC 地址',
   'sponsor.copy': '複製地址',
-  'sponsor.qrAlt': 'BSC 錢包 QR Code',
+  'sponsor.qrAlt': 'BSC 地址 QR Code',
   'sponsor.kofi': '透過 Ko-fi 平台贊助',
   'sponsor.copied': '地址已複製到剪貼簿！',
 
