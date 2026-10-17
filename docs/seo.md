@@ -11,7 +11,9 @@
 - `/assets/logo.png` 回應 200 `image/png`，可用作絕對 OG 圖片網址。
 - GitHub 最新 Production deployment 由 Vercel 建立，對應提交 `2177181c9a4a4243123aa6a102b5b80901ddc20f`。
 
-上述轉址是調整前的歷史狀態。依品牌擁有者指定，canonical origin 統一採 `https://lazyrhythm.com`；部署時須同步將正式網域設定改為 apex，不能保留 apex 轉向 www。這些證據確認程式碼缺口，無法直接證明 Google 未顯示摘要的原因。
+上述轉址是調整前的歷史狀態。依品牌擁有者指定，canonical origin 統一採 `https://lazyrhythm.com`。
+
+2026-10-17 已完成網域切換並驗證：`https://lazyrhythm.com/` 直接回應 200；`https://www.lazyrhythm.com/about?x=1` 以 308 轉向 `https://lazyrhythm.com/about?x=1`，保留路徑與查詢參數；`http://www.lazyrhythm.com/about` 經 Cloudflare 301 轉 HTTPS 後再 308 至 apex，最終 200，無轉址迴圈。這些證據確認程式碼缺口，無法直接證明 Google 未顯示摘要的原因。
 
 ## 本次程式碼範圍
 
@@ -41,7 +43,7 @@ Vercel 須採本次 `vercel.json` 的建置命令及 rewrites，避免 Angular p
 
 1. 將 `lazyrhythm.com` 設為直接連接此專案的 Production 網域，移除既有轉向 www 的規則。
 2. 將 `www.lazyrhythm.com` 設為永久轉址（308）至 `lazyrhythm.com`，保留路徑與 query string；若 Cloudflare 另有相反轉址規則，也須移除。
-3. 先確認 apex 可直接回應 200，再啟用 www 轉址並部署本次 canonical 更新，避免來回轉址。此環境未連接 Vercel／Cloudflare 管理權限，尚未修改這些正式設定。
+3. 先確認 apex 可直接回應 200，再啟用 www 轉址並部署本次 canonical 更新，避免來回轉址。（2026-10-17 已依此順序完成。）
 
 部署後檢查公開網址，而非只驗證 repository：
 
