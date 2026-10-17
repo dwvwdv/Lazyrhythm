@@ -122,6 +122,11 @@ const en = {
   'sponsor.qrAlt': 'BSC address QR code',
   'sponsor.kofi': 'Support through Ko-fi platform',
   'sponsor.copied': 'Address copied to clipboard!',
+  'sponsor.eyebrow': 'Sponsor',
+  'sponsor.copiedShort': 'Copied',
+  'sponsor.copyFailed': 'Could not copy automatically. The address is selected; copy it manually.',
+  'sponsor.scan': 'Scan with a wallet app',
+  'sponsor.kofiCta': 'Open Ko-fi',
 
   'form.contactTitle': 'Contact Form',
   'form.supportTitle': 'Support Form',
@@ -328,6 +333,11 @@ const zhTW: Record<TranslationKey, string> = {
   'sponsor.qrAlt': 'BSC 地址 QR Code',
   'sponsor.kofi': '透過 Ko-fi 平台贊助',
   'sponsor.copied': '地址已複製到剪貼簿！',
+  'sponsor.eyebrow': '贊助',
+  'sponsor.copiedShort': '已複製',
+  'sponsor.copyFailed': '無法自動複製，已選取地址，請手動複製。',
+  'sponsor.scan': '用錢包 App 掃描',
+  'sponsor.kofiCta': '前往 Ko-fi',
 
   'form.contactTitle': '聯絡表單',
   'form.supportTitle': '贊助表單',

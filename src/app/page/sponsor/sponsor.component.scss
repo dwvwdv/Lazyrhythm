@@ -1,276 +1,175 @@
+$mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
 .sponsor-container {
-  padding: 4rem 2rem;
-  max-width: 1200px;
+  width: min(100% - 2rem, 1100px);
   margin: 0 auto;
-  min-height: 100vh;
+  padding: 5rem 0 4rem;
+}
+
+.sponsor-header {
+  max-width: 760px;
+  margin-bottom: 2.75rem;
+}
+
+// Channels on the left, the note form on the right; both stack on narrow screens.
+.sponsor-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: 1.75rem;
+  align-items: start;
+  // Room for the 4px offset shadows so they are never clipped.
+  padding: 0 6px 6px 0;
+}
+
+.channels {
+  display: grid;
+  gap: 1.75rem;
+}
+
+.channel {
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+
+  &:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--frost3);
+  }
+}
+
+.channel-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.7rem 1.1rem;
+  background: var(--elevated-surface);
+  border-bottom: 2px solid var(--border-color);
+}
+
+.channel-index {
+  color: var(--accent-text);
+  font: 700 0.72rem/1 $mono;
+  letter-spacing: 0.1em;
+}
+
+.channel-name {
+  color: var(--text-color);
+  font: 700 0.78rem/1 $mono;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.channel-body {
+  padding: 1.4rem;
+
+  > p {
+    color: var(--text-secondary);
+  }
+}
+
+.bsc {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.qr {
+  margin: 0;
+
+  img {
+    display: block;
+    width: 180px;
+    height: 180px;
+    object-fit: contain;
+    border: 2px solid var(--border-color);
+    box-shadow: 4px 4px 0 var(--frost3);
+  }
+
+  figcaption {
+    margin-top: 0.85rem;
+    color: var(--text-muted);
+    font: 700 0.66rem/1.4 $mono;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+}
+
+.address {
+  display: grid;
+  gap: 0.9rem;
+  justify-items: start;
+}
+
+.address-value {
+  display: block;
+  width: 100%;
+  padding: 0.85rem 1rem;
   background: var(--background-color);
-  position: relative;
+  color: var(--text-color);
+  border: 2px solid var(--border-color);
+  border-left: 4px solid var(--frost1);
+  font: 600 0.92rem/1.55 $mono;
+  word-break: break-all;
+  user-select: all;
+}
 
-  .sponsor-content {
-    .sponsor-info {
-      text-align: center;
-      margin-bottom: 4rem;
-      padding: 3rem;
-      background: var(--card-background);
-      border-radius: 24px;
-      box-shadow: var(--neumorphic-shadow);
+.btn.is-copied {
+  color: color-mix(in srgb, var(--aurora-green) 70%, var(--text-color));
+  border-color: var(--aurora-green);
+}
 
-      h1 {
-        font-size: 3rem;
-        margin-bottom: 1rem;
-        color: var(--text-color);
-        font-weight: 700;
-        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-      }
+.copy-status {
+  min-height: 1.4em;
+  color: color-mix(in srgb, var(--aurora-green) 70%, var(--text-color));
+  font: 700 0.74rem/1.4 $mono;
 
-      p {
-        font-size: 1.2rem;
-        color: var(--text-secondary);
-        margin-bottom: 2rem;
-      }
-    }
-
-    .sponsor-methods {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 3rem;
-      margin-bottom: 4rem;
-
-      .method {
-        background: var(--card-background);
-        border-radius: 24px;
-        padding: 3rem 2rem;
-        box-shadow: var(--neumorphic-shadow);
-        text-align: center;
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-
-        &:hover {
-          box-shadow: 12px 12px 24px var(--shadow-dark), -12px -12px 24px var(--shadow-light);
-          transform: translateY(-5px);
-        }
-
-        h3 {
-          font-size: 1.6rem;
-          color: var(--text-color);
-          margin-bottom: 1.5rem;
-          font-weight: 600;
-        }
-
-        .bsc-address {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 0.75rem;
-          margin-bottom: 1.5rem;
-          padding: 1rem 1.5rem;
-          background: var(--card-background);
-          border-radius: 12px;
-          box-shadow: var(--neumorphic-shadow-inset);
-
-          code {
-            font-family: 'Courier New', monospace;
-            color: var(--text-color);
-            font-size: 0.9rem;
-            word-break: break-all;
-          }
-
-          .copy-btn {
-            background: var(--card-background);
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            color: var(--primary-color);
-            padding: 0.5rem 0.75rem;
-            box-shadow: var(--neumorphic-shadow-small);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            flex-shrink: 0;
-
-            i {
-              font-size: 1.1rem;
-            }
-
-            &:hover {
-              box-shadow: 4px 4px 8px var(--shadow-dark), -4px -4px 8px var(--shadow-light);
-              color: var(--secondary-color);
-              transform: translateY(-1px);
-            }
-
-            &:active {
-              box-shadow: var(--neumorphic-shadow-inset);
-              transform: translateY(0);
-            }
-          }
-        }
-
-        .qr-code {
-          max-width: 220px;
-          width: 100%;
-          margin: 1.5rem auto;
-          border-radius: 12px;
-          box-shadow: var(--neumorphic-shadow-small);
-        }
-
-        p {
-          color: var(--text-muted);
-          margin-bottom: 1rem;
-        }
-
-        .kofi-button {
-          display: inline-block;
-          margin-top: 1rem;
-          transition: transform 0.3s ease;
-          border-radius: 12px;
-          overflow: hidden;
-          box-shadow: var(--neumorphic-shadow-small);
-
-          &:hover {
-            transform: translateY(-3px);
-            box-shadow: 6px 6px 12px var(--shadow-dark), -6px -6px 12px var(--shadow-light);
-          }
-
-          img {
-            max-width: 200px;
-            display: block;
-          }
-        }
-      }
-    }
-
-    .sponsor-form-wrapper {
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 3rem;
-      background: var(--card-background);
-      border-radius: 24px;
-      box-shadow: var(--neumorphic-shadow);
-    }
-  }
-
-  // Toast Notification
-  .toast-notification {
-    position: fixed;
-    bottom: 2rem;
-    left: 50%;
-    transform: translateX(-50%) translateY(100px);
-    padding: 1rem 2rem;
-    background: var(--card-background);
-    border-radius: 12px;
-    box-shadow: var(--neumorphic-shadow);
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    opacity: 0;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    z-index: 1000;
-
-    i {
-      color: var(--success-color);
-      font-size: 1.2rem;
-    }
-
-    span {
-      color: var(--text-color);
-      font-weight: 500;
-    }
-
-    &.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
+  &.is-failed {
+    color: color-mix(in srgb, var(--aurora-orange) 75%, var(--text-color));
   }
 }
 
-// Responsive Design
-@media (max-width: 968px) {
-  .sponsor-container {
-    padding: 2rem 1.5rem;
+.kofi {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem 1.5rem;
 
-    .sponsor-content {
-      .sponsor-info {
-        padding: 2rem;
-
-        h1 {
-          font-size: 2.5rem;
-        }
-
-        p {
-          font-size: 1.1rem;
-        }
-      }
-
-      .sponsor-methods {
-        gap: 2rem;
-
-        .method {
-          padding: 2rem 1.5rem;
-
-          .bsc-address {
-            flex-direction: column;
-            gap: 1rem;
-
-            code {
-              font-size: 0.8rem;
-            }
-          }
-        }
-      }
-
-      .sponsor-form-wrapper {
-        padding: 2rem;
-      }
-    }
+  .external {
+    font-size: 0.7em;
+    opacity: 0.8;
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 900px) {
+  .sponsor-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
   .sponsor-container {
-    padding: 1.5rem 1rem;
+    padding-top: 3rem;
+  }
 
-    .sponsor-content {
-      .sponsor-info {
-        padding: 1.5rem;
+  .bsc {
+    grid-template-columns: 1fr;
+  }
 
-        h1 {
-          font-size: 2rem;
-        }
+  .qr {
+    justify-self: center;
+    text-align: center;
+  }
 
-        p {
-          font-size: 1rem;
-        }
-      }
+  .address,
+  .address .btn {
+    width: 100%;
+  }
+}
 
-      .sponsor-methods {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-
-        .method {
-          padding: 1.5rem 1rem;
-
-          .bsc-address {
-            code {
-              font-size: 0.75rem;
-            }
-          }
-        }
-      }
-
-      .sponsor-form-wrapper {
-        padding: 1.5rem;
-      }
-    }
-
-    .toast-notification {
-      bottom: 1rem;
-      left: 1rem;
-      right: 1rem;
-      transform: translateY(100px);
-
-      &.show {
-        transform: translateY(0);
-      }
-    }
+@media (prefers-reduced-motion: reduce) {
+  .channel,
+  .channel:hover {
+    transition: none;
+    transform: none;
   }
 }
