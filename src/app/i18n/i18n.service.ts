@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Lang, SUPPORTED_LANGS, TRANSLATIONS, TranslationKey } from './translations';
 
@@ -9,8 +10,12 @@ export class I18nService {
   private readonly langSubject = new BehaviorSubject<Lang>(this.initialLang());
   readonly lang$ = this.langSubject.asObservable();
 
-  constructor() {
+  constructor(
+    @Inject(PLATFORM_ID) private readonly platformId: string,
+    @Inject(DOCUMENT) private readonly document: Document
+  ) {
     this.applyDocumentLang(this.lang);
+    if (!isPlatformBrowser(this.platformId)) return;
 
     // 使用者沒手動選過語系時，跟著瀏覽器語言變化。
     window.addEventListener('languagechange', () => {
@@ -25,7 +30,7 @@ export class I18nService {
   }
 
   setLang(lang: Lang, persist = true): void {
-    if (persist) {
+    if (persist && isPlatformBrowser(this.platformId)) {
       try {
         localStorage.setItem(STORAGE_KEY, lang);
       } catch {
@@ -60,6 +65,7 @@ export class I18nService {
   }
 
   private readStored(): Lang | null {
+    if (!isPlatformBrowser(this.platformId)) return null;
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
       return SUPPORTED_LANGS.includes(stored as Lang) ? stored as Lang : null;
@@ -69,6 +75,8 @@ export class I18nService {
   }
 
   private detectBrowserLang(): Lang {
+    // Static HTML uses one predictable language; browser preferences apply after bootstrap.
+    if (!isPlatformBrowser(this.platformId)) return 'en';
     const candidates = navigator.languages?.length ? navigator.languages : [navigator.language];
 
     for (const candidate of candidates) {
@@ -85,6 +93,6 @@ export class I18nService {
   }
 
   private applyDocumentLang(lang: Lang): void {
-    document.documentElement.lang = lang;
+    this.document.documentElement.lang = lang;
   }
 }

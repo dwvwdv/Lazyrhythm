@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app.routes';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -27,7 +27,8 @@ import { TranslatePipe } from './i18n/translate.pipe';
     SnakeCursorComponent,
     TranslatePipe
   ],
-  providers: [],
+  // Reuse the prerendered DOM instead of discarding and re-rendering it on startup.
+  providers: [provideClientHydration(withEventReplay())],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -70,6 +70,9 @@ const en = {
   'about.subtitle': 'A Personal Experimental Laboratory',
   'about.storyTitle': 'The Lab Story',
   'about.storyP1': 'LazyRhythm is a personal experimental laboratory where curiosity meets code — a space for building projects across many domains, from financial technology and game development to cybersecurity tools and automation systems.',
+  // Search snippets: kept short enough that Google does not truncate them.
+  'seo.about': 'LazyRhythm is a personal experimental lab where curiosity meets code — projects in fintech, game development, security tools, and automation.',
+  'seo.art': 'Small generative pieces in LazyRhythm\'s own design language: Nord colour, square corners, hard offset shadows, and a lazy, swung beat.',
   'about.storyP2': 'Each project follows its own rhythm, grows out of genuine interest, and evolves through hands-on experimentation. Schedules stay loose, ideas roam freely, and innovation flows at a lazy, natural pace.',
   'about.principlesTitle': 'Core Principles',
   'about.principle.experimental.title': 'Experimental',
@@ -274,6 +277,8 @@ const zhTW: Record<TranslationKey, string> = {
   'about.subtitle': '一間個人實驗室',
   'about.storyTitle': '實驗室的故事',
   'about.storyP1': 'LazyRhythm 是一間讓好奇心與程式碼相遇的個人實驗室，專注打造橫跨多個領域的專案，從金融科技、遊戲開發，到資安工具與自動化系統。',
+  'seo.about': 'LazyRhythm 是讓好奇心與程式碼相遇的個人實驗室，打造橫跨金融科技、遊戲開發、資安工具與自動化的專案。',
+  'seo.art': '以 LazyRhythm 設計語言畫成的小型生成作品：Nord 色票、直角、硬偏移陰影，以及慵懶的搖擺節拍。',
   'about.storyP2': '每個專案都依照自己的節奏前進，從真正的興趣出發，在動手實驗中演化。時程保持彈性，想法自由生長，創新就照著悠閒的節奏慢慢成形。',
   'about.principlesTitle': '核心原則',
   'about.principle.experimental.title': '實驗精神',

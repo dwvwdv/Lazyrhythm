@@ -3,11 +3,14 @@ import {
   Component,
   ElementRef,
   Input,
+  Inject,
   NgZone,
   OnChanges,
   OnDestroy,
+  PLATFORM_ID,
   SimpleChanges
 } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import type p5 from 'p5';
 import { Subscription } from 'rxjs';
 import {
@@ -70,10 +73,12 @@ export class P5CanvasComponent implements AfterViewInit, OnChanges, OnDestroy {
   constructor(
     private host: ElementRef<HTMLElement>,
     private zone: NgZone,
-    private audio: OffbeatAudioService
+    private audio: OffbeatAudioService,
+    @Inject(PLATFORM_ID) private readonly platformId: string
   ) {}
 
   ngAfterViewInit(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
     this.viewReady = true;
     this.motionQuery = matchMedia('(prefers-reduced-motion: reduce)');
     this.zone.runOutsideAngular(() => {
@@ -92,6 +97,7 @@ export class P5CanvasComponent implements AfterViewInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
     this.destroyed = true;
     this.unmount();
     this.audioSub?.unsubscribe();

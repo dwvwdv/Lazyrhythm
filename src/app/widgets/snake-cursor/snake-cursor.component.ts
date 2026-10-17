@@ -1,5 +1,5 @@
-import { AfterViewInit, Component, ElementRef, HostListener, OnDestroy, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { AfterViewInit, Component, ElementRef, HostListener, Inject, OnDestroy, PLATFORM_ID, ViewChild } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 
 interface TrailPoint {
   x: number;
@@ -23,14 +23,20 @@ export class SnakeCursorComponent implements AfterViewInit, OnDestroy {
   private pointer: TrailPoint = { x: -100, y: -100 };
   private trail: TrailPoint[] = Array.from({ length: 5 }, () => ({ x: -100, y: -100 }));
 
+  constructor(@Inject(PLATFORM_ID) private readonly platformId: string) {}
+
   ngAfterViewInit(): void {
+    // The stylesheet hides the canvas for coarse pointers; static HTML leaves it untouched
+    // because hydration reuses this element in the browser.
+    if (!isPlatformBrowser(this.platformId)) {
+      this.enabled = false;
+      return;
+    }
     this.enabled = window.matchMedia('(pointer: fine)').matches &&
       !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    if (!this.enabled) {
-      this.canvasRef.nativeElement.hidden = true;
-      return;
-    }
+    this.canvasRef.nativeElement.hidden = !this.enabled;
+    if (!this.enabled) return;
 
     this.ctx = this.canvasRef.nativeElement.getContext('2d')!;
     this.resizeCanvas();
@@ -38,7 +44,7 @@ export class SnakeCursorComponent implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    cancelAnimationFrame(this.animationFrameId);
+    if (isPlatformBrowser(this.platformId)) cancelAnimationFrame(this.animationFrameId);
   }
 
   @HostListener('window:mousemove', ['$event'])
