@@ -36,6 +36,8 @@ for (const path of paths) {
   assert.equal(attribute(canonical[0], 'href'), `${origin}${path}`);
   assert.match(html, /<h1\b[^>]*>[^]*?\S[^]*?<\/h1>/i, `${path}: initial heading`);
   assert.doesNotMatch(html, /hreflang=/i, `${path}: no nonexistent language URLs`);
+  assert.doesNotMatch(html.match(/<html\b[^>]*>/i)[0], /data-theme=/, `${path}: theme follows the visitor, not the build`);
+  assert.match(html, /<app-root\b[^>]*\sngh=/, `${path}: hydration data for reusing the static DOM`);
   const structured = [...html.matchAll(/<script\b[^>]*type="application\/ld\+json"[^>]*>([^]*?)<\/script>/gi)];
   assert.equal(structured.length, 1, `${path}: one structured data block`);
   assert.ok(JSON.parse(structured[0][1])['@graph'].some(node => node['@type'] === 'WebSite'));
@@ -49,11 +51,18 @@ assert.equal(titles.size, paths.length, 'Each public page has a distinct title')
 assert.equal(descriptions.size, paths.length, 'Each public page has a distinct description');
 const sitemap = await readFile(join(output, 'sitemap.xml'), 'utf8');
 assert.match(sitemap, /<urlset xmlns="http:\/\/www.sitemaps.org\/schemas\/sitemap\/0.9">/);
-assert.deepEqual([...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(match => match[1]).sort(), paths.map(path => `${origin}${path}`).sort());
+const locs = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(match => match[1]);
+assert.equal(new Set(locs).size, locs.length, 'Sitemap URLs are unique');
+for (const path of paths) assert.ok(locs.includes(`${origin}${path}`), `Sitemap lists ${path}`);
+const articleLocs = locs.filter(loc => !paths.some(path => loc === `${origin}${path}`));
+for (const loc of articleLocs) {
+  assert.match(loc, /^https:\/\/lazyrhythm\.com\/articles\/[^/?#]+$/, `Sitemap only adds article URLs: ${loc}`);
+  assert.doesNotMatch(loc, /\/articles\/manage$/, 'Sitemap never lists author tools');
+}
 const robots = await readFile(join(output, 'robots.txt'), 'utf8');
 assert.match(robots, /User-agent:\s*\*/);
 assert.ok(robots.includes(`Sitemap: ${origin}/sitemap.xml`));
 assert.doesNotMatch(robots, /Disallow:\s*\/\s*$/m);
 const shell = await readFile(join(output, 'csr.html'), 'utf8');
 assert.doesNotMatch(shell, /rel="canonical"|property="og:url"|application\/ld\+json|noindex/i, 'Dynamic shell must not inherit home canonical or an initial noindex');
-console.log(`SEO artifacts verified: ${paths.length} public pages, sitemap, robots and dynamic shell.`);
+console.log(`SEO artifacts verified: ${paths.length} public pages, ${articleLocs.length} sitemap articles, robots and dynamic shell.`);

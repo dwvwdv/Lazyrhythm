@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build && ng run lazyrhythm:server && node scripts/prerender.mjs && npm run verify:seo",
+    "build": "ng build && ng run lazyrhythm:server && node scripts/prerender.mjs && node scripts/sitemap.mjs && npm run verify:seo",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "verify:seo": "node scripts/verify-seo.mjs"

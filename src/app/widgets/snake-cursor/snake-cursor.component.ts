@@ -26,18 +26,17 @@ export class SnakeCursorComponent implements AfterViewInit, OnDestroy {
   constructor(@Inject(PLATFORM_ID) private readonly platformId: string) {}
 
   ngAfterViewInit(): void {
+    // The stylesheet hides the canvas for coarse pointers; static HTML leaves it untouched
+    // because hydration reuses this element in the browser.
     if (!isPlatformBrowser(this.platformId)) {
       this.enabled = false;
-      this.canvasRef.nativeElement.hidden = true;
       return;
     }
     this.enabled = window.matchMedia('(pointer: fine)').matches &&
       !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    if (!this.enabled) {
-      this.canvasRef.nativeElement.hidden = true;
-      return;
-    }
+    this.canvasRef.nativeElement.hidden = !this.enabled;
+    if (!this.enabled) return;
 
     this.ctx = this.canvasRef.nativeElement.getContext('2d')!;
     this.resizeCanvas();

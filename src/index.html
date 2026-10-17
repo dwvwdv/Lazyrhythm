@@ -6,6 +6,8 @@
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light dark">
+  <!-- Apply a stored theme before first paint; prerendered pages are visible before Angular starts. -->
+  <script>try{var t=localStorage.getItem('darkMode');if(t!==null)document.documentElement.setAttribute('data-theme',t==='true'?'dark':'light')}catch(e){}</script>
   <meta name="description" content="Independent experiments across reading, security, finance, automation, and interactive software — each project following its own tempo.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://lazyrhythm.com/">
@@ -16,7 +18,9 @@
   <meta property="og:site_name" content="LazyRhythm">
   <meta property="og:locale" content="en_US">
   <meta property="og:image" content="https://lazyrhythm.com/assets/logo.png">
-  <meta name="twitter:card" content="summary_large_image">
+  <meta property="og:image:width" content="1024">
+  <meta property="og:image:height" content="1024">
+  <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Personal Experimental Laboratory | LazyRhythm">
   <meta name="twitter:description" content="Independent experiments across reading, security, finance, automation, and interactive software — each project following its own tempo.">
   <meta name="twitter:image" content="https://lazyrhythm.com/assets/logo.png">

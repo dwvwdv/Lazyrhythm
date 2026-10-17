@@ -53,6 +53,9 @@ export class ThemeService {
       }
     }
 
+    // Static HTML carries no theme so the stylesheet follows the visitor's system preference
+    // until the browser applies the stored choice (see the inline script in index.html).
+    if (!isPlatformBrowser(this.platformId)) return;
     this.document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
   }
 

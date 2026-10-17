@@ -4,7 +4,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { Subscription, filter } from 'rxjs';
 import { I18nService } from '../i18n/i18n.service';
 import { Article } from './article.service';
-import { PAGE_SEO, SITE_IMAGE, SITE_NAME, SITE_URL, SeoPage } from './seo.config';
+import { PAGE_SEO, SITE_IMAGE, SITE_IMAGE_SIZE, SITE_NAME, SITE_URL, SeoPage } from './seo.config';
 
 @Injectable({ providedIn: 'root' })
 export class SeoService implements OnDestroy {
@@ -65,7 +65,8 @@ export class SeoService implements OnDestroy {
       ? `/articles/${encodeURIComponent(this.articleContext.slug)}`
       : (this.router.url.split(/[?#]/)[0].replace(/\/+$/, '') || '/');
     const canonical = `${SITE_URL}/${path.replace(/^\/+/, '')}`;
-    const image = this.imageUrl(article?.cover_image_url) ?? SITE_IMAGE;
+    const cover = this.imageUrl(article?.cover_image_url);
+    const image = cover ?? SITE_IMAGE;
     const lang = article?.lang ?? this.i18n.lang;
 
     this.document.title = title;
@@ -78,7 +79,11 @@ export class SeoService implements OnDestroy {
     this.meta('property', 'og:site_name', SITE_NAME);
     this.meta('property', 'og:locale', lang === 'zh-TW' ? 'zh_TW' : 'en_US');
     this.meta('property', 'og:image', image);
-    this.meta('name', 'twitter:card', 'summary_large_image');
+    // Cover dimensions are unknown, so only the logo declares its size.
+    const size = cover ? null : String(SITE_IMAGE_SIZE);
+    this.meta('property', 'og:image:width', size);
+    this.meta('property', 'og:image:height', size);
+    this.meta('name', 'twitter:card', cover ? 'summary_large_image' : 'summary');
     this.meta('name', 'twitter:title', title);
     this.meta('name', 'twitter:description', description);
     this.meta('name', 'twitter:image', image);
@@ -92,7 +97,7 @@ export class SeoService implements OnDestroy {
         '@type': 'Article', '@id': `${canonical}#article`, mainEntityOfPage: canonical,
         headline: article.title, description, inLanguage: article.lang,
         publisher: { '@id': organization['@id'] },
-        ...(this.imageUrl(article.cover_image_url) ? { image: this.imageUrl(article.cover_image_url) } : {}),
+        ...(cover ? { image: cover } : {}),
         ...(article.author_name?.trim() ? { author: { '@type': 'Person', name: article.author_name } } : {}),
         ...(this.validDate(article.published_at) ? { datePublished: article.published_at } : {}),
         ...(this.validDate(article.updated_at) ? { dateModified: article.updated_at } : {})
@@ -101,8 +106,13 @@ export class SeoService implements OnDestroy {
     this.jsonLd({ '@context': 'https://schema.org', '@graph': graph });
   }
 
-  private meta(attribute: 'name' | 'property', key: string, content: string): void {
+  /** A null content removes the tag. */
+  private meta(attribute: 'name' | 'property', key: string, content: string | null): void {
     const nodes = Array.from(this.document.head.querySelectorAll<HTMLMetaElement>(`meta[${attribute}="${key}"]`));
+    if (content === null) {
+      nodes.forEach(node => node.remove());
+      return;
+    }
     const node = nodes.shift() ?? this.document.createElement('meta');
     nodes.forEach(duplicate => duplicate.remove());
     node.setAttribute(attribute, key);

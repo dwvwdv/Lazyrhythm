@@ -62,6 +62,8 @@ describe('SeoService', () => {
     expect(doc.title).toBe('A published experiment | LazyRhythm');
     expect(meta('description')).toBe('Actual article summary');
     expect(meta('og:image')).toBe(`${SITE_URL}/assets/cover.png`);
+    expect(meta('og:image:width')).toBeNull();
+    expect(meta('twitter:card')).toBe('summary_large_image');
     expect(meta('robots')).toBe('index, follow');
     const structuredArticle = graph().find(node => node['@type'] === 'Article');
     expect(structuredArticle.headline).toBe('A published experiment');
@@ -72,6 +74,9 @@ describe('SeoService', () => {
     expect(doc.title).toBe('Article | LazyRhythm');
     expect(meta('robots')).toBe('noindex, follow');
     expect(meta('og:image')).toBe(`${SITE_URL}/assets/logo.png`);
+    expect(meta('og:image:width')).toBe('1024');
+    expect(meta('og:image:height')).toBe('1024');
+    expect(meta('twitter:card')).toBe('summary');
     expect(graph().some(node => node['@type'] === 'Article')).toBeFalse();
     expect(meta('og:url')).toBe(`${SITE_URL}/articles/missing`);
     service.setArticle(article({ slug: 'missing', status: 'draft' }));
