@@ -16,6 +16,10 @@
     {
       "source": "/articles/manage/:path*",
       "headers": [{ "key": "X-Robots-Tag", "value": "noindex, follow" }]
+    },
+    {
+      "source": "/sitemap-articles.xml",
+      "headers": [{ "key": "Content-Type", "value": "application/xml; charset=utf-8" }]
     }
   ],
   "rewrites": [
@@ -26,6 +30,7 @@
     { "source": "/contact", "destination": "/contact/index.html" },
     { "source": "/sponsor", "destination": "/sponsor/index.html" },
     { "source": "/articles/manage/:path*", "destination": "/csr.html" },
-    { "source": "/articles/:slug", "destination": "/csr.html" }
+    { "source": "/articles/:slug", "destination": "/csr.html" },
+    { "source": "/sitemap-articles.xml", "destination": "https://pwrwclutauqxbqsqfkjj.supabase.co/functions/v1/sitemap-articles" }
   ]
 }

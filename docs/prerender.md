@@ -1,7 +1,7 @@
 # Static prerendering
 
 `npm run build` builds the browser app, builds an Angular server bundle for build-time
-rendering, renders the public page shells, writes the sitemap, and verifies the SEO output.
+rendering, renders the public page shells, writes the sitemap index, and verifies the SEO output.
 Deploy only `dist/lazyrhythm`; no Node server or database credentials are required in
 production. `dist/` is a build output and is not committed.
 The temporary server bundle stays in `.angular/prerender-server`.
@@ -21,19 +21,26 @@ server must not mutate elements the browser will reuse.
 
 This is progressive prerendering: project lists and article lists still load their live
 public data in the browser. The initial HTML contains the page introduction and loading
-state, not an empty-data claim or a stale database snapshot. `scripts/sitemap.mjs` reads
-published article slugs with the public anon key (the same read the browser makes) so
-crawlers can find article URLs without the list's JavaScript; if that request fails the
-build warns and the sitemap lists only the public pages. Rebuild to pick up newly
-published articles. Article detail pages and
+state, not an empty-data claim or a stale database snapshot. The build reads no database.
+
+`sitemap.xml` is a sitemap index. `scripts/sitemap.mjs` writes it and `sitemap-pages.xml`
+(the seven public pages) at build time. `/sitemap-articles.xml` is rewritten by
+`vercel.json` to the `sitemap-articles` Supabase Edge Function
+(`supabase/functions/sitemap-articles`), which lists published articles on each request,
+so crawlers find a newly published article without a rebuild or the list's JavaScript.
+Supabase serves function responses as `text/plain`, so `vercel.json` sets the XML content
+type for that path. Deploy the function with `verify_jwt` off: crawlers send no key, and it
+only reads public rows. Article detail pages and
 author tools remain client rendered. Full article-content prerendering would require a
 separate published-article build data pipeline and rebuild policy.
 
 `csr.html` is the neutral browser shell for dynamic routes. It intentionally has no home
 canonical, Open Graph URL, or home structured data. Keep the deployment rewrites in
 `vercel.json`: serve the seven prerendered paths explicitly and use `csr.html` for article
-detail and author routes. Other unknown URLs return HTTP 404. Serving the home `index.html` for every URL
-would send the wrong canonical and structured data before client navigation runs.
+detail and author routes, so those pages never start with the home canonical and
+structured data. Other unknown URLs fall back to the home page (HTTP 200, home canonical)
+through the Vercel project's Angular framework preset. This is intentional: the canonical
+consolidates them into the home page, and Search Console may list them as soft 404s.
 
 `npm start` and `npm run watch` retain the normal browser development workflow.
 `npm run verify:seo` checks an existing production build without rebuilding it.
