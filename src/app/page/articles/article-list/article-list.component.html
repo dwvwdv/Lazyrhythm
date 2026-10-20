@@ -13,7 +13,7 @@
   <p class="lr-empty" *ngIf="!isLoading && !loadError && articles.length === 0">{{ 'articles.empty' | t }}</p>
 
   <ol class="article-feed" *ngIf="!isLoading && articles.length">
-    <li *ngFor="let article of articles; let i = index" class="card article-item" [class.has-cover]="article.cover_image_url">
+    <li *ngFor="let article of articles; trackBy: trackArticle" class="card article-item" [class.has-cover]="article.cover_image_url">
       <a [routerLink]="['/articles', article.slug] | localize" class="article-link">
         <img *ngIf="article.cover_image_url" [src]="article.cover_image_url" alt="" class="cover" loading="lazy">
         <div class="article-body">

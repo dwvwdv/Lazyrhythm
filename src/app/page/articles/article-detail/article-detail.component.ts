@@ -9,6 +9,7 @@ import { pickVersion } from '../../../i18n/localize';
 import { TranslatePipe } from '../../../i18n/translate.pipe';
 import { LocalizePipe } from '../../../i18n/localize.pipe';
 import { SeoService } from '../../../services/seo.service';
+import { PrerenderedContent, articleState } from '../../../services/public-content';
 
 @Component({
   selector: 'app-article-detail',
@@ -29,7 +30,8 @@ export class ArticleDetailComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private articleService: ArticleService,
     readonly i18n: I18nService,
-    private readonly seo: SeoService
+    private readonly seo: SeoService,
+    private readonly prerendered: PrerenderedContent
   ) {}
 
   /** 目前語系沒有這篇文章的翻譯，正在顯示其他語系版本。 */
@@ -40,7 +42,10 @@ export class ArticleDetailComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // 切換語系時直接換成該語系的版本。
     this.subs.add(combineLatest([this.versions$, this.i18n.lang$]).subscribe(([versions, lang]) => {
-      const article = pickVersion(versions, lang);
+      const picked = pickVersion(versions, lang);
+      // The live refresh of a prerendered article returns equal rows; keep the rendered DOM.
+      const unchanged = picked && this.article && picked.id === this.article.id && picked.updated_at === this.article.updated_at;
+      const article = unchanged ? this.article : picked;
       if (article !== this.article) {
         this.article = article;
         this.html = article ? renderMarkdown(article.content) : '';
@@ -58,10 +63,15 @@ export class ArticleDetailComponent implements OnInit, OnDestroy {
 
   private async load(slug: string): Promise<void> {
     const requestId = ++this.requestId;
-    this.isLoading = true;
     this.loadError = false;
     this.seo.setArticlePending(slug);
-    this.versions$.next([]);
+    // A prerendered article page starts from the versions the build read, so the static HTML
+    // carries the article and its metadata; the browser then confirms it is still published.
+    const prerendered = this.prerendered.take(articleState(slug),
+      content => content.articles.filter(article => article.slug === slug));
+    this.isLoading = !prerendered;
+    this.versions$.next(prerendered ?? []);
+    if (this.prerendered.isPrerendering) return;
 
     try {
       const versions = await this.articleService.getPublishedVersions(slug);
@@ -70,7 +80,7 @@ export class ArticleDetailComponent implements OnInit, OnDestroy {
     } catch (error) {
       if (requestId !== this.requestId) return;
       console.error('Unable to load article', error);
-      this.loadError = true;
+      this.loadError = !prerendered;
     } finally {
       if (requestId === this.requestId) this.isLoading = false;
     }

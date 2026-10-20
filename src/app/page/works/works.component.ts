@@ -1,10 +1,12 @@
 import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { CommonModule, ViewportScroller, isPlatformBrowser } from '@angular/common';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { WebsiteDataService, WebsiteProjectRow } from '../../services/website-data.service';
 import { I18nService } from '../../i18n/i18n.service';
 import { Lang } from '../../i18n/translations';
 import { TranslatePipe } from '../../i18n/translate.pipe';
+import { PROJECTS_STATE, PrerenderedContent } from '../../services/public-content';
 
 export interface Project {
   id: string;
@@ -46,11 +48,21 @@ export class WorksComponent implements OnInit, OnDestroy {
   constructor(
     private websiteData: WebsiteDataService,
     private i18n: I18nService,
+    private prerendered: PrerenderedContent,
+    private router: Router,
+    private viewport: ViewportScroller,
     @Inject(PLATFORM_ID) private readonly platformId: string
   ) {}
 
   async ngOnInit(): Promise<void> {
-    // Prerender the page introduction; live project data is loaded in the browser.
+    // The prerendered page already lists the projects the build read; the browser starts from
+    // the same rows so hydration matches, then refreshes them from the live data.
+    const prerendered = this.prerendered.take(PROJECTS_STATE, content => content.projects);
+    if (prerendered) {
+      this.rows = prerendered;
+      this.localize();
+      this.isLoading = false;
+    }
     if (!isPlatformBrowser(this.platformId)) return;
     // 切換語系時直接換成對應的翻譯，不需重新抓資料；先訂閱再 await，避免元件銷毀後才建立訂閱。
     this.sub = this.i18n.lang$.subscribe(() => this.localize());
@@ -58,9 +70,13 @@ export class WorksComponent implements OnInit, OnDestroy {
     try {
       this.rows = await this.websiteData.getProjects();
       this.localize();
+      // A link to /works#<slug> from another page arrives before the cards exist.
+      const fragment = this.router.parseUrl(this.router.url).fragment;
+      if (!prerendered && fragment) setTimeout(() => this.viewport.scrollToAnchor(fragment));
     } catch (error) {
       console.error('Unable to load projects from Supabase', error);
-      this.loadError = true;
+      // Keep showing the prerendered projects when the refresh fails.
+      this.loadError = !prerendered;
     } finally {
       this.isLoading = false;
     }
@@ -80,6 +96,10 @@ export class WorksComponent implements OnInit, OnDestroy {
     }
 
     return this.projects.filter(project => project.category === this.selectedCategory);
+  }
+
+  trackProject(_: number, project: Project): string {
+    return project.id;
   }
 
   selectCategory(categoryId: string): void {

@@ -60,8 +60,12 @@ const pages: Routes = [
     data: { seo: 'sponsor' },
     loadComponent: () => import('./page/sponsor/sponsor.component').then(m => m.SponsorComponent)
   },
-  // Unknown paths go to the home page of their language (the host serves that page for them too).
-  { path: '**', redirectTo: '' }
+  // The host answers unknown paths with HTTP 404 and the same page.
+  {
+    path: '**',
+    data: { seo: 'notFound' },
+    loadComponent: () => import('./page/not-found/not-found.component').then(m => m.NotFoundComponent)
+  }
 ];
 
 // The same pages in each language: 中文 at the site root, English under /en.
@@ -72,7 +76,7 @@ export const routes: Routes = [
 
 @NgModule({
   // Start each page at the top; back/forward restores the previous position.
-  imports: [RouterModule.forRoot(routes, { scrollPositionRestoration: 'enabled' })],
+  imports: [RouterModule.forRoot(routes, { scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled' })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

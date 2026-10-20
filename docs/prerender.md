@@ -1,9 +1,9 @@
 # Static prerendering
 
 `npm run build` builds the browser app, builds an Angular server bundle for build-time
-rendering, renders the public page shells, writes the sitemap index, and verifies the SEO output.
-Deploy only `dist/lazyrhythm`; no Node server or database credentials are required in
-production. `dist/` is a build output and is not committed.
+rendering, reads the public content from Supabase, renders the public pages, writes the sitemap
+index and `llms.txt`, and verifies the SEO output. Deploy only `dist/lazyrhythm`; no Node server
+or database credentials are required in production. `dist/` is a build output and is not committed.
 The temporary server bundle stays in `.angular/prerender-server`.
 
 Each language has its own URLs: 繁體中文 at the root and English under `/en`. The generated
@@ -26,9 +26,37 @@ re-rendering it. Components must therefore render the same DOM structure on the 
 and in the browser; browser-only DOM changes belong after view initialisation, and the
 server must not mutate elements the browser will reuse.
 
-This is progressive prerendering: project lists and article lists still load their live
-public data in the browser. The initial HTML contains the page introduction and loading
-state, not an empty-data claim or a stale database snapshot. The build reads no database.
+The build reads the projects and every published article version with the public key, so row
+level security limits it to what any visitor can see (`loadPublicContent` in `src/main.server.ts`).
+A failed read stops the build, so Vercel keeps the previous deployment instead of publishing pages
+without projects or articles. Pages render these rows while prerendering (`PUBLIC_CONTENT`) and
+store them in the page's transfer state; in the browser the same components start from that state,
+so hydration reuses the server DOM, and then refresh from the live data. Lists use `trackBy`, so an
+unchanged refresh keeps the DOM, and a refresh that fails keeps the prerendered content.
+
+Prerendered with real content:
+
+- `/works` and `/en/works`: every project (title, description, tags, stack, link); each card has the
+  project slug as its `id`, so `/works#<slug>` links to it.
+- `/` and `/en`: the featured projects, linked to their cards on the projects page.
+- `/articles` and `/en/articles`: the published articles, one entry per slug in the page language
+  when it exists.
+- `/articles/<slug>` and `/en/articles/<slug>` for every published slug: the article in the URL's
+  language, or the other version with its canonical when only that one exists, with its title,
+  description, Open Graph, `Article` structured data and `hreflang` for existing versions only.
+  They are written to `articles/<slug>/index.html`; the host serves an existing file before any
+  rewrite, so an article published after the last build still opens through `csr.html`.
+- `404.html`: the not-found page, without canonical or hydration data, so the browser renders it
+  in the URL's language.
+
+Content changes reach the static pages through a rebuild. The migration
+`20261020080000_website_rebuild_on_publish.sql` calls a Vercel Deploy Hook (stored in Vault as
+`vercel_deploy_hook`) after a published article is created, changed, unpublished or deleted, and
+after any project change; draft edits do not rebuild. Without the secret the trigger does nothing.
+Until the rebuild finishes, the browser shows the live data on top of the prerendered pages.
+
+`llms.txt` is a plain-text overview for language-model tools (brand, projects, articles, pages),
+generated from the same content. Search engines index the pages themselves; it is optional.
 
 `sitemap.xml` is a sitemap index. `scripts/sitemap.mjs` writes it and `sitemap-pages.xml`
 (the public pages in both languages, each naming its alternates) at build time. `/sitemap-articles.xml` is rewritten by
@@ -41,19 +69,17 @@ created before April 2026), so the function's 10-minute `Cache-Control` is honou
 deployment: crawlers send no key, and it only reads public rows. It lists each article
 language version at its own URL (`/articles/<slug>` or `/en/articles/<slug>`) and, when both
 exist, names the other as an alternate. The function is deployed separately from the site, so
-deploy it together with any change to the URL scheme. Article detail pages and
-author tools remain client rendered. Full article-content prerendering would require a
-separate published-article build data pipeline and rebuild policy.
+deploy it together with any change to the URL scheme. Author tools remain client rendered.
 
 `csr.html` is the neutral browser shell for dynamic routes. It intentionally has no home
 canonical, Open Graph URL, or home structured data. Keep the deployment rewrites in
 `vercel.json`: serve the prerendered paths of both languages explicitly and use `csr.html` for
-article detail and author routes, so those pages never start with the home canonical and
-structured data. The last two rewrites send every other unmatched URL to the home page of its
-language (HTTP 200, home canonical), and the Angular router redirects it to that home page;
-existing files are served first, so assets are unaffected. This is
-intentional: the canonical consolidates them into the home page, and Search Console may
-list them as soft 404s.
+author routes and for article URLs without a prerendered file, so those pages never start with
+the home canonical and structured data. There is no catch-all rewrite: every other URL gets the
+host's HTTP 404 with `404.html`, and the Angular router shows the same not-found page for unknown
+links inside the app. An unknown article slug still opens `csr.html` with HTTP 200 and is marked
+`noindex` in the browser, because the static host cannot tell it from an article published after
+the last build.
 
 `npm start` and `npm run watch` retain the normal browser development workflow.
 `npm run verify:seo` checks an existing production build without rebuilding it.

@@ -30,7 +30,8 @@
     <article
       class="project-card"
       [class.featured]="project.featured"
-      *ngFor="let project of filteredProjects">
+      *ngFor="let project of filteredProjects; trackBy: trackProject"
+      [id]="project.id">
 
       <div class="project-image" [class.no-image]="!project.image">
         <img

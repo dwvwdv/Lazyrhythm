@@ -3,11 +3,18 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { TranslatePipe } from '../../i18n/translate.pipe';
+import { RouterModule } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { P5CanvasComponent } from '../../widgets/p5-canvas/p5-canvas.component';
+import { LocalizePipe } from '../../i18n/localize.pipe';
+import { I18nService } from '../../i18n/i18n.service';
+import { Project, localizeProject } from '../works/works.component';
+import { WebsiteDataService, WebsiteProjectRow } from '../../services/website-data.service';
+import { PROJECTS_STATE, PrerenderedContent } from '../../services/public-content';
 
 @Component({
     selector: 'app-home',
-    imports: [CommonModule, TranslatePipe, P5CanvasComponent],
+    imports: [CommonModule, RouterModule, TranslatePipe, LocalizePipe, P5CanvasComponent],
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.scss']
 })
@@ -17,6 +24,11 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Main feature areas of the experimental lab
   labAreas = [
+    {
+      icon: 'fas fa-book-open',
+      title: 'home.area.reading.title',
+      description: 'home.area.reading.desc'
+    },
     {
       icon: 'fas fa-chart-line',
       title: 'home.area.finance.title',
@@ -39,18 +51,45 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   ];
 
+  /** Featured projects, so the brand page names what LazyRhythm makes. */
+  products: Project[] = [];
+
+  private rows: WebsiteProjectRow[] = [];
+  private sub?: Subscription;
   private animations?: gsap.Context;
   private refreshFrame = 0;
 
   constructor(
     private host: ElementRef<HTMLElement>,
+    private i18n: I18nService,
+    private websiteData: WebsiteDataService,
+    private prerendered: PrerenderedContent,
     @Inject(PLATFORM_ID) private readonly platformId: string
   ) {
     if (isPlatformBrowser(this.platformId)) gsap.registerPlugin(ScrollTrigger);
   }
 
-  ngOnInit() {
-    // Initialization
+  async ngOnInit() {
+    // Same rows as the prerendered page during hydration, then the live ones.
+    const prerendered = this.prerendered.take(PROJECTS_STATE, content => content.projects);
+    if (prerendered) this.showProducts(prerendered);
+    if (!isPlatformBrowser(this.platformId)) return;
+    this.sub = this.i18n.lang$.subscribe(() => this.showProducts(this.rows));
+    try {
+      this.showProducts(await this.websiteData.getProjects());
+    } catch (error) {
+      // Keeps the prerendered projects, if any; the projects page reports the error.
+      console.error('Unable to load projects from Supabase', error);
+    }
+  }
+
+  trackProduct(_: number, product: Project): string {
+    return product.id;
+  }
+
+  private showProducts(rows: WebsiteProjectRow[]): void {
+    this.rows = rows;
+    this.products = rows.filter(row => row.featured).map(row => localizeProject(row, this.i18n.lang));
   }
 
   ngAfterViewInit() {
@@ -65,6 +104,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.sub?.unsubscribe();
     if (isPlatformBrowser(this.platformId)) cancelAnimationFrame(this.refreshFrame);
     this.animations?.revert();
   }

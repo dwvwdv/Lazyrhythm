@@ -1,0 +1,10 @@
+<section class="lr-page not-found">
+  <div class="lr-eyebrow">404</div>
+  <h1 class="lr-title">{{ 'notFound.title' | t }}</h1>
+  <p class="lr-subtitle">{{ 'notFound.text' | t }}</p>
+  <nav class="links">
+    <a [routerLink]="'/' | localize" class="btn btn-primary">{{ 'notFound.home' | t }}</a>
+    <a [routerLink]="'/works' | localize" class="btn">{{ 'notFound.works' | t }}</a>
+    <a [routerLink]="'/articles' | localize" class="btn">{{ 'notFound.articles' | t }}</a>
+  </nav>
+</section>
