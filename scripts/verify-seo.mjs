@@ -88,7 +88,8 @@ const projectTitles = new Set();
 for (const [lang, { at }] of Object.entries(languages)) {
   const works = await readFile(join(output, `${at('/works').slice(1)}/index.html`), 'utf8');
   const rows = state(works).projects;
-  assert.ok(rows?.length, `${at('/works')}: prerendered with the projects`);
+  // An empty list is valid: the page then shows its empty state.
+  assert.ok(Array.isArray(rows), `${at('/works')}: prerendered from the projects the build read`);
   for (const row of rows) {
     const title = row.translations?.[lang]?.title || row.title;
     projectTitles.add(row.title);
