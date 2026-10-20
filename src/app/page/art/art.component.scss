@@ -14,7 +14,7 @@ $mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 .hint { margin-top: 1rem; color: var(--accent-text); font: 700 .78rem/1.5 $mono; }
 .sound-row { display: flex; flex-wrap: wrap; align-items: center; gap: .9rem 1.2rem; margin-top: 1.4rem; padding: 0 4px 4px 0; }
 .sound-toggle { background: var(--surface-color); color: var(--text-color); border-color: var(--border-color); }
-.sound-toggle.on { background: var(--frost3); color: var(--snow2); border-color: var(--frost0); }
+.sound-toggle.on { background: var(--frost1); color: var(--polar0); border-color: var(--primary-border); }
 .sound-hint { color: var(--text-muted); font: .72rem/1.5 $mono; }
 
 .studies-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.75rem; padding: 0 8px 8px 0; }

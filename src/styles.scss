@@ -69,6 +69,7 @@
   --border-color: var(--polar3);
   --border-strong: var(--frost0);
   --border-control: var(--control-dark);
+  --primary-border: var(--frost0);
   --shadow-offset: var(--frost3);
   --success-ink: var(--green-ink-dark);
   --warning-ink: var(--aurora-yellow);
@@ -106,6 +107,7 @@
     --border-color: var(--border-light);
     --border-strong: var(--frost3);
     --border-control: var(--control-light);
+    --primary-border: var(--control-light); /* frost0 is 1.7:1 on snow; the fill alone is no boundary */
     --shadow-offset: var(--frost2);
     --success-ink: var(--green-ink-light);
     --warning-ink: var(--yellow-ink-light);
@@ -131,6 +133,7 @@
   --border-color: var(--border-light);
   --border-strong: var(--frost3);
   --border-control: var(--control-light);
+  --primary-border: var(--control-light); /* frost0 is 1.7:1 on snow; the fill alone is no boundary */
   --shadow-offset: var(--frost2);
   --success-ink: var(--green-ink-light);
   --warning-ink: var(--yellow-ink-light);
@@ -153,6 +156,7 @@
   --border-color: var(--polar3);
   --border-strong: var(--frost0);
   --border-control: var(--control-dark);
+  --primary-border: var(--frost0);
   --shadow-offset: var(--frost3);
   --success-ink: var(--green-ink-dark);
   --warning-ink: var(--aurora-yellow);
@@ -247,7 +251,7 @@ main {
   transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s ease;
 
   &:hover {
-    border-color: var(--frost0);
+    border-color: var(--accent-text);
     transform: translate(-2px, -2px);
     box-shadow: 6px 6px 0 var(--shadow-offset);
   }
@@ -262,7 +266,7 @@ main {
   &.btn-primary {
     background: var(--frost1);
     color: var(--polar0);
-    border-color: var(--frost0);
+    border-color: var(--primary-border);
   }
 }
 
