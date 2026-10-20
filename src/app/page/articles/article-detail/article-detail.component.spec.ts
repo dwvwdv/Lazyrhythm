@@ -1,9 +1,11 @@
+import { TransferState } from '@angular/core';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { I18nService } from '../../../i18n/i18n.service';
 import { Lang } from '../../../i18n/translations';
 import { Article, ArticleService } from '../../../services/article.service';
 import { SeoService } from '../../../services/seo.service';
+import { PrerenderedContent, PublicContent, articleState } from '../../../services/public-content';
 import { ArticleDetailComponent } from './article-detail.component';
 
 describe('ArticleDetailComponent loading and SEO', () => {
@@ -12,6 +14,8 @@ describe('ArticleDetailComponent loading and SEO', () => {
   let lang: BehaviorSubject<Lang>;
   let articles: jasmine.SpyObj<ArticleService>;
   let seo: jasmine.SpyObj<SeoService>;
+  let state: TransferState;
+  let create: (content?: PublicContent) => ArticleDetailComponent;
 
   function article(slug: string, language: Lang = 'en', status: 'published' | 'draft' = 'published'): Article {
     return { id: `${slug}-${language}`, slug, lang: language, status, title: `${slug} ${language}`, summary: 'Summary', content: '# Article',
@@ -31,7 +35,10 @@ describe('ArticleDetailComponent loading and SEO', () => {
     articles = jasmine.createSpyObj<ArticleService>('ArticleService', ['getPublishedVersions']);
     seo = jasmine.createSpyObj<SeoService>('SeoService', ['setArticlePending', 'setArticle', 'clearArticle']);
     const i18n = { lang$: lang.asObservable(), get lang() { return lang.value; } };
-    component = new ArticleDetailComponent({ paramMap: params.asObservable() } as ActivatedRoute, articles, i18n as I18nService, seo);
+    state = new TransferState();
+    create = content => new ArticleDetailComponent({ paramMap: params.asObservable() } as ActivatedRoute, articles, i18n as I18nService, seo,
+      new PrerenderedContent(state, content ?? null));
+    component = create();
   });
   afterEach(() => component.ngOnDestroy());
 
@@ -107,6 +114,47 @@ describe('ArticleDetailComponent loading and SEO', () => {
     await settle();
     expect(component.loadError).toBeTrue();
     expect(component.isLoading).toBeFalse();
+    expect(component.article).toBeNull();
+    expect(seo.setArticle.calls.mostRecent().args[0]).toBeNull();
+  });
+
+  it('renders the prerendered article from the build without a request and writes it to the transfer state', () => {
+    component = create({ projects: [], articles: [article('first'), article('other')] });
+    component.ngOnInit();
+    expect(articles.getPublishedVersions).not.toHaveBeenCalled();
+    expect(component.isLoading).toBeFalse();
+    expect(component.article?.slug).toBe('first');
+    expect(seo.setArticle.calls.mostRecent().args[0]?.slug).toBe('first');
+    expect(state.get(articleState('first'), null)?.map(version => version.slug)).toEqual(['first']);
+  });
+
+  it('starts the browser from the prerendered article and keeps it when the refresh fails', async () => {
+    state.set(articleState('first'), [article('first')]);
+    articles.getPublishedVersions.and.returnValue(Promise.reject(new Error('Unavailable')));
+    spyOn(console, 'error');
+    component.ngOnInit();
+    expect(component.isLoading).toBeFalse();
+    const shown = component.article;
+    expect(shown?.slug).toBe('first');
+    await settle();
+    expect(component.loadError).toBeFalse();
+    expect(component.article).toBe(shown);
+  });
+
+  it('keeps the rendered article when the refresh returns the same version', async () => {
+    state.set(articleState('first'), [article('first')]);
+    articles.getPublishedVersions.and.returnValue(Promise.resolve([article('first')]));
+    component.ngOnInit();
+    const shown = component.article;
+    await settle();
+    expect(component.article).toBe(shown);
+  });
+
+  it('removes a prerendered article that is no longer published', async () => {
+    state.set(articleState('first'), [article('first')]);
+    articles.getPublishedVersions.and.returnValue(Promise.resolve([]));
+    component.ngOnInit();
+    await settle();
     expect(component.article).toBeNull();
     expect(seo.setArticle.calls.mostRecent().args[0]).toBeNull();
   });

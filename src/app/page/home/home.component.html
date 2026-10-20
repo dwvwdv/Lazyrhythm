@@ -30,9 +30,33 @@
     </div>
   </section>
 
+  <section class="products-section" *ngIf="products.length">
+    <div class="section-heading">
+      <span class="section-index">02</span>
+      <div>
+        <p class="section-label">{{ 'home.productsLabel' | t }}</p>
+        <h2 class="section-title">{{ 'home.productsTitle' | t }}</h2>
+      </div>
+    </div>
+
+    <ul class="product-list">
+      <li class="product-item" *ngFor="let product of products; trackBy: trackProduct">
+        <h3 class="product-title">
+          <a [routerLink]="'/works' | localize" [fragment]="product.id">{{ product.title }}</a>
+        </h3>
+        <p class="product-description">{{ product.description }}</p>
+        <a [href]="product.link" class="product-link" target="_blank" rel="noopener noreferrer">
+          {{ 'home.productsOpen' | t }} <i class="fas fa-external-link-alt" aria-hidden="true"></i>
+        </a>
+      </li>
+    </ul>
+
+    <a [routerLink]="'/works' | localize" class="lr-link products-all">{{ 'home.productsAll' | t }} →</a>
+  </section>
+
   <section class="philosophy-section">
     <div class="philosophy-content">
-      <span class="section-index">02</span>
+      <span class="section-index">03</span>
       <p class="section-label">{{ 'home.principleLabel' | t }}</p>
       <h2>{{ 'home.principleTitle' | t }}</h2>
       <p>{{ 'home.principleP1' | t }}</p>

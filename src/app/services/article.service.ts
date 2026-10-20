@@ -35,7 +35,7 @@ export interface ArticlePayload {
 }
 
 const SUMMARY_COLUMNS = 'id,slug,title,summary,cover_image_url,tags,lang,status,published_at,updated_at,author_name';
-const FULL_COLUMNS = `${SUMMARY_COLUMNS},content`;
+export const FULL_COLUMNS = `${SUMMARY_COLUMNS},content`;
 
 @Injectable({ providedIn: 'root' })
 export class ArticleService {

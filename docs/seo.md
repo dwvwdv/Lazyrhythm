@@ -24,8 +24,22 @@
 - 語言只由網址決定：每頁宣告兩種語言的 `hreflang`，`x-default` 指向中文；文章只宣告實際存在的語言版本，只有單一語言的文章在另一語言網址顯示時，canonical 指向原語言網址。語系切換鈕會開啟另一語言的同一頁並記住選擇；儲存的選擇或瀏覽器語言與頁面不同時，只顯示可關閉的切換提示，不自動轉址。
 - 預渲染 HTML 不寫入主題，由 CSS 跟隨系統配色，`index.html` 的 inline script 在首次繪製前套用已儲存的主題；瀏覽器以 hydration 重用靜態 DOM，不會整頁重畫。
 - 預設分享圖為 1024×1024 logo，使用 `summary` 卡片並宣告尺寸；只有文章具封面圖時才用 `summary_large_image`。About 與 Art 使用專用的短描述，避免搜尋摘要被截斷。
-- 文章詳情維持 CSR，初始 `csr.html` 無首頁 canonical 或初始 noindex。未執行 JavaScript 的社群爬蟲無法取得文章專屬分享資訊；若要支援，需另加發布時文章預渲染及重建機制，或文章 SSR。
-- 靜態主機無法判斷文章是否存在：未知 slug 回應 200，再由瀏覽器設定 noindex；真正的文章 HTTP 404 需由 server 層判斷。其他未知路徑由 `vercel.json` 最後一條 rewrite 回應首頁（200，canonical 指向首頁）；這是刻意保留的行為，Search Console 可能將其列為軟 404，不需處理。
+- 文章詳情、作品與文章列表的預渲染與 404 見下方「第二階段（Issue #18）」。
+
+## 第二階段（Issue #18）
+
+- 建置時以公開金鑰讀取作品與已發布文章（受 RLS 限制，只讀得到訪客可見的資料），讀取失敗即中止建置，Vercel 保留上一版，不會部署空清單。
+- `/works`、`/articles`、首頁精選作品及每篇已發布文章的兩種語言網址，初始 HTML 即含真實內容；文章頁含專屬 title、description、canonical、OG、`Article` JSON-LD，`hreflang` 只列實際存在的語言版本。瀏覽器從頁面內的 transfer state 接手 hydration，再向 Supabase 更新。
+- 未知網址回 HTTP 404（`404.html`，`noindex`）；移除首頁 catch-all rewrite。不存在的文章 slug 仍由 `csr.html` 回 200 並在瀏覽器設 `noindex`，因為靜態主機無法分辨「不存在」與「建置後才發布」。
+- `Organization` 補上 `description`、`alternateName`（悠閒節奏）與 `sameAs`（目前只有 Ko-fi，其餘帳號確認屬於品牌後再加到 `SITE_SAME_AS`）；`WebSite` 宣告 `inLanguage`。
+- 首頁研究領域補上「閱讀與知識」，並列出精選作品、連到作品頁對應卡片。
+- `llms.txt` 由同一份資料產生；非 Google / ChatGPT 收錄必要條件。
+- 發布後重建：`supabase/migrations/20261020080000_website_rebuild_on_publish.sql`。啟用步驟：
+  1. Vercel Project → Settings → Git → Deploy Hooks 建立 Production 分支的 hook。
+  2. 套用 migration，並執行 `select vault.create_secret('<hook URL>', 'vercel_deploy_hook');`。
+  3. 發布或撤下一篇文章，確認 Vercel 出現由 hook 觸發的部署。
+- 2026-10-20 以 GPTBot、OAI-SearchBot、ClaudeBot、PerplexityBot、Googlebot、bingbot 的 User-Agent 請求 `/works` 皆回 200；這只排除以 UA 阻擋，Cloudflare 依 IP 驗證的 bot 規則仍需在 Cloudflare 後台（Security → Bots / AI Crawl Control）確認。
+- 尚未處理：`/products/:slug` 產品頁（需先備妥功能、限制、截圖等實際內容）、站外品牌連結統一、Search Console / Bing 驗收、Core Web Vitals 基線。
 
 ## 建置與部署驗證
 
@@ -35,9 +49,9 @@ npm run build
 CHROME_BIN=/path/to/chrome npm test -- --watch=false --browsers=ChromeHeadless
 ```
 
-`npm run build` 會驗證兩種語言共 14 頁的初始 metadata、`<html lang>`、hreflang、h1、首頁品牌正文、JSON-LD、hydration 資料、未寫死主題、robots、sitemap 與中性 CSR shell。產物留在 `dist/lazyrhythm`，暫存 server bundle 不需部署。`dist/` 不再納入版本控制，正式站內容以 Vercel 建置結果為準。
+`npm run build` 會驗證兩種語言共 14 頁及每篇已發布文章的初始 metadata、`<html lang>`、hreflang、h1、首頁品牌正文、JSON-LD、hydration 資料、未寫死主題、robots、sitemap、中性 CSR shell，以及作品／文章的初始內容、文章 canonical 與 hreflang、404 頁、無 catch-all rewrite 與 `llms.txt`。產物留在 `dist/lazyrhythm`，暫存 server bundle 不需部署。`dist/` 不再納入版本控制，正式站內容以 Vercel 建置結果為準。
 
-Vercel 須採本次 `vercel.json` 的建置命令及 rewrites，避免 Angular preset 只執行 `ng build`。公開頁面回傳預渲染 HTML，動態文章與管理頁使用 `csr.html`；不要將所有路徑 rewrite 至首頁。
+Vercel 須採本次 `vercel.json` 的建置命令及 rewrites，避免 Angular preset 只執行 `ng build`。公開頁面與已發布文章回傳預渲染 HTML，建置後才發布的文章與管理頁使用 `csr.html`；不要將所有路徑 rewrite 至首頁。
 
 網域切換須在 Vercel Project → Settings → Domains 完成：
 
@@ -58,7 +72,7 @@ curl -sS -D - -o /dev/null https://lazyrhythm.com/articles/PUBLISHED_SLUG
 curl -sS -D - -o /dev/null https://lazyrhythm.com/unknown-page
 ```
 
-需確認 apex 直接回應 200，www 以 308 轉向 apex 且保留路徑及查詢參數，HTTP 最終轉向 HTTPS apex，沒有轉址迴圈。另確認首頁及 `/about`、`/works` 與對應 `/en` 頁面的初始 metadata、hreflang 與正文正確；robots 為文字、`sitemap.xml` 與 `sitemap-articles.xml` 皆為 XML（後者須為 `application/xml`，不可是 Supabase 預設的 `text/plain`）；公開頁與已發布文章沒有意外 `X-Robots-Tag: noindex`、`nosnippet` 或 `max-snippet:0`。管理頁須有 noindex，未知一般路徑回首頁且 canonical 指向首頁。另以瀏覽器確認文章成功後解除 noindex、失敗時保留 noindex，並測試語系切換、返回首頁、p5 重抽及聲音。
+需確認 apex 直接回應 200，www 以 308 轉向 apex 且保留路徑及查詢參數，HTTP 最終轉向 HTTPS apex，沒有轉址迴圈。另確認首頁及 `/about`、`/works` 與對應 `/en` 頁面的初始 metadata、hreflang 與正文正確；robots 為文字、`sitemap.xml` 與 `sitemap-articles.xml` 皆為 XML（後者須為 `application/xml`，不可是 Supabase 預設的 `text/plain`）；公開頁與已發布文章沒有意外 `X-Robots-Tag: noindex`、`nosnippet` 或 `max-snippet:0`。管理頁須有 noindex；未知一般路徑（含 `/en/...`）回 404；已發布文章的初始 HTML 須含文章標題與內文（`curl` 即可看到，不需 JavaScript）。另以瀏覽器確認文章成功後解除 noindex、失敗時保留 noindex，並測試語系切換、返回首頁、p5 重抽及聲音。
 
 ## Search Console：部署後由有權限者完成
 

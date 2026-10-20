@@ -6,7 +6,7 @@ import { I18nService } from '../i18n/i18n.service';
 import { DEFAULT_LANG, languageVersions, localizePath } from '../i18n/lang-path';
 import { Lang, SUPPORTED_LANGS } from '../i18n/translations';
 import { Article } from './article.service';
-import { PAGE_SEO, SITE_IMAGE, SITE_IMAGE_SIZE, SITE_NAME, SITE_URL, SeoPage } from './seo.config';
+import { PAGE_SEO, SITE_ALTERNATE_NAME, SITE_IMAGE, SITE_IMAGE_SIZE, SITE_NAME, SITE_SAME_AS, SITE_URL, SeoPage } from './seo.config';
 
 @Injectable({ providedIn: 'root' })
 export class SeoService implements OnDestroy {
@@ -100,8 +100,14 @@ export class SeoService implements OnDestroy {
     this.link('canonical', canonical);
     this.alternates(versions.length > 1 ? versions : [], lang);
 
-    const organization = { '@type': 'Organization', '@id': `${SITE_URL}/#organization`, name: SITE_NAME, url: `${SITE_URL}/`, logo: SITE_IMAGE };
-    const website = { '@type': 'WebSite', '@id': `${SITE_URL}/#website`, name: SITE_NAME, url: `${SITE_URL}/`, publisher: { '@id': organization['@id'] } };
+    const organization = {
+      '@type': 'Organization', '@id': `${SITE_URL}/#organization`, name: SITE_NAME, alternateName: SITE_ALTERNATE_NAME,
+      url: `${SITE_URL}/`, logo: SITE_IMAGE, description: this.i18n.t('home.description', lang), sameAs: SITE_SAME_AS
+    };
+    const website = {
+      '@type': 'WebSite', '@id': `${SITE_URL}/#website`, name: SITE_NAME, url: `${SITE_URL}/`,
+      inLanguage: SUPPORTED_LANGS, publisher: { '@id': organization['@id'] }
+    };
     const graph: object[] = [organization, website];
     if (article) {
       graph.push({

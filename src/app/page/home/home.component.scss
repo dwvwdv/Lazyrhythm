@@ -107,6 +107,7 @@
   }
 
   .lab-areas-section,
+  .products-section,
   .philosophy-section {
     width: min(100% - 2rem, var(--content-width));
     margin: 0 auto;
@@ -141,12 +142,55 @@
 
   .lab-grid {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 1.25rem;
     padding: 0 8px 8px 0;
   }
 
+  .product-list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem;
+    padding: 0 8px 8px 0;
+    list-style: none;
+  }
+
+  .product-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding: 1.4rem;
+    border-left: 4px solid var(--aurora-green);
+  }
+
+  .product-title {
+    font-size: 1.15rem;
+    font-weight: 800;
+
+    a { color: var(--text-color); text-decoration: none; }
+    a:hover { color: var(--accent-text); }
+  }
+
+  .product-description {
+    flex: 1;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+  }
+
+  .product-link {
+    color: var(--accent-text);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
+
+  .products-all {
+    display: inline-block;
+    margin-top: 1.6rem;
+  }
+
   .lab-card,
+  .product-item,
   .philosophy-content {
     position: relative;
     background: var(--card-background);
@@ -211,7 +255,8 @@
 }
 
 @media (max-width: 900px) {
-  .home-container .lab-grid {
+  .home-container .lab-grid,
+  .home-container .product-list {
     grid-template-columns: repeat(2, 1fr);
   }
 }
@@ -220,6 +265,7 @@
   .home-container {
     .hero-section,
     .lab-areas-section,
+    .products-section,
     .philosophy-section {
       width: min(100% - 1rem, var(--content-width));
     }
@@ -229,7 +275,8 @@
       padding: 4rem 0 3rem;
     }
 
-    .lab-grid {
+    .lab-grid,
+    .product-list {
       grid-template-columns: 1fr;
     }
   }
