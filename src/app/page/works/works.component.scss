@@ -11,13 +11,13 @@
 
   .category-filter { display: flex; flex-wrap: wrap; gap: .7rem; margin-bottom: 2.5rem; padding: 0 8px 8px 0; }
   .category-btn { display: inline-flex; align-items: center; gap: .5rem; padding: .58rem .75rem; background: var(--surface-color); color: var(--text-muted); border: 2px solid var(--border-control); box-shadow: 3px 3px 0 var(--shadow-offset); cursor: pointer; font: 700 .72rem/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; letter-spacing: .06em; text-transform: uppercase; transition: transform .12s ease, box-shadow .12s ease, color .12s ease; }
-  .category-btn:hover { color: var(--text-color); transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--frost3); }
+  .category-btn:hover { color: var(--text-color); transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--shadow-offset); }
   /* Selected: the outline itself turns accent-text (≥3:1 on every surface in both themes), not just the label. */
   .category-btn.active { color: var(--accent-text); border-color: var(--accent-text); background: var(--elevated-surface); }
 
   .projects-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 1.5rem; padding: 0 8px 8px 0; }
-  .project-card { grid-column: span 6; position: relative; background: var(--surface-color); border: 2px solid var(--border-color); box-shadow: 4px 4px 0 var(--frost3); overflow: visible; transition: transform .12s ease, box-shadow .12s ease; }
-  .project-card:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--frost3); }
+  .project-card { grid-column: span 6; position: relative; background: var(--surface-color); border: 2px solid var(--border-color); box-shadow: 4px 4px 0 var(--shadow-offset); overflow: visible; transition: transform .12s ease, box-shadow .12s ease; }
+  .project-card:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--shadow-offset); }
 
   .project-image { position: relative; aspect-ratio: 16 / 9; min-height: 220px; display: grid; place-items: center; overflow: hidden; background: var(--polar0); border-bottom: 2px solid var(--border-color); }
   .project-image img { width: auto; height: auto; max-width: calc(100% - 3rem); max-height: calc(100% - 3rem); display: block; object-fit: contain; }

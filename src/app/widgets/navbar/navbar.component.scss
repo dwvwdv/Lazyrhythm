@@ -68,11 +68,11 @@
 
     a.active {
       color: var(--accent-text);
-      border-bottom-color: var(--frost1);
+      border-bottom-color: var(--accent-text);
     }
 
     .theme-toggle {
-      color: var(--frost0);
+      color: var(--accent-text);
       border-left: 2px solid var(--border-color);
     }
 
@@ -86,12 +86,12 @@
     margin-left: auto;
     padding: 0.55rem 0.65rem;
     background: transparent;
-    border: 2px solid var(--border-color);
+    border: 2px solid var(--border-control);
     color: var(--accent-text);
     font: 700 0.7rem/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
     letter-spacing: 0.08em;
     cursor: pointer;
-    box-shadow: 3px 3px 0 var(--frost3);
+    box-shadow: 3px 3px 0 var(--shadow-offset);
   }
 }
 
@@ -120,7 +120,7 @@
       flex-direction: column;
       background: var(--surface-color);
       border: 2px solid var(--border-color);
-      box-shadow: 4px 4px 0 var(--frost3);
+      box-shadow: 4px 4px 0 var(--shadow-offset);
 
       &.show {
         display: flex;

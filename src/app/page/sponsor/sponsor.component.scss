@@ -31,7 +31,7 @@ $mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 
   &:hover {
     transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0 var(--frost3);
+    box-shadow: 6px 6px 0 var(--shadow-offset);
   }
 }
 
@@ -81,7 +81,7 @@ $mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
     height: 180px;
     object-fit: contain;
     border: 2px solid var(--border-color);
-    box-shadow: 4px 4px 0 var(--frost3);
+    box-shadow: 4px 4px 0 var(--shadow-offset);
   }
 
   figcaption {

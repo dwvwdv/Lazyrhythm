@@ -89,7 +89,7 @@
     padding: 0.7rem 0.8rem;
     background: var(--surface-color);
     border: 2px solid var(--border-color);
-    box-shadow: 4px 4px 0 var(--frost3);
+    box-shadow: 4px 4px 0 var(--shadow-offset);
 
     i {
       width: 7px;
@@ -152,7 +152,7 @@
     background: var(--card-background);
     border: 2px solid var(--border-color);
     border-radius: 0;
-    box-shadow: 4px 4px 0 var(--frost3);
+    box-shadow: 4px 4px 0 var(--shadow-offset);
   }
 
   .lab-card {
@@ -161,7 +161,7 @@
 
     &:hover {
       transform: translate(-2px, -2px);
-      box-shadow: 6px 6px 0 var(--frost3);
+      box-shadow: 6px 6px 0 var(--shadow-offset);
     }
 
     .card-icon {

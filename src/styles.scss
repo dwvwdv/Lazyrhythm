@@ -283,7 +283,7 @@ textarea {
   outline: none;
 
   &:focus {
-    border-color: var(--frost1);
+    border-color: var(--accent-text);
   }
 
   &::placeholder {
