@@ -1,5 +1,9 @@
 /* Offbeat — LazyRhythm Design System
  * Nord × Brutalism. Structure 8 / Motion 5 for the portfolio.
+ * Values follow the Offbeat design system (tokens v1), shared with Driftread, WorldPane,
+ * LazyEmbed and Seamless Track. Raw Nord swatches are for fills, borders, dots and offset
+ * shadows; text always goes through a text token (--text-*, --accent-text, --*-ink), each of
+ * which holds ≥4.5:1 on all three surfaces of its theme.
  */
 :root {
   color-scheme: dark;
@@ -29,6 +33,26 @@
   --aurora-green: #A3BE8C;
   --aurora-purple: #B48EAD;
 
+  /* Derived for contrast (tokens v1). Dark values measured on polar0／polar1／polar2. */
+  --dim-ink: #B8BDC8;          /* 6.63／5.34／4.58 — the old dim #9AA0AD fell to 3.29 on polar2 */
+  --frost-ink: #93C6D4;        /* 6.70／5.40／4.63 — frost1 itself is 4.31 on polar2 */
+  --frost-deep: #456287;       /* light-theme accent text: 5.44 on snow2 */
+  --border-light: #B8C0CC;     /* light-theme structural border */
+  --control-dark: #919BB1;     /* control outlines: polar0 4.48／polar1 3.61／polar2 3.09 */
+  --control-light: #707E95;    /* control outlines: snow2 3.57／snow1 3.38／snow0 3.04 */
+  --red-ink-dark: #F4ABB2;
+  --green-ink-dark: #B0CB98;
+  --orange-ink-dark: #F3AE95;
+  --purple-ink-dark: #D9B2D3;
+  --red-ink-light: #96434B;
+  --green-ink-light: #4D683A;
+  --yellow-ink-light: #7A5E1E;
+  --orange-ink-light: #8A5330;
+  --purple-ink-light: #755770;
+
+  --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans TC', 'PingFang TC', 'Hiragino Sans TC', 'Microsoft JhengHei', 'Source Han Sans TC', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, SFMono-Regular, Menlo, Consolas, 'Noto Sans Mono CJK TC', monospace;
+
   /* Compatibility tokens used by existing components */
   --primary-color: var(--frost1);
   --secondary-color: var(--frost2);
@@ -40,10 +64,18 @@
   --input-background: var(--polar1);
   --text-color: var(--snow0);
   --text-secondary: var(--snow0);
-  --text-muted: var(--dim);
-  --accent-text: var(--frost1);
+  --text-muted: var(--dim-ink);
+  --accent-text: var(--frost-ink);
   --border-color: var(--polar3);
   --border-strong: var(--frost0);
+  --border-control: var(--control-dark);
+  --primary-border: var(--frost0);
+  --shadow-offset: var(--frost3);
+  --success-ink: var(--green-ink-dark);
+  --warning-ink: var(--aurora-yellow);
+  --caution-ink: var(--orange-ink-dark);
+  --danger-ink: var(--red-ink-dark);
+  --special-ink: var(--purple-ink-dark);
   --success-color: var(--aurora-green);
   --error-color: var(--aurora-red);
   --warning-color: var(--aurora-yellow);
@@ -70,10 +102,18 @@
     --input-background: var(--snow2);
     --text-color: var(--polar0);
     --text-secondary: var(--polar1);
-    --text-muted: #596273;
-    --accent-text: #456A8F; /* frost3 deepened: 4.9:1 on snow2 */
-    --border-color: var(--polar3);
+    --text-muted: var(--polar3); /* 6.40 on snow2 — legal in light mode, unlike on polar0 */
+    --accent-text: var(--frost-deep);
+    --border-color: var(--border-light);
     --border-strong: var(--frost3);
+    --border-control: var(--control-light);
+    --primary-border: var(--control-light); /* frost0 is 1.7:1 on snow; the fill alone is no boundary */
+    --shadow-offset: var(--frost2);
+    --success-ink: var(--green-ink-light);
+    --warning-ink: var(--yellow-ink-light);
+    --caution-ink: var(--orange-ink-light);
+    --danger-ink: var(--red-ink-light);
+    --special-ink: var(--purple-ink-light);
   }
 }
 
@@ -88,10 +128,18 @@
   --input-background: var(--snow2);
   --text-color: var(--polar0);
   --text-secondary: var(--polar1);
-  --text-muted: #596273;
-  --accent-text: #456A8F; /* frost3 deepened: 4.9:1 on snow2 */
-  --border-color: var(--polar3);
+  --text-muted: var(--polar3); /* 6.40 on snow2 — legal in light mode, unlike on polar0 */
+  --accent-text: var(--frost-deep);
+  --border-color: var(--border-light);
   --border-strong: var(--frost3);
+  --border-control: var(--control-light);
+  --primary-border: var(--control-light); /* frost0 is 1.7:1 on snow; the fill alone is no boundary */
+  --shadow-offset: var(--frost2);
+  --success-ink: var(--green-ink-light);
+  --warning-ink: var(--yellow-ink-light);
+  --caution-ink: var(--orange-ink-light);
+  --danger-ink: var(--red-ink-light);
+  --special-ink: var(--purple-ink-light);
 }
 
 :root[data-theme='dark'] {
@@ -103,10 +151,18 @@
   --input-background: var(--polar1);
   --text-color: var(--snow0);
   --text-secondary: var(--snow0);
-  --text-muted: var(--dim);
-  --accent-text: var(--frost1);
+  --text-muted: var(--dim-ink);
+  --accent-text: var(--frost-ink);
   --border-color: var(--polar3);
   --border-strong: var(--frost0);
+  --border-control: var(--control-dark);
+  --primary-border: var(--frost0);
+  --shadow-offset: var(--frost3);
+  --success-ink: var(--green-ink-dark);
+  --warning-ink: var(--aurora-yellow);
+  --caution-ink: var(--orange-ink-dark);
+  --danger-ink: var(--red-ink-dark);
+  --special-ink: var(--purple-ink-dark);
 }
 
 * {
@@ -126,7 +182,8 @@ body {
   min-height: 100vh;
   background: var(--background-color);
   color: var(--text-color);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang TC', 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
+  /* Latin families first, CJK after: the other way round pulls Latin glyphs from the CJK font. */
+  font-family: var(--font-sans);
   line-height: 1.65;
   transition: background-color 0.2s ease, color 0.2s ease;
   -webkit-font-smoothing: antialiased;
@@ -156,7 +213,7 @@ a {
 }
 
 :focus-visible {
-  outline: 2px solid var(--frost1);
+  outline: 2px solid var(--accent-text);
   outline-offset: 3px;
 }
 
@@ -170,7 +227,7 @@ main {
   background: var(--card-background);
   border: 2px solid var(--border-color);
   border-radius: 0;
-  box-shadow: 4px 4px 0 var(--frost3);
+  box-shadow: 4px 4px 0 var(--shadow-offset);
 }
 
 .btn {
@@ -181,11 +238,11 @@ main {
   padding: 0.7rem 1.15rem;
   background: transparent;
   color: var(--text-color);
-  border: 2px solid var(--border-color);
+  border: 2px solid var(--border-control);
   border-radius: 0;
-  box-shadow: 4px 4px 0 color-mix(in srgb, var(--frost3) 70%, transparent);
+  box-shadow: 4px 4px 0 var(--shadow-offset);
   cursor: pointer;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-family: var(--font-mono);
   font-size: 0.82rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -194,21 +251,22 @@ main {
   transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s ease;
 
   &:hover {
-    border-color: var(--frost0);
+    border-color: var(--accent-text);
     transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0 var(--frost3);
+    box-shadow: 6px 6px 0 var(--shadow-offset);
   }
 
+  /* Pressed: the button drops into its own shadow and the shadow goes to zero. */
   &:active {
-    transform: translate(3px, 3px);
-    box-shadow: 1px 1px 0 var(--frost3);
+    transform: translate(4px, 4px);
+    box-shadow: 0 0 0 var(--shadow-offset);
   }
 
+  /* frost1 fill + polar0 ink is 6.24:1 in both themes; snow2 on frost3 was 3.50:1. */
   &.btn-primary {
-    background: var(--frost3);
-    color: var(--snow2);
-    border-color: var(--frost0);
-    box-shadow: 4px 4px 0 var(--frost2);
+    background: var(--frost1);
+    color: var(--polar0);
+    border-color: var(--primary-border);
   }
 }
 
@@ -218,13 +276,14 @@ textarea {
   padding: 0.72rem 0.9rem;
   background: var(--input-background);
   color: var(--text-color);
-  border: 2px solid var(--border-color);
+  /* Controls need ≥3:1 outlines; the structural --border-color is decorative (1.59:1 in light mode). */
+  border: 2px solid var(--border-control);
   border-left: 4px solid var(--frost1);
   border-radius: 0;
   outline: none;
 
   &:focus {
-    border-color: var(--frost1);
+    border-color: var(--accent-text);
   }
 
   &::placeholder {
@@ -237,7 +296,7 @@ select {
   padding: 0.65rem 0.9rem;
   background: var(--input-background);
   color: var(--text-color);
-  border: 2px solid var(--border-color);
+  border: 2px solid var(--border-control);
   border-left: 4px solid var(--frost1);
   border-radius: 0;
 }
@@ -255,7 +314,7 @@ select {
   gap: 0.55rem;
   margin-bottom: 0.9rem;
   color: var(--text-muted);
-  font: 700 0.72rem/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font: 700 0.72rem/1 var(--font-mono);
   letter-spacing: 0.16em;
   text-transform: uppercase;
 
@@ -281,25 +340,25 @@ select {
 }
 
 .lr-mono {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-family: var(--font-mono);
 }
 
 .lr-empty {
   padding: 3rem 1rem;
   color: var(--text-muted);
   text-align: center;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-family: var(--font-mono);
 
   &::before {
     content: '~';
     display: block;
-    color: var(--frost1);
+    color: var(--accent-text);
     font-size: 2.6rem;
   }
 
   &.is-error::before {
     content: '!';
-    color: var(--aurora-red);
+    color: var(--danger-ink);
   }
 }
 
@@ -308,8 +367,8 @@ select {
   display: inline-block;
   padding: 0.28rem 0.5rem;
   background: var(--elevated-surface);
-  color: var(--frost1);
-  font: 700 0.66rem/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  color: var(--accent-text);
+  font: 700 0.66rem/1 var(--font-mono);
   letter-spacing: 0.06em;
 }
 
@@ -318,17 +377,19 @@ select {
   text-transform: uppercase;
 
   &.is-draft {
-    color: color-mix(in srgb, var(--aurora-orange) 70%, var(--text-color));
+    color: var(--warning-ink);
+    border-color: var(--aurora-yellow);
   }
 
   &.is-published {
-    color: color-mix(in srgb, var(--aurora-green) 65%, var(--text-color));
+    color: var(--success-ink);
+    border-color: var(--aurora-green);
   }
 }
 
 .lr-link {
-  color: var(--frost1);
-  font: 700 0.75rem/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  color: var(--accent-text);
+  font: 700 0.75rem/1 var(--font-mono);
   letter-spacing: 0.06em;
   text-decoration: none;
   text-transform: uppercase;
@@ -347,13 +408,13 @@ select {
   > * + * { margin-top: 1.1em; }
   h1, h2, h3, h4 { margin-top: 1.8em; font-weight: 900; letter-spacing: -0.02em; }
   h2 { padding-bottom: 0.35em; border-bottom: 2px solid var(--border-color); }
-  a { color: var(--frost1); }
+  a { color: var(--accent-text); }
   ul, ol { padding-left: 1.5em; }
   li + li { margin-top: 0.3em; }
   img { display: block; max-width: 100%; height: auto; border: 2px solid var(--border-color); }
   blockquote { padding: 0.4em 1em; border-left: 4px solid var(--frost1); background: var(--surface-color); color: var(--text-muted); }
-  code { padding: 0.1em 0.35em; background: var(--elevated-surface); font: 0.9em ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
-  pre { padding: 1rem; overflow-x: auto; background: var(--polar0); color: var(--snow0); border: 2px solid var(--border-color); box-shadow: 4px 4px 0 var(--frost3); }
+  code { padding: 0.1em 0.35em; background: var(--elevated-surface); font: 0.9em var(--font-mono); }
+  pre { padding: 1rem; overflow-x: auto; background: var(--polar0); color: var(--snow0); border: 2px solid var(--border-color); box-shadow: 4px 4px 0 var(--shadow-offset); }
   pre code { padding: 0; background: none; }
   hr { border: 0; border-top: 2px dashed var(--border-color); }
   table { width: 100%; border-collapse: collapse; display: block; overflow-x: auto; }
