@@ -18,7 +18,8 @@ export const articleState = (slug: string) => makeStateKey<Article[]>(`article:$
 /**
  * Content rendered into the current page. While prerendering it comes from the build and is
  * written into the page's transfer state; the browser reads it back from there, so hydration
- * renders exactly the server's DOM before any live request finishes.
+ * renders exactly the server's DOM before any live request finishes. The browser removes each
+ * entry on first use, so later in-app visits load live data instead of the build snapshot.
  */
 @Injectable({ providedIn: 'root' })
 export class PrerenderedContent {
@@ -38,7 +39,9 @@ export class PrerenderedContent {
       this.state.set(key, value);
       return value;
     }
-    return this.state.get(key, null);
+    const value = this.state.get(key, null);
+    this.state.remove(key);
+    return value;
   }
 }
 

@@ -1,5 +1,6 @@
 import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { CommonModule, ViewportScroller, isPlatformBrowser } from '@angular/common';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { WebsiteDataService, WebsiteProjectRow } from '../../services/website-data.service';
 import { I18nService } from '../../i18n/i18n.service';
@@ -48,6 +49,8 @@ export class WorksComponent implements OnInit, OnDestroy {
     private websiteData: WebsiteDataService,
     private i18n: I18nService,
     private prerendered: PrerenderedContent,
+    private router: Router,
+    private viewport: ViewportScroller,
     @Inject(PLATFORM_ID) private readonly platformId: string
   ) {}
 
@@ -67,6 +70,9 @@ export class WorksComponent implements OnInit, OnDestroy {
     try {
       this.rows = await this.websiteData.getProjects();
       this.localize();
+      // A link to /works#<slug> from another page arrives before the cards exist.
+      const fragment = this.router.parseUrl(this.router.url).fragment;
+      if (!prerendered && fragment) setTimeout(() => this.viewport.scrollToAnchor(fragment));
     } catch (error) {
       console.error('Unable to load projects from Supabase', error);
       // Keep showing the prerendered projects when the refresh fails.

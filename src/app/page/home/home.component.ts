@@ -70,16 +70,15 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   async ngOnInit() {
-    // Same rows as the prerendered page during hydration; a client-side visit loads them.
+    // Same rows as the prerendered page during hydration, then the live ones.
     const prerendered = this.prerendered.take(PROJECTS_STATE, content => content.projects);
     if (prerendered) this.showProducts(prerendered);
     if (!isPlatformBrowser(this.platformId)) return;
     this.sub = this.i18n.lang$.subscribe(() => this.showProducts(this.rows));
-    if (prerendered) return;
     try {
       this.showProducts(await this.websiteData.getProjects());
     } catch (error) {
-      // The section stays empty; the projects page reports the error.
+      // Keeps the prerendered projects, if any; the projects page reports the error.
       console.error('Unable to load projects from Supabase', error);
     }
   }

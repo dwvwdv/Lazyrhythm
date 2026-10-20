@@ -136,6 +136,7 @@ describe('ArticleDetailComponent loading and SEO', () => {
     expect(component.isLoading).toBeFalse();
     const shown = component.article;
     expect(shown?.slug).toBe('first');
+    expect(state.hasKey(articleState('first'))).withContext('used for hydration only').toBeFalse();
     await settle();
     expect(component.loadError).toBeFalse();
     expect(component.article).toBe(shown);
