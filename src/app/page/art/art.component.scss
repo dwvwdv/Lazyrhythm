@@ -11,7 +11,7 @@ $mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 .beat-dot { width: 8px; height: 8px; background: var(--frost1); animation: art-beat 1.43s steps(1, end) infinite; }
 .title { margin-bottom: 1rem; color: var(--text-color); font-size: clamp(2.6rem, 7vw, 5.2rem); line-height: .98; letter-spacing: -.055em; font-weight: 900; }
 .subtitle { max-width: 680px; color: var(--text-muted); }
-.hint { margin-top: 1rem; color: var(--frost1); font: 700 .78rem/1.5 $mono; }
+.hint { margin-top: 1rem; color: var(--accent-text); font: 700 .78rem/1.5 $mono; }
 .sound-row { display: flex; flex-wrap: wrap; align-items: center; gap: .9rem 1.2rem; margin-top: 1.4rem; padding: 0 4px 4px 0; }
 .sound-toggle { background: var(--surface-color); color: var(--text-color); border-color: var(--border-color); }
 .sound-toggle.on { background: var(--frost3); color: var(--snow2); border-color: var(--frost0); }
@@ -23,10 +23,10 @@ $mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 .study-card:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--frost3); }
 
 .study-bar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .55rem .9rem; background: var(--elevated-surface); border-bottom: 2px solid var(--border-color); font: 700 .66rem/1 $mono; letter-spacing: .12em; }
-.study-index { color: var(--frost1); }
+.study-index { color: var(--accent-text); }
 .study-tempo { flex: 1; color: var(--text-muted); text-align: right; }
 .channel { padding: .2rem .45rem; background: transparent; color: var(--text-muted); border: 1px solid var(--border-color); cursor: pointer; font: inherit; letter-spacing: .08em; }
-.channel.live { color: var(--frost1); border-color: var(--frost1); }
+.channel.live { color: var(--accent-text); border-color: var(--frost1); }
 .channel[aria-pressed='false'] { text-decoration: line-through; }
 .channel:focus-visible { outline: 2px solid var(--frost1); outline-offset: 2px; }
 
@@ -39,7 +39,7 @@ $mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 
 .study-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .8rem; padding: 1rem 1.2rem 1.2rem; }
 .seed { color: var(--text-muted); font: 700 .7rem/1 $mono; letter-spacing: .12em; text-transform: uppercase; }
-.seed b { color: var(--aurora-purple); letter-spacing: .06em; }
+.seed b { color: var(--special-ink); letter-spacing: .06em; }
 .buttons { display: flex; gap: .7rem; padding: 0 4px 4px 0; }
 
 .btn { padding: .55rem .7rem; background: var(--frost3); color: var(--snow2); border: 2px solid var(--frost0); box-shadow: 4px 4px 0 var(--frost2); cursor: pointer; font: 700 .7rem/1 $mono; letter-spacing: .06em; text-transform: uppercase; transition: transform .1s ease, box-shadow .1s ease; }

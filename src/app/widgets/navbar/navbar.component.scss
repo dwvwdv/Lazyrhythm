@@ -26,7 +26,7 @@
   }
 
   .brand-slash {
-    color: var(--frost1);
+    color: var(--accent-text);
     font-weight: 900;
   }
 
@@ -67,7 +67,7 @@
     }
 
     a.active {
-      color: var(--frost1);
+      color: var(--accent-text);
       border-bottom-color: var(--frost1);
     }
 
@@ -77,7 +77,7 @@
     }
 
     .lang-toggle {
-      color: var(--aurora-purple);
+      color: var(--special-ink);
     }
   }
 
@@ -87,7 +87,7 @@
     padding: 0.55rem 0.65rem;
     background: transparent;
     border: 2px solid var(--border-color);
-    color: var(--frost1);
+    color: var(--accent-text);
     font: 700 0.7rem/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
     letter-spacing: 0.08em;
     cursor: pointer;

@@ -36,7 +36,7 @@
 }
 
 .error {
-  color: var(--error-color);
+  color: var(--danger-ink);
   font-size: 0.9rem;
 }
 
@@ -90,7 +90,7 @@
     cursor: pointer;
   }
 
-  .danger { color: var(--aurora-red); }
+  .danger { color: var(--danger-ink); }
 }
 
 @media (max-width: 640px) {
