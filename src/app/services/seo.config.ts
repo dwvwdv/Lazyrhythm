@@ -11,7 +11,7 @@ export const SITE_IMAGE = `${SITE_URL}/assets/logo.png`;
 /** The square logo is shown as a small card; only landscape article covers use the large card. */
 export const SITE_IMAGE_SIZE = 1024;
 
-export type SeoPage = 'home' | 'articles' | 'article' | 'manage' | 'art' | 'about' | 'works' | 'contact' | 'sponsor' | 'notFound';
+export type SeoPage = 'home' | 'articles' | 'article' | 'product' | 'manage' | 'art' | 'about' | 'works' | 'contact' | 'sponsor' | 'notFound';
 
 export interface PageSeo {
   title: { en: string; 'zh-TW': string };
@@ -23,6 +23,8 @@ export const PAGE_SEO: Record<SeoPage, PageSeo> = {
   home: { title: { en: 'Personal Experimental Laboratory', 'zh-TW': '個人實驗室' }, description: 'home.description' },
   articles: { title: { en: 'Articles & Dev Logs', 'zh-TW': '文章與開發日誌' }, description: 'articles.subtitle' },
   article: { title: { en: 'Article', 'zh-TW': '文章' }, description: 'articles.subtitle', noindex: true },
+  // Until the product is known (or when the slug has no page) the URL is not indexable.
+  product: { title: { en: 'Product', 'zh-TW': '產品' }, description: 'works.subtitle', noindex: true },
   manage: { title: { en: 'Article Management', 'zh-TW': '文章管理' }, description: 'articles.subtitle', noindex: true },
   art: { title: { en: 'Generative Art', 'zh-TW': '生成藝術' }, description: 'seo.art' },
   about: { title: { en: 'About', 'zh-TW': '關於' }, description: 'seo.about' },

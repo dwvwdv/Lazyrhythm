@@ -1,0 +1,95 @@
+<article class="lr-page product" *ngIf="product && content as page; else missing">
+  <nav class="crumbs lr-mono" [attr.aria-label]="'product.breadcrumb' | t">
+    <a [routerLink]="'/works' | localize" [fragment]="product.slug" class="lr-link">← {{ 'product.back' | t }}</a>
+  </nav>
+
+  <header class="product-header" [attr.lang]="page.lang">
+    <p class="lr-eyebrow">{{ page.eyebrow }}</p>
+    <p *ngIf="isFallback" class="fallback-note lr-mono" role="note" [attr.lang]="i18n.lang">{{ 'product.fallback.' + page.lang | t }}</p>
+    <h1 class="lr-title">{{ page.name }}<span *ngIf="page.alternateName" class="alt-name">{{ page.alternateName }}</span></h1>
+    <p class="tagline">{{ page.tagline }}</p>
+    <div class="actions">
+      <a *ngFor="let link of page.links; let first = first" [href]="link.url" class="btn" [class.btn-primary]="first"
+        target="_blank" rel="noopener noreferrer">{{ link.label }} <i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+    </div>
+  </header>
+
+  <figure class="shot hero" *ngIf="shows(page.hero)">
+    <img [src]="src(page.hero)" [alt]="page.hero.alt" [attr.width]="page.hero.width" [attr.height]="page.hero.height"
+      fetchpriority="high" (error)="hide(page.hero)">
+  </figure>
+
+  <dl class="facts card" [attr.lang]="page.lang">
+    <div *ngFor="let fact of page.facts">
+      <dt class="lr-mono">{{ fact.label }}</dt>
+      <dd>{{ fact.value }}</dd>
+    </div>
+  </dl>
+
+  <nav class="toc lr-mono" [attr.aria-label]="'product.toc' | t">
+    <a *ngFor="let section of page.sections" [routerLink]="'/products/' + product.slug | localize" [fragment]="section.id">{{ section.heading }}</a>
+    <a [routerLink]="'/products/' + product.slug | localize" fragment="faq">{{ 'product.faq' | t }}</a>
+  </nav>
+
+  <div class="body" [attr.lang]="page.lang">
+    <section *ngFor="let section of page.sections" class="block" [id]="section.id">
+      <h2>{{ section.heading }}</h2>
+      <p *ngFor="let paragraph of section.paragraphs">{{ paragraph }}</p>
+      <ng-container *ngIf="section.items?.length">
+        <ol *ngIf="section.ordered; else bullets" class="steps">
+          <li *ngFor="let item of section.items"><strong *ngIf="item.title">{{ item.title }}</strong> {{ item.text }}</li>
+        </ol>
+        <ng-template #bullets>
+          <ul class="items" [class.grid]="section.items!.length > 3 && section.items![0].title">
+            <li *ngFor="let item of section.items"><strong *ngIf="item.title">{{ item.title }}</strong> {{ item.text }}</li>
+          </ul>
+        </ng-template>
+      </ng-container>
+      <p *ngIf="section.note" class="note">{{ section.note }}</p>
+      <figure class="shot" *ngIf="shows(section.image)">
+        <img [src]="src(section.image)" [alt]="section.image.alt" [attr.width]="section.image.width" [attr.height]="section.image.height"
+          loading="lazy" (error)="hide(section.image)">
+      </figure>
+    </section>
+
+    <section class="block" id="faq">
+      <h2>{{ 'product.faq' | t }}</h2>
+      <div class="faq" *ngFor="let entry of page.faq">
+        <h3>{{ entry.question }}</h3>
+        <p>{{ entry.answer }}</p>
+      </div>
+    </section>
+
+    <section class="block" id="links">
+      <h2>{{ 'product.links' | t }}</h2>
+      <ul class="items">
+        <li *ngFor="let link of page.links">
+          <a [href]="link.url" target="_blank" rel="noopener noreferrer">{{ link.label }}</a>
+          <span *ngIf="link.note" class="lr-mono muted"> · {{ link.note }}</span>
+        </li>
+        <li><a [routerLink]="'/works' | localize" [fragment]="product.slug">{{ 'product.allWorks' | t }}</a></li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="block related" *ngIf="related.length">
+    <h2>{{ 'product.related' | t }}</h2>
+    <ul class="items">
+      <li *ngFor="let article of related; trackBy: trackArticle">
+        <a [routerLink]="['/articles', article.slug] | localize" [attr.lang]="article.lang">{{ article.title }}</a>
+      </li>
+    </ul>
+  </section>
+
+  <footer class="product-footer lr-mono">
+    <span>{{ 'product.updated' | t }} <time [attr.datetime]="product.updated">{{ product.updated }}</time></span>
+    <span [attr.lang]="page.lang">{{ page.sourceNote }}</span>
+  </footer>
+</article>
+
+<ng-template #missing>
+  <section class="lr-page">
+    <h1 class="lr-title">{{ 'product.notFound' | t }}</h1>
+    <a [routerLink]="'/works' | localize" class="lr-link">← {{ 'product.back' | t }}</a>
+  </section>
+</ng-template>

@@ -47,14 +47,16 @@ describe('HomeComponent prerendering', () => {
         provideRouter([]),
         { provide: PLATFORM_ID, useValue: 'server' },
         { provide: WebsiteDataService, useValue: { getProjects } },
-        { provide: PUBLIC_CONTENT, useValue: { projects: [project('seamless-track', true), project('hidden', false)], articles: [] } }
+        { provide: PUBLIC_CONTENT, useValue: { projects: [project('seamless-track', true), project('driftread', true), project('hidden', false)], articles: [] } }
       ]
     });
     const fixture = TestBed.createComponent(HomeComponent);
     fixture.detectChanges();
     const items = Array.from(fixture.nativeElement.querySelectorAll('.product-title a') as NodeListOf<HTMLAnchorElement>);
-    expect(items.map(item => item.textContent?.trim())).toEqual(['seamless-track']);
-    expect(items[0].getAttribute('href')).toBe('/works#seamless-track');
+    expect(items.map(item => item.textContent?.trim())).toEqual(['seamless-track', 'driftread']);
+    // A product page when the project has one, else the project's card on /works.
+    expect(items[0].getAttribute('href')).toBe('/products/seamless-track');
+    expect(items[1].getAttribute('href')).toBe('/works#driftread');
     expect(getProjects).not.toHaveBeenCalled();
   });
 });

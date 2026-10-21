@@ -6,6 +6,8 @@ import { WebsiteProjectRow } from './website-data.service';
 export interface PublicContent {
   projects: WebsiteProjectRow[];
   articles: Article[];
+  /** Product image files present in the build output; pages leave out images not exported yet. */
+  productAssets?: string[];
 }
 
 /** Provided only while prerendering, so the static HTML contains the real content. */
@@ -14,6 +16,8 @@ export const PUBLIC_CONTENT = new InjectionToken<PublicContent>('PUBLIC_CONTENT'
 export const PROJECTS_STATE = makeStateKey<WebsiteProjectRow[]>('projects');
 export const ARTICLES_STATE = makeStateKey<ArticleSummary[]>('articles');
 export const articleState = (slug: string) => makeStateKey<Article[]>(`article:${slug}`);
+export const productAssetsState = (slug: string) => makeStateKey<string[]>(`product-assets:${slug}`);
+export const productArticlesState = (slug: string) => makeStateKey<ArticleSummary[]>(`product-articles:${slug}`);
 
 /**
  * Content rendered into the current page. While prerendering it comes from the build and is

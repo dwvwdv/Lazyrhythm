@@ -1,9 +1,9 @@
-import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { access, readFile, writeFile, mkdir } from 'node:fs/promises';
 import { createRequire } from 'node:module';
 import { dirname, join, resolve } from 'node:path';
 
 const require = createRequire(import.meta.url);
-const { prerender, loadPublicContent, localizeProject, SITE_URL, TRANSLATIONS } = require('../.angular/prerender-server/main.js');
+const { prerender, loadPublicContent, localizeProject, PRODUCTS, productImages, SITE_URL, TRANSLATIONS } = require('../.angular/prerender-server/main.js');
 const output = resolve('dist/lazyrhythm');
 const template = (await readFile(join(output, 'index.html'), 'utf8'))
   .replace(/<app-root\b[^>]*>[\s\S]*?<\/app-root>/i, '<app-root></app-root>');
@@ -25,8 +25,16 @@ await writeFile(join(output, 'csr.html'), shell);
 
 // The pages list the projects and articles that are public now. A failed read stops the build,
 // so a deployment never replaces the live site with empty lists.
-const content = await loadPublicContent();
-console.log(`Public content: ${content.projects.length} projects, ${content.articles.length} published article versions`);
+const exists = file => access(join(output, file)).then(() => true, () => false);
+// Product images are exported by hand into src/assets/products/; a page names only the files
+// that made it into this build, so a missing export never becomes a broken image or social card.
+const productFiles = [...new Set(PRODUCTS.flatMap(product => product.versions.flatMap(productImages)).map(image => image.file))];
+const productAssets = [];
+for (const file of productFiles) if (await exists(file)) productAssets.push(file);
+const missingAssets = productFiles.filter(file => !productAssets.includes(file));
+if (missingAssets.length) console.warn(`Product images not exported yet (left out of the pages): ${missingAssets.join(', ')}`);
+const content = { ...(await loadPublicContent()), productAssets };
+console.log(`Public content: ${content.projects.length} projects, ${content.articles.length} published article versions, ${PRODUCTS.length} product pages`);
 
 async function render(route, file, check = html => html) {
   const html = check(await prerender(template, `${SITE_URL}${route}`, content));
@@ -58,6 +66,15 @@ for (const route of inBothLanguages(slugs.map(slug => `/articles/${slug}`))) {
   });
 }
 
+// Product pages come from the repository. Both language URLs exist; a product without a version
+// in the URL's language shows the other one with its canonical, like an article.
+for (const route of inBothLanguages(PRODUCTS.map(product => `/products/${product.slug}`))) {
+  await render(route, fileFor(route), html => {
+    if (/<meta\b(?=[^>]*\bname="robots")(?=[^>]*noindex)[^>]*>/.test(html)) throw new Error(`Prerendered product ${route} is not indexable`);
+    return html;
+  });
+}
+
 // Served by the host with HTTP 404 for every unknown URL in either language. Without hydration
 // data the browser renders the not-found page in the URL's language instead of reusing this DOM.
 await render('/404', '404.html', html => neutral(html)
@@ -71,6 +88,7 @@ const zhPath = path => path;
 const enPath = path => (path === '/' ? '/en' : `/en${path}`);
 const projects = content.projects.map(row => ({ en: localizeProject(row, 'en'), zh: localizeProject(row, 'zh-TW') }));
 const articleVersions = slugs.flatMap(slug => content.articles.filter(article => article.slug === slug));
+const productPages = PRODUCTS.flatMap(product => product.versions.map(version => ({ product, version })));
 const llms = [
   '# LazyRhythm',
   '',
@@ -85,6 +103,11 @@ const llms = [
   '',
   ...projects.map(({ en, zh }) =>
     `- [${en.title}${zh.title !== en.title ? ` (${zh.title})` : ''}](${SITE_URL}${enPath('/works')}#${en.id}): ${en.description} Official link: ${en.link}`),
+  '',
+  '## Product pages',
+  '',
+  ...productPages.map(({ product, version }) =>
+    `- [${version.name}${version.alternateName ? ` (${version.alternateName})` : ''}](${SITE_URL}${(version.lang === 'en' ? enPath : zhPath)(`/products/${product.slug}`)}) (${version.lang}): ${version.description}${product.installUrl ? ` Download: ${product.installUrl}` : ''}`),
   '',
   '## Articles',
   '',
@@ -101,4 +124,4 @@ const llms = [
   ''
 ].join('\n');
 await writeFile(join(output, 'llms.txt'), llms);
-console.log(`llms.txt: ${projects.length} projects, ${articleVersions.length} articles`);
+console.log(`llms.txt: ${projects.length} projects, ${productPages.length} product pages, ${articleVersions.length} articles`);

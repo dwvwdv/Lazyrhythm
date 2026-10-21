@@ -10,7 +10,9 @@
     { "source": "/en/index.html", "destination": "/en", "permanent": true },
     { "source": "/en/:page(about|works|art|articles|contact|sponsor)/index.html", "destination": "/en/:page", "permanent": true },
     { "source": "/articles/:slug/index.html", "destination": "/articles/:slug", "permanent": true },
-    { "source": "/en/articles/:slug/index.html", "destination": "/en/articles/:slug", "permanent": true }
+    { "source": "/en/articles/:slug/index.html", "destination": "/en/articles/:slug", "permanent": true },
+    { "source": "/products/:slug/index.html", "destination": "/products/:slug", "permanent": true },
+    { "source": "/en/products/:slug/index.html", "destination": "/en/products/:slug", "permanent": true }
   ],
   "headers": [
     {
@@ -42,10 +44,12 @@
     { "source": "/sponsor", "destination": "/sponsor/index.html" },
     { "source": "/articles/manage/:path*", "destination": "/csr.html" },
     { "source": "/articles/:slug", "destination": "/csr.html" },
+    { "source": "/products/:slug", "destination": "/products/:slug/index.html" },
     { "source": "/en", "destination": "/en/index.html" },
     { "source": "/en/:page(about|works|art|articles|contact|sponsor)", "destination": "/en/:page/index.html" },
     { "source": "/en/articles/manage/:path*", "destination": "/csr.html" },
     { "source": "/en/articles/:slug", "destination": "/csr.html" },
+    { "source": "/en/products/:slug", "destination": "/en/products/:slug/index.html" },
     { "source": "/sitemap-articles.xml", "destination": "https://pwrwclutauqxbqsqfkjj.supabase.co/functions/v1/sitemap-articles" }
   ]
 }

@@ -3,7 +3,7 @@ import { createRequire } from 'node:module';
 import { join, resolve } from 'node:path';
 
 const require = createRequire(import.meta.url);
-const { SITE_URL } = require('../.angular/prerender-server/main.js');
+const { PRODUCTS, SITE_URL } = require('../.angular/prerender-server/main.js');
 const output = resolve('dist/lazyrhythm');
 const pages = ['/', '/about', '/works', '/art', '/articles', '/contact', '/sponsor'];
 
@@ -18,6 +18,15 @@ const alternates = path => [
 ].join('');
 const entries = Object.values(localized).flatMap(at =>
   pages.map(path => `  <url><loc>${SITE_URL}${at(path)}</loc>${alternates(path)}</url>`));
+// Product pages: only the language versions that exist, each at its own URL. The other language's
+// URL shows a fallback whose canonical points here, so it is not listed.
+const products = PRODUCTS.flatMap(product => {
+  const path = `/products/${product.slug}`;
+  const langs = product.versions.map(version => version.lang);
+  const links = langs.length > 1 ? alternates(path) : '';
+  return langs.map(lang => `  <url><loc>${SITE_URL}${localized[lang](path)}</loc><lastmod>${product.updated}</lastmod>${links}</url>`);
+});
+entries.push(...products);
 await writeFile(join(output, 'sitemap-pages.xml'),
   `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${entries.join('\n')}\n</urlset>\n`);
 
@@ -26,4 +35,4 @@ await writeFile(join(output, 'sitemap.xml'),
   `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${
     sitemaps.map(file => `  <sitemap><loc>${SITE_URL}/${file}</loc></sitemap>`).join('\n')
   }\n</sitemapindex>\n`);
-console.log(`Sitemap index: ${entries.length} pages in 2 languages, articles served live`);
+console.log(`Sitemap index: ${entries.length - products.length} pages in 2 languages, ${products.length} product pages, articles served live`);

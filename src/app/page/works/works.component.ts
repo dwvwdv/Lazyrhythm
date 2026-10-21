@@ -1,12 +1,14 @@
 import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
 import { CommonModule, ViewportScroller, isPlatformBrowser } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { WebsiteDataService, WebsiteProjectRow } from '../../services/website-data.service';
 import { I18nService } from '../../i18n/i18n.service';
 import { Lang } from '../../i18n/translations';
 import { TranslatePipe } from '../../i18n/translate.pipe';
+import { LocalizePipe } from '../../i18n/localize.pipe';
 import { PROJECTS_STATE, PrerenderedContent } from '../../services/public-content';
+import { hasProductPage, productPath } from '../../products/product-index';
 
 export interface Project {
   id: string;
@@ -19,11 +21,13 @@ export interface Project {
   link: string;
   technologies: string[];
   featured?: boolean;
+  /** This site's product page, when the project has one; `link` stays the external site. */
+  page: string | null;
 }
 
 @Component({
   selector: 'app-works',
-  imports: [CommonModule, TranslatePipe],
+  imports: [CommonModule, RouterModule, TranslatePipe, LocalizePipe],
   templateUrl: './works.component.html',
   styleUrls: ['./works.component.scss']
 })
@@ -119,6 +123,7 @@ export function localizeProject(row: WebsiteProjectRow, lang: Lang): Project {
     category: row.category,
     link: row.project_url,
     technologies: row.technologies,
-    featured: row.featured
+    featured: row.featured,
+    page: hasProductPage(row.slug) ? productPath(row.slug) : null
   };
 }

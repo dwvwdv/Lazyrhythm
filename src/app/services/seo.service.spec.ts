@@ -5,6 +5,7 @@ import { Lang, TRANSLATIONS, TranslationKey } from '../i18n/translations';
 import { Article } from './article.service';
 import { SITE_URL } from './seo.config';
 import { SeoService } from './seo.service';
+import { findProduct } from '../products/products';
 
 describe('SeoService', () => {
   let doc: Document;
@@ -125,6 +126,43 @@ describe('SeoService', () => {
     expect(meta('robots')).toBe('index, follow');
     expect(meta('og:type')).toBe('website');
     expect(doc.title).toBe('About | LazyRhythm');
+  });
+
+  it('describes a product page with SoftwareApplication data and canonicalises a single-language page', () => {
+    const product = findProduct('seamless-track')!;
+    const content = product.versions[0];
+    navigate('product', '/en/products/seamless-track', 'seamless-track');
+    service.setProduct('seamless-track', null);
+    expect(meta('robots')).toBe('noindex, follow');
+
+    service.setProduct('seamless-track', { product, content, image: null });
+    expect(meta('robots')).toBe('index, follow');
+    expect(doc.title).toBe(`${content.title} | LazyRhythm`);
+    expect(meta('description')).toBe(content.description);
+    // Only a 中文 version exists, so the English URL points search engines at the 中文 URL.
+    expect(doc.head.querySelector('link[rel="canonical"]')?.getAttribute('href')).toBe(`${SITE_URL}/products/seamless-track`);
+    expect(meta('og:locale')).toBe('zh_TW');
+    expect(doc.head.querySelector('link[hreflang]')).toBeNull();
+    expect(meta('og:image')).toBe(`${SITE_URL}/assets/logo.png`);
+    expect(meta('twitter:card')).toBe('summary');
+    const app = graph().find(node => node['@type'] === 'SoftwareApplication');
+    expect(app.publisher['@id']).toBe(`${SITE_URL}/#organization`);
+    expect(graph().find(node => node['@type'] === 'Organization')['@id']).toBe(app.publisher['@id']);
+    expect(app.operatingSystem).toBe(product.operatingSystem);
+    expect(app.installUrl).toBe(product.installUrl);
+    expect(graph().find(node => node['@type'] === 'WebPage').dateModified).toBe(product.updated);
+
+    service.setProduct('seamless-track', { product, content, image: content.og! });
+    expect(meta('og:image')).toBe(`${SITE_URL}/${content.og!.file}`);
+    expect(meta('og:image:width')).toBe('1200');
+    expect(meta('og:image:height')).toBe('630');
+    expect(meta('og:image:alt')).toBe(content.og!.alt);
+    expect(meta('twitter:card')).toBe('summary_large_image');
+
+    navigate('works', '/en/works');
+    expect(graph().some(node => node['@type'] === 'SoftwareApplication')).toBeFalse();
+    expect(meta('og:image:alt')).toBeNull();
+    expect(doc.head.querySelectorAll('link[hreflang]').length).toBe(3);
   });
 
   it('uses the displayed article language and safely serializes user-provided structured data', () => {

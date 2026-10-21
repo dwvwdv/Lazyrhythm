@@ -39,7 +39,8 @@
   2. 套用 migration，並執行 `select vault.create_secret('<hook URL>', 'vercel_deploy_hook');`。
   3. 發布或撤下一篇文章，確認 Vercel 出現由 hook 觸發的部署。
 - 2026-10-20 以 GPTBot、OAI-SearchBot、ClaudeBot、PerplexityBot、Googlebot、bingbot 的 User-Agent 請求 `/works` 皆回 200；這只排除以 UA 阻擋，Cloudflare 依 IP 驗證的 bot 規則仍需在 Cloudflare 後台（Security → Bots / AI Crawl Control）確認。
-- 尚未處理：`/products/:slug` 產品頁（需先備妥功能、限制、截圖等實際內容）、站外品牌連結統一、Search Console / Bing 驗收、Core Web Vitals 基線。
+- 產品頁 `/products/:slug`、`/en/products/:slug`：內容放在 repo（`src/app/products/`），建置時預渲染；目前只發布有完整內容的無感記帳（`seamless-track`），其餘作品補齊內容後再加入。產品頁只有中文版時，英文網址顯示中文內容並以 canonical 指回中文網址、不輸出 hreflang，sitemap 只列中文網址。結構化資料為 `WebPage` + `SoftwareApplication`，publisher／author 引用 `Organization` 的 `@id`。`/works` 與首頁以一般超連結連到產品頁，產品頁再連到 Google Play 等外部連結。圖片放在 `src/assets/products/<slug>/`，檔案不存在時頁面與 og:image 自動略過（退回 logo）。
+- 尚未處理：其他作品的產品頁（需先備妥功能、限制、截圖等實際內容）、站外品牌連結統一、Search Console / Bing 驗收、Core Web Vitals 基線。
 
 ## 建置與部署驗證
 
@@ -49,7 +50,7 @@ npm run build
 CHROME_BIN=/path/to/chrome npm test -- --watch=false --browsers=ChromeHeadless
 ```
 
-`npm run build` 會驗證兩種語言共 14 頁及每篇已發布文章的初始 metadata、`<html lang>`、hreflang、h1、首頁品牌正文、JSON-LD、hydration 資料、未寫死主題、robots、sitemap、中性 CSR shell，以及作品／文章的初始內容、文章 canonical 與 hreflang、404 頁、無 catch-all rewrite 與 `llms.txt`。產物留在 `dist/lazyrhythm`，暫存 server bundle 不需部署。`dist/` 不再納入版本控制，正式站內容以 Vercel 建置結果為準。
+`npm run build` 會驗證兩種語言共 14 頁及每篇已發布文章的初始 metadata、`<html lang>`、hreflang、h1、首頁品牌正文、JSON-LD、hydration 資料、未寫死主題、robots、sitemap、中性 CSR shell，以及作品／文章的初始內容、文章 canonical 與 hreflang、產品頁的初始內容、metadata、`SoftwareApplication` JSON-LD、canonical、hreflang、sitemap 與圖片檔、404 頁、無 catch-all rewrite 與 `llms.txt`。產物留在 `dist/lazyrhythm`，暫存 server bundle 不需部署。`dist/` 不再納入版本控制，正式站內容以 Vercel 建置結果為準。
 
 Vercel 須採本次 `vercel.json` 的建置命令及 rewrites，避免 Angular preset 只執行 `ng build`。公開頁面與已發布文章回傳預渲染 HTML，建置後才發布的文章與管理頁使用 `csr.html`；不要將所有路徑 rewrite 至首頁。
 
