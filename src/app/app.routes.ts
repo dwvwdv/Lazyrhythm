@@ -51,6 +51,11 @@ const pages: Routes = [
     loadComponent: () => import('./page/works/works.component').then(m => m.WorksComponent)
   },
   {
+    path: 'products/:slug',
+    data: { seo: 'product' },
+    loadComponent: () => import('./page/products/product-detail/product-detail.component').then(m => m.ProductDetailComponent)
+  },
+  {
     path: 'contact',
     data: { seo: 'contact' },
     loadComponent: () => import('./page/contact/contact.component').then(m => m.ContactComponent)

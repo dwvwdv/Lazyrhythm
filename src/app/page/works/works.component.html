@@ -52,7 +52,8 @@
 
       <div class="project-content">
         <div class="project-heading">
-          <h2 class="project-title">{{ project.title }}</h2>
+          <h2 class="project-title" *ngIf="!project.page">{{ project.title }}</h2>
+          <h2 class="project-title" *ngIf="project.page"><a [routerLink]="project.page | localize">{{ project.title }}</a></h2>
           <span class="project-index">/{{ project.id }}</span>
         </div>
 
@@ -67,6 +68,9 @@
           <span class="tech-item" *ngFor="let tech of project.technologies">{{ tech }}</span>
         </div>
 
+        <a *ngIf="project.page" [routerLink]="project.page | localize" class="learn-more-btn details-btn">
+          {{ 'works.details' | t }} <i class="fas fa-arrow-right" aria-hidden="true"></i>
+        </a>
         <a
           [href]="project.link"
           class="learn-more-btn"

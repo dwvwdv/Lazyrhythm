@@ -10,6 +10,7 @@ import { WebsiteDataService } from './app/services/website-data.service';
 export { SITE_URL } from './app/services/seo.config';
 export { localizeProject } from './app/page/works/works.component';
 export { TRANSLATIONS } from './app/i18n/translations';
+export { PRODUCTS, productImages } from './app/products/products';
 export type { PublicContent } from './app/services/public-content';
 
 // Used only at build time. Deployment contains static HTML, CSS and browser JavaScript.

@@ -42,7 +42,8 @@
     <ul class="product-list">
       <li class="product-item" *ngFor="let product of products; trackBy: trackProduct">
         <h3 class="product-title">
-          <a [routerLink]="'/works' | localize" [fragment]="product.id">{{ product.title }}</a>
+          <a *ngIf="product.page" [routerLink]="product.page | localize">{{ product.title }}</a>
+          <a *ngIf="!product.page" [routerLink]="'/works' | localize" [fragment]="product.id">{{ product.title }}</a>
         </h3>
         <p class="product-description">{{ product.description }}</p>
         <a [href]="product.link" class="product-link" target="_blank" rel="noopener noreferrer">

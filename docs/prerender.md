@@ -46,6 +46,24 @@ Prerendered with real content:
   description, Open Graph, `Article` structured data and `hreflang` for existing versions only.
   They are written to `articles/<slug>/index.html`; the host serves an existing file before any
   rewrite, so an article published after the last build still opens through `csr.html`.
+- `/products/<slug>` and `/en/products/<slug>` for every product in `src/app/products/products.ts`:
+  what the product is, the problem it solves, how it works, features, privacy, limitations, FAQ,
+  official links, related articles (published articles tagged with the product's `articleTag`) and
+  the last update date, with their own title, description, canonical, Open Graph and
+  `SoftwareApplication` + `WebPage` structured data (publisher is the site `Organization` `@id`).
+  Product content lives in the repository, not Supabase: it changes together with the product and its
+  screenshots, goes through review, and needs no database read. A product without a version in the
+  URL's language shows the other version with its canonical and no `hreflang`, like an article; only
+  canonical URLs go into `sitemap-pages.xml`. `/works` and the home page link to the page with plain
+  links (`PRODUCT_SLUGS` in `product-index.ts`, so those pages do not load the product content). A slug
+  is added only once it has real content. Images accept absolute HTTPS URLs or local paths under
+  `src/assets/products/<slug>/`; the build passes remote URLs and existing local files to the page
+  (`productAssets`). Missing local exports are left out (social cards fall back to the logo).
+  Seamless Track directly loads its Hero, OG card, three feature images and works cover from the
+  author's `https://filedn.eu/lyWyjTiBuD9uWONu3Or0JNX/lazyrhythm/SeamlessTrack/website/`
+  directory; image binaries are not stored in the repo or downloaded during the build.
+  `PRODUCT_COVERS` in `product-index.ts` selects the new remote `/works` cover before the Supabase
+  image without a database edit. Unknown product slugs have no file and get the host's 404.
 - `404.html`: the not-found page, without canonical or hydration data, so the browser renders it
   in the URL's language.
 

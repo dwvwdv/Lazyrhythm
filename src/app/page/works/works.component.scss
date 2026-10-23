@@ -44,6 +44,8 @@
   .project-technologies { display: flex; flex-wrap: wrap; gap: .4rem .7rem; margin-bottom: 1.2rem; padding: .8rem 0; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); color: var(--text-muted); font: .7rem/1.4 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
   .tech-label { color: var(--accent-text); text-transform: uppercase; letter-spacing: .08em; }
   .learn-more-btn { display: inline-flex; align-items: center; gap: .55rem; padding: .6rem .75rem; background: var(--frost1); color: var(--polar0); border: 2px solid var(--primary-border); box-shadow: 4px 4px 0 var(--shadow-offset); text-decoration: none; font: 700 .72rem/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; letter-spacing: .06em; text-transform: uppercase; transition: transform .12s ease, box-shadow .12s ease; }
+  .project-title a { color: inherit; }
+  .details-btn { margin: 0 .8rem .8rem 0; background: none; color: var(--text-color); }
   .learn-more-btn:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--shadow-offset); }
 
   .empty-state { padding: 3rem 1rem; color: var(--text-muted); text-align: center; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }

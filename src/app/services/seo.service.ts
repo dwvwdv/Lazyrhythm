@@ -5,6 +5,7 @@ import { Subscription, filter } from 'rxjs';
 import { I18nService } from '../i18n/i18n.service';
 import { DEFAULT_LANG, languageVersions, localizePath } from '../i18n/lang-path';
 import { Lang, SUPPORTED_LANGS } from '../i18n/translations';
+import type { Product, ProductContent, ProductImage } from '../products/product.model';
 import { Article } from './article.service';
 import { PAGE_SEO, SITE_ALTERNATE_NAME, SITE_IMAGE, SITE_IMAGE_SIZE, SITE_NAME, SITE_SAME_AS, SITE_URL, SeoPage } from './seo.config';
 
@@ -13,6 +14,7 @@ export class SeoService implements OnDestroy {
   private readonly subscriptions = new Subscription();
   private started = false;
   private articleContext: { slug: string; article: Article | null; langs: Lang[] } | null = null;
+  private productContext: { slug: string; page: ProductSeo | null } | null = null;
 
   constructor(
     @Inject(DOCUMENT) private readonly document: Document,
@@ -28,6 +30,9 @@ export class SeoService implements OnDestroy {
       while (route.firstChild) route = route.firstChild;
       if (route.data['seo'] !== 'article' || route.paramMap.get('slug') !== this.articleContext?.slug) {
         this.articleContext = null;
+      }
+      if (route.data['seo'] !== 'product' || route.paramMap.get('slug') !== this.productContext?.slug) {
+        this.productContext = null;
       }
       this.update();
     }));
@@ -54,6 +59,21 @@ export class SeoService implements OnDestroy {
     this.update();
   }
 
+  /**
+   * A product page, or null while the slug has no page (kept noindex). `image` is the social card
+   * when its file exists, so a card is never announced before the author exports it.
+   */
+  setProduct(slug: string, page: ProductSeo | null): void {
+    const current = page && page.product.slug === slug ? page : null;
+    this.productContext = { slug, page: current };
+    this.update();
+  }
+
+  clearProduct(): void {
+    this.productContext = null;
+    this.update();
+  }
+
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
@@ -61,27 +81,31 @@ export class SeoService implements OnDestroy {
   private update(): void {
     let route = this.router.routerState.snapshot.root;
     while (route.firstChild) route = route.firstChild;
-    const page: SeoPage = this.articleContext ? 'article' : route.data['seo'] ?? 'home';
+    const page: SeoPage = this.articleContext ? 'article' : this.productContext ? 'product' : route.data['seo'] ?? 'home';
     const config = PAGE_SEO[page] ?? PAGE_SEO.home;
     const article = this.articleContext?.article;
-    const title = `${article?.title || config.title[this.i18n.lang]} | ${SITE_NAME}`;
-    const description = article?.summary?.trim() || this.i18n.t(config.description);
-    const lang = (article?.lang as Lang | undefined) ?? this.i18n.lang;
-    // An article shown in its fallback language is canonical at that language's URL.
+    const product = this.productContext?.page ?? null;
+    const title = `${article?.title || product?.content.title || config.title[this.i18n.lang]} | ${SITE_NAME}`;
+    const description = article?.summary?.trim() || product?.content.description || this.i18n.t(config.description);
+    const lang = (article?.lang as Lang | undefined) ?? product?.content.lang ?? this.i18n.lang;
+    // An article or product shown in its fallback language is canonical at that language's URL.
     const path = this.articleContext
       ? localizePath(`/articles/${encodeURIComponent(this.articleContext.slug)}`, lang)
-      : (this.router.url.split(/[?#]/)[0].replace(/\/+$/, '') || '/');
+      : this.productContext
+        ? localizePath(`/products/${encodeURIComponent(this.productContext.slug)}`, lang)
+        : (this.router.url.split(/[?#]/)[0].replace(/\/+$/, '') || '/');
     const canonical = this.absolute(path);
-    const cover = this.imageUrl(article?.cover_image_url);
+    const cover = this.imageUrl(article?.cover_image_url) ?? this.imageUrl(product?.image?.file);
     const image = cover ?? SITE_IMAGE;
-    const indexable = !config.noindex || !!article;
+    const indexable = !config.noindex || !!article || !!product;
+    const existing = article ? this.articleContext!.langs : product ? product.product.versions.map(version => version.lang) : null;
     const versions = !indexable ? []
-      : article ? languageVersions(path).filter(version => this.articleContext!.langs.includes(version.lang))
+      : existing ? languageVersions(path).filter(version => existing.includes(version.lang))
       : languageVersions(path);
 
     this.document.title = title;
     this.meta('name', 'description', description);
-    this.meta('name', 'robots', config.noindex && !article ? 'noindex, follow' : 'index, follow');
+    this.meta('name', 'robots', indexable ? 'index, follow' : 'noindex, follow');
     this.meta('property', 'og:title', title);
     this.meta('property', 'og:description', description);
     this.meta('property', 'og:type', article ? 'article' : 'website');
@@ -89,10 +113,12 @@ export class SeoService implements OnDestroy {
     this.meta('property', 'og:site_name', SITE_NAME);
     this.meta('property', 'og:locale', this.locale(lang));
     this.meta('property', 'og:image', image);
-    // Cover dimensions are unknown, so only the logo declares its size.
-    const size = cover ? null : String(SITE_IMAGE_SIZE);
-    this.meta('property', 'og:image:width', size);
-    this.meta('property', 'og:image:height', size);
+    // Article cover dimensions are unknown; the logo and product cards declare theirs.
+    const size = product?.image ? { width: product.image.width, height: product.image.height }
+      : cover ? null : { width: SITE_IMAGE_SIZE, height: SITE_IMAGE_SIZE };
+    this.meta('property', 'og:image:width', size ? String(size.width) : null);
+    this.meta('property', 'og:image:height', size ? String(size.height) : null);
+    this.meta('property', 'og:image:alt', product?.image?.alt ?? null);
     this.meta('name', 'twitter:card', cover ? 'summary_large_image' : 'summary');
     this.meta('name', 'twitter:title', title);
     this.meta('name', 'twitter:description', description);
@@ -120,7 +146,28 @@ export class SeoService implements OnDestroy {
         ...(this.validDate(article.updated_at) ? { dateModified: article.updated_at } : {})
       });
     }
+    if (product) graph.push(...this.productGraph(product, canonical, description, cover, organization['@id'], website['@id']));
     this.jsonLd({ '@context': 'https://schema.org', '@graph': graph });
+  }
+
+  /** The page and the app it describes; the app keeps one @id across language versions. */
+  private productGraph({ product, content }: ProductSeo, canonical: string, description: string, image: string | null,
+    publisher: string, website: string): object[] {
+    const app = `${SITE_URL}/products/${encodeURIComponent(product.slug)}#software`;
+    return [{
+      '@type': 'WebPage', '@id': canonical, url: canonical, name: content.title, description, inLanguage: content.lang,
+      isPartOf: { '@id': website }, about: { '@id': app }, dateModified: product.updated,
+      ...(image ? { primaryImageOfPage: image } : {})
+    }, {
+      '@type': 'SoftwareApplication', '@id': app, name: content.name,
+      ...(content.alternateName ? { alternateName: content.alternateName } : {}),
+      description, url: canonical, mainEntityOfPage: canonical, inLanguage: content.lang,
+      applicationCategory: product.applicationCategory, operatingSystem: product.operatingSystem,
+      publisher: { '@id': publisher }, author: { '@id': publisher },
+      ...(image ? { image } : {}),
+      ...(product.installUrl ? { installUrl: product.installUrl, downloadUrl: product.installUrl } : {}),
+      ...(product.free ? { offers: { '@type': 'Offer', price: '0', priceCurrency: 'TWD' } } : {})
+    }];
   }
 
   /** A null content removes the tag. */
@@ -199,4 +246,11 @@ export class SeoService implements OnDestroy {
   private validDate(value: string | null): boolean {
     return !!value && Number.isFinite(Date.parse(value));
   }
+}
+
+export interface ProductSeo {
+  product: Product;
+  content: ProductContent;
+  /** The social card when its file exists. */
+  image: ProductImage | null;
 }
