@@ -153,7 +153,8 @@ describe('SeoService', () => {
     expect(graph().find(node => node['@type'] === 'WebPage').dateModified).toBe(product.updated);
 
     service.setProduct('seamless-track', { product, content, image: content.og! });
-    expect(meta('og:image')).toBe(`${SITE_URL}/${content.og!.file}`);
+    expect(meta('og:image')).toBe(content.og!.file);
+    expect(meta('twitter:image')).toBe(content.og!.file);
     expect(meta('og:image:width')).toBe('1200');
     expect(meta('og:image:height')).toBe('630');
     expect(meta('og:image:alt')).toBe(content.og!.alt);

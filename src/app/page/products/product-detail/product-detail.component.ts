@@ -23,7 +23,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
   content: ProductContent | null = null;
   related: ArticleSummary[] = [];
   /**
-   * Image files the build found. Null on an in-app visit (no prerendered state): every image is
+   * Remote URLs and local files selected by the build. Null on an in-app visit: every image is
    * tried and one that fails to load is hidden, so a page never shows a broken image.
    */
   private assets: Set<string> | null = null;
@@ -67,7 +67,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
   }
 
   src(image: ProductImage): string {
-    return `/${image.file}`;
+    return image.file.startsWith('https://') ? image.file : `/${image.file}`;
   }
 
   trackArticle(_: number, article: ArticleSummary): string {
@@ -107,8 +107,8 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     this.content = product ? productVersion(product, this.i18n.lang) : null;
     this.related = pickVersionsBy(this.articles, article => article.slug, this.i18n.lang);
     const og = this.content?.og;
-    // The social card is announced only when the build saw the file.
-    const image = og && this.assets?.has(og.file) ? og : null;
+    // Remote cards also work on in-app visits without prerendered asset state.
+    const image = og && (this.assets?.has(og.file) || (!this.assets && og.file.startsWith('https://'))) ? og : null;
     this.seo.setProduct(this.slug, product && this.content ? { product, content: this.content, image } : null);
   }
 }

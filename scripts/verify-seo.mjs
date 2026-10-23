@@ -175,9 +175,14 @@ for (const product of PRODUCTS) {
     assert.equal(content('og:title'), title, `${path}: matching OG title`);
     assert.equal(content('description'), shown.description, `${path}: product description`);
     assert.equal(content('og:description'), shown.description, `${path}: matching OG description`);
-    // The social card is the product's own only once the author has exported it.
-    const og = shown.og && await exists(shown.og.file);
-    assert.equal(content('og:image'), og ? `${origin}/${shown.og.file}` : `${origin}/assets/logo.png`, `${path}: OG image`);
+    // Remote cards keep their URL; local cards are announced only when exported.
+    const og = shown.og && (shown.og.file.startsWith('https://') || await exists(shown.og.file));
+    assert.equal(content('og:image'), og ? new URL(shown.og.file, `${origin}/`).href : `${origin}/assets/logo.png`, `${path}: OG image`);
+    assert.equal(content('twitter:image'), content('og:image'), `${path}: matching Twitter image`);
+    if (og) {
+      assert.equal(content('og:image:width'), String(shown.og.width), `${path}: OG image width`);
+      assert.equal(content('og:image:height'), String(shown.og.height), `${path}: OG image height`);
+    }
     assert.equal(content('twitter:card'), og ? 'summary_large_image' : 'summary', `${path}: card size matches the image`);
     const hreflang = tags.filter(tag => attribute(tag, 'rel') === 'alternate' && attribute(tag, 'hreflang'));
     assert.equal(hreflang.length, product.versions.length > 1 ? 3 : 0, `${path}: hreflang only names versions that exist`);
@@ -206,7 +211,11 @@ for (const product of PRODUCTS) {
     for (const entry of shown.faq) assert.ok(body.includes(text(entry.question)) && body.includes(text(entry.answer)), `${path}: FAQ ${entry.question}`);
     for (const link of shown.links) assert.ok(html.includes(`href="${text(link.url)}"`), `${path}: links ${link.url}`);
     assert.ok(html.includes(`href="${at('/works')}#${product.slug}"`), `${path}: links back to the projects page`);
-    // Every image on the page exists in the build output.
+    // Remote page images must keep their exact configured URL in the initial HTML.
+    for (const image of [shown.hero, ...shown.sections.map(section => section.image)].filter(Boolean)) {
+      if (image.file.startsWith('https://')) assert.ok(html.includes(`src="${text(image.file)}"`), `${path}: remote image ${image.file}`);
+    }
+    // Every local image on the page exists in the build output.
     for (const [, src] of html.matchAll(/<img\b[^>]*\bsrc="(\/assets\/products\/[^"]+)"/g)) {
       assert.ok(await exists(src.slice(1)), `${path}: image ${src} is in the build`);
     }

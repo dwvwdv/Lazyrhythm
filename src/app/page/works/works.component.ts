@@ -8,7 +8,7 @@ import { Lang } from '../../i18n/translations';
 import { TranslatePipe } from '../../i18n/translate.pipe';
 import { LocalizePipe } from '../../i18n/localize.pipe';
 import { PROJECTS_STATE, PrerenderedContent } from '../../services/public-content';
-import { hasProductPage, productPath } from '../../products/product-index';
+import { hasProductPage, productPath, PRODUCT_COVERS } from '../../products/product-index';
 
 export interface Project {
   id: string;
@@ -113,10 +113,11 @@ export class WorksComponent implements OnInit, OnDestroy {
 
 export function localizeProject(row: WebsiteProjectRow, lang: Lang): Project {
   const translation = row.translations?.[lang] ?? {};
+  const cover = PRODUCT_COVERS[row.slug];
   return {
     id: row.slug,
-    image: row.image_url ?? '',
-    imageFit: row.image_fit,
+    image: cover ?? row.image_url ?? '',
+    imageFit: cover ? 'cover' : row.image_fit,
     title: translation.title || row.title,
     description: translation.description || row.description,
     tags: translation.tags?.length ? translation.tags : row.tags,

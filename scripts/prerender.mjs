@@ -26,11 +26,11 @@ await writeFile(join(output, 'csr.html'), shell);
 // The pages list the projects and articles that are public now. A failed read stops the build,
 // so a deployment never replaces the live site with empty lists.
 const exists = file => access(join(output, file)).then(() => true, () => false);
-// Product images are exported by hand into src/assets/products/; a page names only the files
-// that made it into this build, so a missing export never becomes a broken image or social card.
+// Remote images load directly from their declared URLs. Local images are included only when
+// exported into this build, so missing local exports never become broken images or social cards.
 const productFiles = [...new Set(PRODUCTS.flatMap(product => product.versions.flatMap(productImages)).map(image => image.file))];
 const productAssets = [];
-for (const file of productFiles) if (await exists(file)) productAssets.push(file);
+for (const file of productFiles) if (file.startsWith('https://') || await exists(file)) productAssets.push(file);
 const missingAssets = productFiles.filter(file => !productAssets.includes(file));
 if (missingAssets.length) console.warn(`Product images not exported yet (left out of the pages): ${missingAssets.join(', ')}`);
 const content = { ...(await loadPublicContent()), productAssets };

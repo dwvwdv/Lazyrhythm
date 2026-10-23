@@ -22,7 +22,7 @@ describe('product pages', () => {
         expect(new Set(version.sections.map(section => section.id)).size).toBe(version.sections.length);
         expect(version.sections.map(section => section.id)).not.toContain('faq');
         for (const image of productImages(version)) {
-          expect(image.file.startsWith(`assets/products/${product.slug}/`)).toBeTrue();
+          expect(image.file.startsWith(`assets/products/${product.slug}/`) || image.file.startsWith('https://')).toBeTrue();
           expect(image.alt.trim()).not.toBe('');
           expect(image.width).toBeGreaterThan(0);
           expect(image.height).toBeGreaterThan(0);

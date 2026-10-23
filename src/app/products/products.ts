@@ -5,7 +5,7 @@ import { SEAMLESS_TRACK } from './seamless-track';
 
 /**
  * Product pages, stored in the repository rather than Supabase: the content changes with the
- * product (and its screenshots, which live in `src/assets/products/`), every change goes through
+ * product (screenshots can be hosted remotely or in `src/assets/products/`), every change goes through
  * review, and the build can prerender it without a database read. Add a product here and its slug
  * to `PRODUCT_SLUGS` only when it has real content; the other projects stay on /works until then.
  */

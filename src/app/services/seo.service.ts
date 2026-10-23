@@ -95,7 +95,7 @@ export class SeoService implements OnDestroy {
         ? localizePath(`/products/${encodeURIComponent(this.productContext.slug)}`, lang)
         : (this.router.url.split(/[?#]/)[0].replace(/\/+$/, '') || '/');
     const canonical = this.absolute(path);
-    const cover = this.imageUrl(article?.cover_image_url) ?? (product?.image ? this.absolute(product.image.file) : null);
+    const cover = this.imageUrl(article?.cover_image_url) ?? this.imageUrl(product?.image?.file);
     const image = cover ?? SITE_IMAGE;
     const indexable = !config.noindex || !!article || !!product;
     const existing = article ? this.articleContext!.langs : product ? product.product.versions.map(version => version.lang) : null;

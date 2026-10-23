@@ -1,8 +1,8 @@
 import { Lang } from '../i18n/translations';
 
-/** An image the author exports into `src/assets/products/<slug>/`; pages omit it until the file exists. */
+/** An author-provided image, either hosted remotely or exported into the site's assets. */
 export interface ProductImage {
-  /** Path under the site root, e.g. `assets/products/seamless-track/hero.png`. */
+  /** An absolute HTTPS URL or a path under the site root. */
   file: string;
   width: number;
   height: number;

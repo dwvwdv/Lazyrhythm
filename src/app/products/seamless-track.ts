@@ -1,6 +1,7 @@
 import { Product } from './product.model';
 
-const dir = 'assets/products/seamless-track';
+// Author-provided website images are loaded directly from pCloud.
+const dir = 'https://filedn.eu/lyWyjTiBuD9uWONu3Or0JNX/lazyrhythm/SeamlessTrack/website';
 
 /**
  * 內容取自 dwvwdv/seamless_track 的 README、AGENTS.md 與 docs/（overview、auto-accounting、investment、
@@ -10,7 +11,7 @@ const dir = 'assets/products/seamless-track';
  */
 export const SEAMLESS_TRACK: Product = {
   slug: 'seamless-track',
-  updated: '2026-10-21',
+  updated: '2026-10-23',
   applicationCategory: 'FinanceApplication',
   operatingSystem: 'Android 7.0+',
   installUrl: 'https://play.google.com/store/apps/details?id=com.lazyrhythm.seamless_track',
@@ -24,8 +25,8 @@ export const SEAMLESS_TRACK: Product = {
     description: '無感記帳（Seamless Track）是本地優先的 Android 記帳 App：讀取銀行與支付 App 的交易通知，由原生層規則引擎自動建立交易，App 沒開也能記帳。帳務資料存在裝置本地、預設不上傳。',
     eyebrow: 'Android · 自動記帳 · 本地優先',
     tagline: '把銀行與支付 App 的交易通知，自動變成帳目的 Android 記帳 App。',
-    hero: { file: `${dir}/hero.png`, width: 2400, height: 1200, alt: '無感記帳 App 畫面：銀行通知自動轉成交易紀錄，首頁顯示帳戶與淨資產' },
-    og: { file: `${dir}/og.png`, width: 1200, height: 630, alt: '無感記帳 Seamless Track：Android 通知自動記帳' },
+    hero: { file: `${dir}/Hero%202400%C3%971200%401x.png`, width: 2400, height: 1200, alt: '無感記帳 App 畫面：銀行通知自動轉成交易紀錄，首頁顯示帳戶與淨資產' },
+    og: { file: `${dir}/OG%20%E5%88%86%E4%BA%AB%E5%9C%96%201200%C3%97630%401x.png`, width: 1200, height: 630, alt: '無感記帳 Seamless Track：Android 通知自動記帳' },
     facts: [
       { label: '平台', value: 'Android 7.0（API 24）以上' },
       { label: '必要權限', value: '通知存取（自動記帳用）' },
@@ -63,7 +64,7 @@ export const SEAMLESS_TRACK: Product = {
           { title: '確認與修正', text: '可以開啟記帳確認通知（30 秒後自動消失，預設關閉）。通知紀錄頁會顯示每則通知是否已記帳；改完規則後，可用「重新檢查通知」把先前沒記到的通知補記。' }
         ],
         note: '例外：投資買賣規則在原生層只暫存擷取結果，交易會在下次開啟 App 時建立。',
-        image: { file: `${dir}/flow.png`, width: 1600, height: 1200, alt: '自動記帳流程圖：銀行通知經過原生層規則引擎比對後建立交易並更新帳戶餘額' }
+        image: { file: `${dir}/%E5%8A%9F%E8%83%BD%20%C2%B7%20%E8%87%AA%E5%8B%95%E8%A8%98%E5%B8%B3%E6%B5%81%E7%A8%8B%401x.png`, width: 1600, height: 1200, alt: '自動記帳流程圖：銀行通知經過原生層規則引擎比對後建立交易並更新帳戶餘額' }
       },
       {
         id: 'rules',
@@ -72,7 +73,7 @@ export const SEAMLESS_TRACK: Product = {
           '每個 App 都可以自訂比對條件與欄位擷取器（支援正則），決定哪些通知要記、金額與標題從哪裡取、記到哪個帳戶。',
           '規則編輯頁的預覽直接呼叫負責背景記帳的同一個原生規則引擎，顯示這則通知會不會被記、會記成什麼，以及沒有記帳的原因（例如沒有匹配、正則錯誤、擷取不到金額）。預覽和背景記帳用的是同一份判斷，不會各說各話。'
         ],
-        image: { file: `${dir}/rules.png`, width: 1600, height: 1200, alt: '無感記帳規則編輯畫面：設定通知比對條件與金額擷取，並即時預覽記帳結果' }
+        image: { file: `${dir}/%E5%8A%9F%E8%83%BD%20%C2%B7%20%E8%A6%8F%E5%89%87%E7%B7%A8%E8%BC%AF%401x.png`, width: 1600, height: 1200, alt: '無感記帳規則編輯畫面：點選通知中的金額設定擷取，套用預配置規則，並即時預覽記帳結果' }
       },
       {
         id: 'features',
@@ -95,7 +96,7 @@ export const SEAMLESS_TRACK: Product = {
           '每天 23:59 會凍結一筆淨資產快照（含各幣種明細與匯率）；手機沒在那個時間拍到時，下次開啟 App 會從交易回推補上。統計分析頁用這些快照畫出淨資產走勢。',
           '投資分頁列出各標的的配置占比與損益；「標的價格走勢」以漲跌百分比比較多檔標的。價格走勢只能從安裝之後開始累積，不會回補安裝前的歷史。'
         ],
-        image: { file: `${dir}/insight.png`, width: 1600, height: 1200, alt: '無感記帳統計分析畫面：淨資產走勢與資產配置圖表' }
+        image: { file: `${dir}/%E5%8A%9F%E8%83%BD%20%C2%B7%20%E6%B7%A8%E8%B3%87%E7%94%A2%E8%88%87%E8%B6%A8%E5%8B%A2%401x.png`, width: 1600, height: 1200, alt: '無感記帳首頁與統計分析畫面：帳戶資產與負債、淨資產歷史走勢及收支趨勢' }
       },
       {
         id: 'presets',

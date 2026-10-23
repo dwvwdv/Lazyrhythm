@@ -56,11 +56,11 @@ describe('ProductDetailComponent prerendering', () => {
     expect(seoPage?.image).toBeNull();
   });
 
-  it('shows the exported images and announces the social card', () => {
+  it('loads the remote images directly and announces the remote social card', () => {
     const page = findProduct('seamless-track')!.versions[0];
     const element = render('seamless-track', { projects: [], articles: [], productAssets: [page.hero!.file, page.og!.file] });
     const images = Array.from(element.querySelectorAll('img'));
-    expect(images.map(image => image.getAttribute('src'))).toEqual([`/${page.hero!.file}`]);
+    expect(images.map(image => image.getAttribute('src'))).toEqual([page.hero!.file]);
     expect(images[0].getAttribute('alt')).toBe(page.hero!.alt);
     expect(seo.setProduct.calls.mostRecent().args[1]?.image?.file).toBe(page.og!.file);
   });

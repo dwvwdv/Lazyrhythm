@@ -6,7 +6,7 @@ import { WebsiteProjectRow } from './website-data.service';
 export interface PublicContent {
   projects: WebsiteProjectRow[];
   articles: Article[];
-  /** Product image files present in the build output; pages leave out images not exported yet. */
+  /** Remote image URLs and local image files present in the build output. */
   productAssets?: string[];
 }
 

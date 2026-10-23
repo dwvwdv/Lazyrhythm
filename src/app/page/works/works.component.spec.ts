@@ -71,5 +71,7 @@ describe('WorksComponent prerendering', () => {
     expect(card.querySelector('.project-title a')?.getAttribute('href')).toBe('/products/seamless-track');
     expect(card.querySelector('.details-btn')?.getAttribute('href')).toBe('/products/seamless-track');
     expect(card.querySelector(`a[href="${row.project_url}"]`)).not.toBeNull();
+    expect(card.querySelector('img')?.getAttribute('src')).toBe('https://filedn.eu/lyWyjTiBuD9uWONu3Or0JNX/lazyrhythm/SeamlessTrack/website/%E4%BD%9C%E5%93%81%E5%8D%A1%E5%B0%81%E9%9D%A2%201600%C3%97900%401x.png');
+    expect(card.querySelector('img')?.classList.contains('cover')).toBeTrue();
   });
 });
