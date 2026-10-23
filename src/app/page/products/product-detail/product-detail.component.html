@@ -27,7 +27,7 @@
   </dl>
 
   <nav class="toc lr-mono" [attr.aria-label]="'product.toc' | t">
-    <a *ngFor="let section of page.sections" [routerLink]="'/products/' + product.slug | localize" [fragment]="section.id">{{ section.heading }}</a>
+    <a *ngFor="let section of page.sections" [routerLink]="'/products/' + product.slug | localize" [fragment]="section.id" [attr.lang]="page.lang">{{ section.heading }}</a>
     <a [routerLink]="'/products/' + product.slug | localize" fragment="faq">{{ 'product.faq' | t }}</a>
   </nav>
 
