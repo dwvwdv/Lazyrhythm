@@ -52,15 +52,15 @@ describe('product pages', () => {
     }
   });
 
-  // CoTime Book is an online app: rooms, page turns and book transfers go through Supabase.
+  // CoTime Book is an online app; how books travel may change, so the page only promises they are never stored.
   it('describes CoTime Book data use as the app stores it', () => {
     const text = JSON.stringify(findProduct('cotime-book'));
     expect(text).toContain('匿名');
     expect(text).toContain('暱稱');
     expect(text).toContain('檔案雜湊');
-    expect(text).toContain('不保存書檔');
+    expect(text).toContain('完全不會保存使用者的書');
     expect(text).toContain('需要網路');
-    for (const claim of ['完全本地', '不需要網路', '離線共讀', '不收集任何資料', '端對端加密']) {
+    for (const claim of ['完全本地', '不需要網路', '離線共讀', '不收集任何資料', '端對端加密', 'Realtime']) {
       expect(text).not.toContain(claim);
     }
   });

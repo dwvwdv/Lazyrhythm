@@ -7,6 +7,7 @@ const dir = 'https://filedn.eu/lyWyjTiBuD9uWONu3Or0JNX/lazyrhythm/CotimeBook/web
  * 內容取自 dwvwdv/cotime_book 的 README、CLAUDE.md、changelog（.claude/skills/changelog.md）、
  * supabase/migrations 與 lib/（page_sync_service、page_turn_input、reader_screen、layout_report）。
  * 隱私段落依實際存進 Supabase 的欄位撰寫：App 需要連網，不可寫成「完全本地」或「伺服器不存任何資料」。
+ * 傳書方式可能改變（評估中的 FilePizza 等），頁面只承諾「不保存使用者的書」，不寫傳輸管道。
  * App 功能或資料欄位有變動時，同步更新這裡與 `updated`。
  */
 export const COTIME_BOOK: Product = {
@@ -30,9 +31,9 @@ export const COTIME_BOOK: Product = {
       { label: '平台', value: 'Android 7.0（API 24）以上，手機、平板與 Android 電子閱讀器' },
       { label: '帳號', value: '免註冊：匿名登入，只需要暱稱' },
       { label: '書籍格式', value: 'EPUB（單本 40MB 以內）；TXT 可先用內建工具轉成 EPUB' },
-      { label: '網路', value: '需要：房間、翻頁與傳書都經由 Supabase Realtime' },
+      { label: '網路', value: '需要：開房、翻頁確認與傳書都要連網' },
       { label: '費用', value: '免費、無廣告；原始碼以 MIT 授權公開' },
-      { label: '技術', value: 'Flutter、Supabase Realtime、epub.js' },
+      { label: '技術', value: 'Flutter、Supabase、epub.js' },
       { label: '開發', value: 'LazyRhythm' }
     ],
     sections: [
@@ -103,11 +104,11 @@ export const COTIME_BOOK: Product = {
         id: 'privacy',
         heading: '隱私與網路使用',
         paragraphs: [
-          '頁間是連線 App：房間、成員名單、翻頁確認與傳書都經由 Supabase（資料庫與 Realtime）進行，沒有網路就無法共讀。登入採匿名帳號，不需要 email、手機號碼或密碼。'
+          '頁間是連線 App：開房、成員名單、翻頁確認與傳書都需要網路，沒有網路就無法共讀。登入採匿名帳號，不需要 email、手機號碼或密碼。'
         ],
         items: [
           { title: '伺服器上會存什麼', text: '匿名帳號 ID、你輸入的暱稱與頭像顏色、你所在的房間與房號、房間目前這本書的書名與檔案雜湊、房間共同的閱讀位置，以及最後上線時間。房內成員彼此看得到暱稱。' },
-          { title: '書檔怎麼傳', text: '分享自己的 EPUB 時，書檔經由只有房內成員能加入的私有 Realtime 頻道分段傳給其他成員，伺服器轉送但不保存書檔。收到的書存在各自的裝置上。公共書庫的書則由每個人直接從書庫的公開資料夾下載。' },
+          { title: '你的書不會存在我們這邊', text: '分享自己的 EPUB 時，書只會傳給房內的其他成員，存在各自的裝置上；開發者這邊完全不會保存使用者的書。公共書庫的書則由每個人直接從書庫的公開資料夾下載。' },
           { title: '房間會自動清理', text: '30 分鐘沒有回應的成員會被移出房間，沒有人在、或 24 小時沒有任何人上線的房間會關閉，關閉 30 天後刪除；用過的房號不會再發給其他房間。' },
           { title: '排版回報（只在你送出時發生）', text: '閱讀設定的「Page Layout Report」只有在你按下「Send Report」時才會送出，內容是裝置與 App 版本、目前這本書，以及房內各閱讀者的頁框與最近幾次翻頁，用來排查切字或跳頁；不含書的內文、暱稱或帳號 ID。' }
         ],
@@ -146,7 +147,7 @@ export const COTIME_BOOK: Product = {
       },
       {
         question: '需要註冊帳號嗎？會收集哪些資料？',
-        answer: '不需要註冊，App 使用匿名登入。伺服器上存的是匿名帳號 ID、暱稱與頭像顏色、所在房間、房間目前的書名與檔案雜湊、共同的閱讀位置與最後上線時間。分享的書檔只經由房間的私有頻道轉送、不保存在伺服器；App 沒有廣告與第三方分析 SDK。'
+        answer: '不需要註冊，App 使用匿名登入。伺服器上存的是匿名帳號 ID、暱稱與頭像顏色、所在房間、房間目前的書名與檔案雜湊、共同的閱讀位置與最後上線時間。分享的書只會傳給房內成員、存在各自的裝置上，開發者這邊完全不會保存使用者的書；App 沒有廣告與第三方分析 SDK。'
       },
       {
         question: '可以讀哪些書？',
