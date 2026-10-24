@@ -61,7 +61,7 @@ describe('product pages', () => {
     expect(text).toContain('完全不會保存使用者的書');
     expect(text).toContain('插頁式廣告');
     expect(text).toContain('需要網路');
-    for (const claim of ['完全本地', '不需要網路', '離線共讀', '不收集任何資料', '端對端加密', 'Realtime', '無廣告', '沒有廣告']) {
+    for (const claim of ['完全本地', '不需要網路', '離線共讀', '不收集任何資料', '端對端加密', 'Realtime', '無廣告', '沒有廣告', '開源', 'MIT', 'github.com']) {
       expect(text).not.toContain(claim);
     }
   });

@@ -33,7 +33,7 @@ export const COTIME_BOOK: Product = {
       { label: '帳號', value: '免註冊：匿名登入，只需要暱稱' },
       { label: '書籍格式', value: 'EPUB（單本 40MB 以內）；TXT 可先用內建工具轉成 EPUB' },
       { label: '網路', value: '需要：開房、翻頁確認與傳書都要連網' },
-      { label: '費用', value: '免費下載，含插頁式廣告；原始碼以 MIT 授權公開' },
+      { label: '費用', value: '免費下載，含插頁式廣告' },
       { label: '技術', value: 'Flutter、Supabase、epub.js' },
       { label: '開發', value: 'LazyRhythm' }
     ],
@@ -113,7 +113,7 @@ export const COTIME_BOOK: Product = {
           { title: '房間會自動清理', text: '30 分鐘沒有回應的成員會被移出房間，沒有人在、或 24 小時沒有任何人上線的房間會關閉，關閉 30 天後刪除；用過的房號不會再發給其他房間。' },
           { title: '排版回報（只在你送出時發生）', text: '閱讀設定的「Page Layout Report」只有在你按下「Send Report」時才會送出，內容是裝置與 App 版本、目前這本書，以及房內各閱讀者的頁框與最近幾次翻頁，用來排查切字或跳頁；不含書的內文、暱稱或帳號 ID。' }
         ],
-        note: 'App 透過 Google Mobile Ads（AdMob）顯示插頁式廣告，廣告相關資料由 Google 依其政策處理；除此之外沒有內建第三方分析 SDK。原始碼公開在 GitHub，可以自行檢查實際傳送了哪些資料。'
+        note: 'App 透過 Google Mobile Ads（AdMob）顯示插頁式廣告，廣告相關資料由 Google 依其政策處理；除此之外沒有內建第三方分析 SDK。'
       },
       {
         id: 'limits',
@@ -164,9 +164,8 @@ export const COTIME_BOOK: Product = {
         answer: '使用 iPhone、沒有穩定網路、主要讀 PDF 或受 DRM 保護的書，或是只想各讀各的、不需要逐頁同步的情況，都不適合。頁間是為幾個人的小房間設計，每次翻頁都要全員確認。'
       }
     ],
-    links: [
-      { label: 'GitHub 原始碼', url: 'https://github.com/dwvwdv/cotime_book', note: 'MIT 授權，套件名稱 com.lazyrhythm.cotime_book' }
-    ],
-    sourceNote: '內容依 App 的原始碼與開發文件整理'
+    // 原始碼之後會轉為私有，不連 GitHub；Google Play 上架後在這裡與 installUrl 補上商店連結。
+    links: [],
+    sourceNote: '內容依 App 的實作與開發文件整理'
   }]
 };

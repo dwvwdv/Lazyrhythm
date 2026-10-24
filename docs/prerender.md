@@ -64,7 +64,8 @@ Prerendered with real content:
   and `…/lazyrhythm/CotimeBook/website/` directories; image binaries are not stored in the repo or
   downloaded during the build. `PRODUCT_COVERS` in `product-index.ts` selects the new remote `/works`
   cover before the Supabase image without a database edit. CoTime Book has no public store listing
-  yet, so its page has no `installUrl` and links to the GitHub repository instead. Unknown product slugs have no file and get the host's 404.
+  yet and its source will not be public, so its page has no `installUrl` and no external links until the
+  store listing is live. Unknown product slugs have no file and get the host's 404.
 - `404.html`: the not-found page, without canonical or hydration data, so the browser renders it
   in the URL's language.
 
