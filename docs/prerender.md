@@ -59,11 +59,12 @@ Prerendered with real content:
   is added only once it has real content. Images accept absolute HTTPS URLs or local paths under
   `src/assets/products/<slug>/`; the build passes remote URLs and existing local files to the page
   (`productAssets`). Missing local exports are left out (social cards fall back to the logo).
-  Seamless Track directly loads its Hero, OG card, three feature images and works cover from the
-  author's `https://filedn.eu/lyWyjTiBuD9uWONu3Or0JNX/lazyrhythm/SeamlessTrack/website/`
-  directory; image binaries are not stored in the repo or downloaded during the build.
-  `PRODUCT_COVERS` in `product-index.ts` selects the new remote `/works` cover before the Supabase
-  image without a database edit. Unknown product slugs have no file and get the host's 404.
+  Seamless Track and CoTime Book directly load their Hero, OG card, three feature images and works
+  cover from the author's `https://filedn.eu/lyWyjTiBuD9uWONu3Or0JNX/lazyrhythm/SeamlessTrack/website/`
+  and `…/lazyrhythm/CotimeBook/website/` directories; image binaries are not stored in the repo or
+  downloaded during the build. `PRODUCT_COVERS` in `product-index.ts` selects the new remote `/works`
+  cover before the Supabase image without a database edit. CoTime Book has no public store listing
+  yet, so its page has no `installUrl` and links to the GitHub repository instead. Unknown product slugs have no file and get the host's 404.
 - `404.html`: the not-found page, without canonical or hydration data, so the browser renders it
   in the URL's language.
 

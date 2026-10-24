@@ -5,6 +5,7 @@ describe('product pages', () => {
   it('lists every product page in the lightweight slug index used by /works and the home page', () => {
     expect([...PRODUCT_SLUGS].sort()).toEqual(PRODUCTS.map(product => product.slug).sort());
     expect(hasProductPage('seamless-track')).toBeTrue();
+    expect(hasProductPage('cotime-book')).toBeTrue();
     expect(hasProductPage('driftread')).toBeFalse();
     expect(findProduct('missing')).toBeNull();
   });
@@ -47,6 +48,19 @@ describe('product pages', () => {
     expect(text).toContain('股票代號');
     expect(text).toContain('INTERNET');
     for (const claim of ['完全不連網', '不需要網路', '無網路權限', '永不離開', '絕不上傳']) {
+      expect(text).not.toContain(claim);
+    }
+  });
+
+  // CoTime Book is an online app: rooms, page turns and book transfers go through Supabase.
+  it('describes CoTime Book data use as the app stores it', () => {
+    const text = JSON.stringify(findProduct('cotime-book'));
+    expect(text).toContain('匿名');
+    expect(text).toContain('暱稱');
+    expect(text).toContain('檔案雜湊');
+    expect(text).toContain('不保存書檔');
+    expect(text).toContain('需要網路');
+    for (const claim of ['完全本地', '不需要網路', '離線共讀', '不收集任何資料', '端對端加密']) {
       expect(text).not.toContain(claim);
     }
   });
