@@ -11,8 +11,16 @@ import { join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { createRequire } from 'node:module';
 
+// Not a project dependency: the site build has no use for a browser. Claude Code cloud sessions
+// ship Playwright with Chromium; elsewhere install it without touching package.json.
 const require = createRequire(import.meta.url);
-const { chromium } = require('playwright');
+let chromium;
+try {
+  ({ chromium } = require('playwright'));
+} catch {
+  console.error('Playwright not found. Install it for this checkout only:\n  npm i --no-save playwright && npx playwright install chromium');
+  process.exit(1);
+}
 
 const [srcDir, outDir, filter = ''] = process.argv.slice(2);
 if (!srcDir || !outDir) {

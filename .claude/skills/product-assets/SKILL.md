@@ -66,7 +66,8 @@ description: >
    <meta name="asset" content="2400x1200" data-file="Hero 2400×1200@1x.png">
    ```
    `body` 設成同樣的寬高、`margin: 0`；字型用 Google Fonts（`display=block`），其餘 inline。
-2. 渲染（Playwright 已預裝；腳本會等字型載入並警告內容溢出）：
+2. 渲染（腳本會等字型載入並警告內容溢出）。Playwright 不是專案依賴：Claude Code 雲端 session 已預裝，
+   其他環境先執行 `npm i --no-save playwright && npx playwright install chromium`，不要寫進 `package.json`：
    ```bash
    node .claude/skills/product-assets/render.mjs <src-dir> <out-dir>            # 全部
    node .claude/skills/product-assets/render.mjs <src-dir> <out-dir> "功能 ·"   # 只重渲染部分
@@ -92,7 +93,9 @@ SCRATCH=<scratchpad 目錄>; SLUG=<slug>; BR="tmp/assets-$SLUG-$(date +%Y%m%d%H%
 git fetch origin master
 git worktree add -b "$BR" "$SCRATCH/assets-wt" origin/master   # 不動目前工作中的分支
 mkdir -p "$SCRATCH/assets-wt/promo/$SLUG"
-cp <out-dir>/*.png "$SCRATCH/assets-wt/promo/$SLUG/"
+# 只複製核准的檔案：分支是公開的，未核准的草稿一推上去就公開了
+APPROVED=("Hero 2400×1200@1x.png" "OG 分享圖 1200×630@1x.png")   # 照核准清單逐一列出
+for f in "${APPROVED[@]}"; do cp "<out-dir>/$f" "$SCRATCH/assets-wt/promo/$SLUG/"; done
 git -C "$SCRATCH/assets-wt" add "promo/$SLUG"
 git -C "$SCRATCH/assets-wt" commit -m "暫存 $SLUG 宣傳圖供 pCloud 上傳（上傳後刪除此分支）"
 git -C "$SCRATCH/assets-wt" push -u origin "$BR"
