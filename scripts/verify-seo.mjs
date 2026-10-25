@@ -10,7 +10,7 @@ assert.ok(PRODUCTS?.length, 'Product list available from the prerender bundle (r
 const origin = 'https://lazyrhythm.com';
 const paths = ['/', '/about', '/works', '/art', '/articles', '/contact', '/sponsor'];
 // 中文 at the root, English under /en.
-const languages = { 'zh-TW': { at: path => path, locale: 'zh_TW', home: '橫跨閱讀、資安、金融、自動化與互動軟體的獨立實驗' },
+const languages = { 'zh-TW': { at: path => path, locale: 'zh_TW', home: '主要是下班找點東西開發' },
   en: { at: path => (path === '/' ? '/en' : `/en${path}`), locale: 'en_US', home: 'Independent experiments across reading, security, finance, automation, and interactive software' } };
 const urls = Object.values(languages).flatMap(({ at }) => paths.map(at));
 const titles = new Set();

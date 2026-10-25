@@ -6,6 +6,7 @@ describe('product pages', () => {
     expect([...PRODUCT_SLUGS].sort()).toEqual(PRODUCTS.map(product => product.slug).sort());
     expect(hasProductPage('seamless-track')).toBeTrue();
     expect(hasProductPage('cotime-book')).toBeTrue();
+    expect(hasProductPage('lazyembed')).toBeTrue();
     expect(hasProductPage('driftread')).toBeFalse();
     expect(findProduct('missing')).toBeNull();
   });
@@ -62,6 +63,19 @@ describe('product pages', () => {
     expect(text).toContain('插頁式廣告');
     expect(text).toContain('需要網路');
     for (const claim of ['完全本地', '不需要網路', '離線共讀', '不收集任何資料', '端對端加密', 'Realtime', '無廣告', '沒有廣告', '開源', 'MIT', 'github.com']) {
+      expect(text).not.toContain(claim);
+    }
+  });
+
+  // LazyEmbed has no LICENSE file, and its browser tools still reach a few third parties (DoH, CDNs).
+  it('describes LazyEmbed network use as the tools implement it', () => {
+    const text = JSON.stringify(findProduct('lazyembed'));
+    expect(text).toContain('cloudflare-dns.com');
+    expect(text).toContain('dns.google');
+    expect(text).toContain('esm.sh');
+    expect(text).toContain('jsDelivr');
+    expect(text).toContain('網址參數');
+    for (const claim of ['開源', 'MIT', 'github.com', '完全離線', '不需要網路', '不連網', 'localStorage']) {
       expect(text).not.toContain(claim);
     }
   });
