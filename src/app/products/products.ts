@@ -2,6 +2,7 @@ import { Lang } from '../i18n/translations';
 import { pickVersion } from '../i18n/localize';
 import { Product, ProductContent, ProductImage } from './product.model';
 import { COTIME_BOOK } from './cotime-book';
+import { LAZYEMBED } from './lazyembed';
 import { DRIFTREAD } from './driftread';
 import { SEAMLESS_TRACK } from './seamless-track';
 
@@ -11,7 +12,7 @@ import { SEAMLESS_TRACK } from './seamless-track';
  * review, and the build can prerender it without a database read. Add a product here and its slug
  * to `PRODUCT_SLUGS` only when it has real content; the other projects stay on /works until then.
  */
-export const PRODUCTS: readonly Product[] = [SEAMLESS_TRACK, COTIME_BOOK, DRIFTREAD];
+export const PRODUCTS: readonly Product[] = [SEAMLESS_TRACK, COTIME_BOOK, LAZYEMBED, DRIFTREAD];
 
 export function findProduct(slug: string): Product | null {
   return PRODUCTS.find(product => product.slug === slug) ?? null;

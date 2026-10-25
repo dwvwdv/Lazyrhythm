@@ -39,7 +39,7 @@
   2. 套用 migration，並執行 `select vault.create_secret('<hook URL>', 'vercel_deploy_hook');`。
   3. 發布或撤下一篇文章，確認 Vercel 出現由 hook 觸發的部署。
 - 2026-10-20 以 GPTBot、OAI-SearchBot、ClaudeBot、PerplexityBot、Googlebot、bingbot 的 User-Agent 請求 `/works` 皆回 200；這只排除以 UA 阻擋，Cloudflare 依 IP 驗證的 bot 規則仍需在 Cloudflare 後台（Security → Bots / AI Crawl Control）確認。
-- 產品頁 `/products/:slug`、`/en/products/:slug`：內容放在 repo（`src/app/products/`），建置時預渲染；目前發布有完整內容的無感記帳（`seamless-track`）與頁間（`cotime-book`），其餘作品補齊內容後再加入。產品頁只有中文版時，英文網址顯示中文內容並以 canonical 指回中文網址、不輸出 hreflang，sitemap 只列中文網址。結構化資料為 `WebPage` + `SoftwareApplication`，publisher／author 引用 `Organization` 的 `@id`。`/works` 與首頁以一般超連結連到產品頁，產品頁再連到 Google Play 等外部連結。圖片支援 HTTPS 網址及本機資產；無感記帳與頁間的 Hero、分享圖、三張功能圖與作品卡封面直接載入作者提供的 pCloud `SeamlessTrack/website/`、`CotimeBook/website/` 網址，不存入 repo。分享圖維持原始遠端 URL 與 1200×630 尺寸，使用 `summary_large_image`。本機資產仍會在缺檔時略過（og:image 退回 logo）。
+- 產品頁 `/products/:slug`、`/en/products/:slug`：內容放在 repo（`src/app/products/`），建置時預渲染；目前發布有完整內容的無感記帳（`seamless-track`）、頁間（`cotime-book`）與 LazyEmbed（`lazyembed`），其餘作品補齊內容後再加入。產品頁只有中文版時，英文網址顯示中文內容並以 canonical 指回中文網址、不輸出 hreflang，sitemap 只列中文網址。結構化資料為 `WebPage` + `SoftwareApplication`，publisher／author 引用 `Organization` 的 `@id`。`/works` 與首頁以一般超連結連到產品頁，產品頁再連到 Google Play 等外部連結。圖片支援 HTTPS 網址及本機資產；無感記帳、頁間與 LazyEmbed 的 Hero、分享圖、三張功能圖與作品卡封面直接載入作者提供的 pCloud `SeamlessTrack/website/`、`CotimeBook/website/`、`LazyEmbed/website/` 網址，不存入 repo。分享圖維持原始遠端 URL 與 1200×630 尺寸，使用 `summary_large_image`。本機資產仍會在缺檔時略過（og:image 退回 logo）。
 - 尚未處理：其他作品的產品頁（需先備妥功能、限制、截圖等實際內容）、站外品牌連結統一、Search Console / Bing 驗收、Core Web Vitals 基線。
 
 ## 建置與部署驗證
