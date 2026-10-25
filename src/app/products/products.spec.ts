@@ -6,7 +6,8 @@ describe('product pages', () => {
     expect([...PRODUCT_SLUGS].sort()).toEqual(PRODUCTS.map(product => product.slug).sort());
     expect(hasProductPage('seamless-track')).toBeTrue();
     expect(hasProductPage('cotime-book')).toBeTrue();
-    expect(hasProductPage('driftread')).toBeFalse();
+    expect(hasProductPage('driftread')).toBeTrue();
+    expect(hasProductPage('hookfy')).toBeFalse();
     expect(findProduct('missing')).toBeNull();
   });
 
