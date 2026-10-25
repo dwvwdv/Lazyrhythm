@@ -7,7 +7,8 @@ describe('product pages', () => {
     expect(hasProductPage('seamless-track')).toBeTrue();
     expect(hasProductPage('cotime-book')).toBeTrue();
     expect(hasProductPage('lazyembed')).toBeTrue();
-    expect(hasProductPage('driftread')).toBeFalse();
+    expect(hasProductPage('driftread')).toBeTrue();
+    expect(hasProductPage('hookfy')).toBeFalse();
     expect(findProduct('missing')).toBeNull();
   });
 

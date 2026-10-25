@@ -7,9 +7,9 @@ import { PUBLIC_CONTENT } from '../../services/public-content';
 import { WebsiteDataService, WebsiteProjectRow } from '../../services/website-data.service';
 
 const row: WebsiteProjectRow = {
-  slug: 'driftread', title: 'Driftread', description: 'RSS discovery', image_url: null, image_fit: 'contain',
-  project_url: 'https://driftread.lazyrhythm.com', category: 'reading', tags: ['RSS'], technologies: ['Angular'],
-  featured: true, sort_order: 1, translations: { 'zh-TW': { description: 'RSS 探索' } }
+  slug: 'hookfy', title: 'Hookfy', description: 'Notification webhooks', image_url: null, image_fit: 'contain',
+  project_url: 'https://hookfy.example', category: 'automation', tags: ['Webhooks'], technologies: ['Flutter'],
+  featured: true, sort_order: 1, translations: { 'zh-TW': { description: '通知轉發' } }
 };
 
 describe('WorksComponent', () => {
@@ -48,8 +48,8 @@ describe('WorksComponent prerendering', () => {
     const fixture = TestBed.createComponent(WorksComponent);
     fixture.detectChanges();
     const card: HTMLElement = fixture.nativeElement.querySelector('.project-card');
-    expect(card.id).toBe('driftread');
-    expect(card.querySelector('.project-title')?.textContent).toBe('Driftread');
+    expect(card.id).toBe('hookfy');
+    expect(card.querySelector('.project-title')?.textContent).toBe('Hookfy');
     expect(fixture.componentInstance.isLoading).toBeFalse();
     expect(getProjects).not.toHaveBeenCalled();
     expect(card.querySelector('a[href^="/products/"]')).toBeNull();
