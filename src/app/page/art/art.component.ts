@@ -34,9 +34,14 @@ export class ArtComponent implements OnDestroy {
   /** The visitor chose to animate the studies anyway. */
   readonly playMotion = signal(false);
 
+  private motionQuery?: MediaQueryList;
+
   constructor(readonly audio: OffbeatAudioService) {
     afterNextRender(() => {
-      this.reducedMotion.set(matchMedia('(prefers-reduced-motion: reduce)').matches);
+      // The canvases follow later changes on their own; keep the control in step with them.
+      this.motionQuery = matchMedia('(prefers-reduced-motion: reduce)');
+      this.motionQuery.addEventListener('change', this.onMotionChange);
+      this.reducedMotion.set(this.motionQuery.matches);
       try {
         this.playMotion.set(localStorage.getItem(MOTION_KEY) === 'on');
       } catch {
@@ -63,7 +68,12 @@ export class ArtComponent implements OnDestroy {
   // Sound belongs to this page; leaving it switches sound off so the toggle never lies on return.
   ngOnDestroy(): void {
     void this.audio.disable();
+    this.motionQuery?.removeEventListener('change', this.onMotionChange);
   }
+
+  private onMotionChange = (event: MediaQueryListEvent): void => {
+    this.reducedMotion.set(event.matches);
+  };
 
   reroll(study: Study): void {
     study.seed = randomSeed();

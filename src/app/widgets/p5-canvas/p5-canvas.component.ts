@@ -64,6 +64,8 @@ export class P5CanvasComponent implements AfterViewInit, OnChanges, OnDestroy {
   private reducedMotion = false;
   /** True once p5 has loaded and the canvas exists. */
   ready = false;
+  /** p5 runs setup after the constructor returns; until then the sketch has no size. */
+  private started = false;
 
   private resizeObserver?: ResizeObserver;
   private intersectionObserver?: IntersectionObserver;
@@ -93,7 +95,9 @@ export class P5CanvasComponent implements AfterViewInit, OnChanges, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (!this.viewReady) return;
-    if (changes['sketch'] || changes['seed'] || changes['forceMotion']) {
+    // forceMotion only matters while the system asks for reduced motion.
+    const motionChanged = changes['forceMotion'] && this.motionQuery?.matches;
+    if (changes['sketch'] || changes['seed'] || motionChanged) {
       this.zone.runOutsideAngular(() => void this.mount());
     }
     if (changes['muted']) this.applyGain();
@@ -153,6 +157,7 @@ export class P5CanvasComponent implements AfterViewInit, OnChanges, OnDestroy {
         p.noiseSeed(this.seed);
         this.hooks?.setup?.();
         if (this.reducedMotion || !this.visible) p.noLoop();
+        this.started = true;
       };
 
       p.draw = () => this.hooks?.draw();
@@ -165,6 +170,7 @@ export class P5CanvasComponent implements AfterViewInit, OnChanges, OnDestroy {
     this.instance?.remove();
     this.instance = null;
     this.hooks = null;
+    this.started = false;
     this.bus?.disconnect();
     this.bus = null;
     this.setReady(false);
@@ -223,7 +229,7 @@ export class P5CanvasComponent implements AfterViewInit, OnChanges, OnDestroy {
 
     this.resizeObserver = new ResizeObserver(() => {
       const p = this.instance;
-      if (!p || !el.clientWidth || !el.clientHeight) return;
+      if (!p || !this.started || !el.clientWidth || !el.clientHeight) return;
       if (p.width === el.clientWidth && p.height === el.clientHeight) return;
       p.resizeCanvas(el.clientWidth, el.clientHeight);
       this.hooks?.resize?.();
