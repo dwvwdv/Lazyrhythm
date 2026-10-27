@@ -8,14 +8,16 @@ const dir = 'https://filedn.eu/lyWyjTiBuD9uWONu3Or0JNX/lazyrhythm/CotimeBook/web
  * supabase/migrations 與 lib/（page_sync_service、page_turn_input、reader_screen、layout_report）。
  * 隱私段落依實際存進 Supabase 的欄位撰寫：App 需要連網，不可寫成「完全本地」或「伺服器不存任何資料」。
  * 廣告依 cotime_book PR #59（v1.0.13，AdMob 插頁式廣告）撰寫，不可寫成「無廣告」。
+ * 原始碼不公開，對外只連 Google Play，不連 GitHub。
  * 傳書方式可能改變（評估中的 FilePizza 等），頁面只承諾「不保存使用者的書」，不寫傳輸管道。
  * App 功能或資料欄位有變動時，同步更新這裡與 `updated`。
  */
 export const COTIME_BOOK: Product = {
   slug: 'cotime-book',
-  updated: '2026-10-24',
+  updated: '2026-10-27',
   applicationCategory: 'ReferenceApplication',
   operatingSystem: 'Android 7.0+',
+  installUrl: 'https://play.google.com/store/apps/details?id=com.lazyrhythm.cotime_book',
   free: true,
   articleTag: 'CoTime Book',
   versions: [{
@@ -164,8 +166,9 @@ export const COTIME_BOOK: Product = {
         answer: '使用 iPhone、沒有穩定網路、主要讀 PDF 或受 DRM 保護的書，或是只想各讀各的、不需要逐頁同步的情況，都不適合。頁間是為幾個人的小房間設計，每次翻頁都要全員確認。'
       }
     ],
-    // 原始碼之後會轉為私有，不連 GitHub；Google Play 上架後在這裡與 installUrl 補上商店連結。
-    links: [],
+    links: [
+      { label: 'Google Play 下載', url: 'https://play.google.com/store/apps/details?id=com.lazyrhythm.cotime_book', note: '套件名稱 com.lazyrhythm.cotime_book' }
+    ],
     sourceNote: '內容依 App 的實作與開發文件整理'
   }]
 };

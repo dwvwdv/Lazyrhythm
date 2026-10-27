@@ -63,9 +63,8 @@ Prerendered with real content:
   images and works cover from the author's `https://filedn.eu/lyWyjTiBuD9uWONu3Or0JNX/lazyrhythm/SeamlessTrack/website/`,
   `…/lazyrhythm/CotimeBook/website/`, `…/lazyrhythm/LazyEmbed/website/` and `…/lazyrhythm/Driftread/website/` directories; image binaries are not stored in the repo or
   downloaded during the build. `PRODUCT_COVERS` in `product-index.ts` selects the new remote `/works`
-  cover before the Supabase image without a database edit. CoTime Book has no public store listing
-  yet and its source will not be public, so its page has no `installUrl` and no external links until the
-  store listing is live. LazyEmbed is a web app with no license file, so its page has no `installUrl`
+  cover before the Supabase image without a database edit. CoTime Book's source is closed, so its
+  `installUrl` and only external link are its Google Play listing, never the repository. LazyEmbed is a web app with no license file, so its page has no `installUrl`
   and links only to `https://embed.lazyrhythm.com`, not to its repository. Driftread is likewise a web app
   with no license file: no `installUrl`, and its only external link is `https://driftread.lazyrhythm.com`.
   Unknown product slugs have no file and get the host's 404.
