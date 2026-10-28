@@ -28,7 +28,8 @@ import { OffbeatAudioService } from '../../art/audio/offbeat-audio.service';
  * p5 is loaded on demand so it never weighs on the initial bundle, runs
  * outside Angular's zone so 60fps draws do not trigger change detection,
  * pauses while off screen, follows the site theme, and renders a single
- * still frame for visitors who prefer reduced motion.
+ * still frame for visitors who prefer reduced motion unless the page lets
+ * them opt back in.
  * Each host also owns an independent sound bus, audible only while sound
  * is on, the channel is unmuted and the sketch is on screen.
  */
@@ -49,6 +50,8 @@ export class P5CanvasComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() interactive = true;
   /** Silences this sketch's channel without touching the others. */
   @Input() muted = false;
+  /** Animate even when the system asks for reduced motion (the visitor chose to). */
+  @Input() forceMotion = false;
 
   private instance: p5 | null = null;
   private hooks: SketchHooks | null = null;
@@ -61,6 +64,8 @@ export class P5CanvasComponent implements AfterViewInit, OnChanges, OnDestroy {
   private reducedMotion = false;
   /** True once p5 has loaded and the canvas exists. */
   ready = false;
+  /** p5 runs setup after the constructor returns; until then the sketch has no size. */
+  private started = false;
 
   private resizeObserver?: ResizeObserver;
   private intersectionObserver?: IntersectionObserver;
@@ -90,7 +95,9 @@ export class P5CanvasComponent implements AfterViewInit, OnChanges, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (!this.viewReady) return;
-    if (changes['sketch'] || changes['seed']) {
+    // forceMotion only matters while the system asks for reduced motion.
+    const motionChanged = changes['forceMotion'] && this.motionQuery?.matches;
+    if (changes['sketch'] || changes['seed'] || motionChanged) {
       this.zone.runOutsideAngular(() => void this.mount());
     }
     if (changes['muted']) this.applyGain();
@@ -122,7 +129,7 @@ export class P5CanvasComponent implements AfterViewInit, OnChanges, OnDestroy {
     if (this.destroyed || generation !== this.generation) return;
 
     this.unmount();
-    this.reducedMotion = this.motionQuery?.matches ?? false;
+    this.reducedMotion = !this.forceMotion && (this.motionQuery?.matches ?? false);
     (P5 as unknown as { disableFriendlyErrors: boolean }).disableFriendlyErrors = true;
 
     const el = this.host.nativeElement;
@@ -150,6 +157,7 @@ export class P5CanvasComponent implements AfterViewInit, OnChanges, OnDestroy {
         p.noiseSeed(this.seed);
         this.hooks?.setup?.();
         if (this.reducedMotion || !this.visible) p.noLoop();
+        this.started = true;
       };
 
       p.draw = () => this.hooks?.draw();
@@ -162,6 +170,7 @@ export class P5CanvasComponent implements AfterViewInit, OnChanges, OnDestroy {
     this.instance?.remove();
     this.instance = null;
     this.hooks = null;
+    this.started = false;
     this.bus?.disconnect();
     this.bus = null;
     this.setReady(false);
@@ -220,7 +229,7 @@ export class P5CanvasComponent implements AfterViewInit, OnChanges, OnDestroy {
 
     this.resizeObserver = new ResizeObserver(() => {
       const p = this.instance;
-      if (!p || !el.clientWidth || !el.clientHeight) return;
+      if (!p || !this.started || !el.clientWidth || !el.clientHeight) return;
       if (p.width === el.clientWidth && p.height === el.clientHeight) return;
       p.resizeCanvas(el.clientWidth, el.clientHeight);
       this.hooks?.resize?.();

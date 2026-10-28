@@ -5,6 +5,18 @@
     <p class="subtitle">{{ 'art.description' | t }}</p>
     <p class="hint">&gt; {{ 'art.hint' | t }}</p>
 
+    <div class="sound-row" *ngIf="reducedMotion()">
+      <button
+        type="button"
+        class="btn sound-toggle"
+        [class.on]="playMotion()"
+        [attr.aria-pressed]="playMotion()"
+        (click)="toggleMotion()">
+        [▶ {{ (playMotion() ? 'art.motionOn' : 'art.motionOff') | t }}]
+      </button>
+      <span class="sound-hint">{{ 'art.motionHint' | t }}</span>
+    </div>
+
     <div class="sound-row" *ngIf="audio.supported">
       <button
         type="button"
@@ -40,6 +52,7 @@
         [sketch]="study.id"
         [seed]="study.seed"
         [muted]="study.muted"
+        [forceMotion]="playMotion()"
         [attr.aria-label]="('art.canvasLabel' | t) + ': ' + (('art.' + study.id + '.title') | t)">
       </app-p5-canvas>
 
