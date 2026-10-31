@@ -31,7 +31,7 @@
 - 建置時以公開金鑰讀取作品與已發布文章（受 RLS 限制，只讀得到訪客可見的資料），讀取失敗即中止建置，Vercel 保留上一版，不會部署空清單。
 - `/works`、`/articles`、首頁精選作品及每篇已發布文章的兩種語言網址，初始 HTML 即含真實內容；文章頁含專屬 title、description、canonical、OG、`Article` JSON-LD，`hreflang` 只列實際存在的語言版本。瀏覽器從頁面內的 transfer state 接手 hydration，再向 Supabase 更新。
 - 未知網址回 HTTP 404（`404.html`，`noindex`）；移除首頁 catch-all rewrite。不存在的文章 slug 仍由 `csr.html` 回 200 並在瀏覽器設 `noindex`，因為靜態主機無法分辨「不存在」與「建置後才發布」。
-- `Organization` 補上 `description`、`alternateName`（悠閒節奏）與 `sameAs`（目前只有 Ko-fi，其餘帳號確認屬於品牌後再加到 `SITE_SAME_AS`）；`WebSite` 宣告 `inLanguage`。
+- `Organization` 補上 `description`、`alternateName`（悠閒節奏）與 `sameAs`（Ko-fi 與 Facebook 粉專；個人 GitHub 不屬於品牌帳號所以不列入，其餘帳號確認屬於品牌後再加到 `SITE_SAME_AS`）；`WebSite` 宣告 `inLanguage`。
 - 首頁研究領域補上「閱讀與知識」，並列出精選作品、連到作品頁對應卡片。
 - `llms.txt` 由同一份資料產生；非 Google / ChatGPT 收錄必要條件。
 - 發布後重建：`supabase/migrations/20261020080000_website_rebuild_on_publish.sql`。啟用步驟：

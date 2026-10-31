@@ -33,6 +33,7 @@
         padding: 0 4px 4px 0;
 
         .method {
+          display: block;
           padding: 1.25rem 1.5rem;
           background: var(--card-background);
           border: 2px solid var(--border-color);
@@ -56,6 +57,17 @@
             color: var(--text-color);
             font-family: var(--font-mono);
             font-variant-numeric: tabular-nums;
+          }
+        }
+
+        a.method {
+          text-decoration: none;
+          transition: transform 0.15s ease, box-shadow 0.15s ease;
+
+          &:hover,
+          &:focus-visible {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0 var(--shadow-offset);
           }
         }
       }
