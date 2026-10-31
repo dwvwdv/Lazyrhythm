@@ -6,6 +6,14 @@
   </main>
 
   <footer role="contentinfo">
+    <nav class="footer-links lr-mono" [attr.aria-label]="'footer.links' | t">
+      <a [href]="facebookUrl" target="_blank" rel="noopener noreferrer" [attr.aria-label]="'social.facebookLabel' | t">
+        <i class="fab fa-facebook" aria-hidden="true"></i>{{ 'social.facebook' | t }}
+      </a>
+      <a [href]="githubUrl" target="_blank" rel="noopener noreferrer" [attr.aria-label]="'social.githubLabel' | t">
+        <i class="fab fa-github" aria-hidden="true"></i>{{ 'social.github' | t }}
+      </a>
+    </nav>
     <p>© {{currentYear}} {{title}}. {{ 'footer.rights' | t }}</p>
   </footer>
 

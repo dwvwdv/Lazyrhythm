@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ContactFormComponent } from '../../widgets/contact-form/contact-form.component';
 import { TranslatePipe } from '../../i18n/translate.pipe';
+import { FACEBOOK_URL, GITHUB_URL } from '../../services/seo.config';
 
 @Component({
     selector: 'app-contact',
@@ -10,4 +11,6 @@ import { TranslatePipe } from '../../i18n/translate.pipe';
     styleUrls: ['./contact.component.scss']
 })
 export class ContactComponent {
+  readonly facebookUrl = FACEBOOK_URL;
+  readonly githubUrl = GITHUB_URL;
 }
