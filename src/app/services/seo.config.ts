@@ -5,8 +5,12 @@ export const SITE_URL = 'https://lazyrhythm.com';
 export const SITE_NAME = 'LazyRhythm';
 /** The name the 中文 pages use for the lab. */
 export const SITE_ALTERNATE_NAME = '悠閒節奏';
+/** 悠閒節奏 Facebook page (the canonical URL the share link redirects to). */
+export const FACEBOOK_URL = 'https://www.facebook.com/profile.php?id=61577652545497';
+/** The developer's personal GitHub; it is not a brand account, so it stays out of SITE_SAME_AS. */
+export const GITHUB_URL = 'https://github.com/dwvwdv';
 /** Profiles that belong to LazyRhythm itself; add only accounts the brand owns. */
-export const SITE_SAME_AS = ['https://ko-fi.com/lazyrhythm'];
+export const SITE_SAME_AS = ['https://ko-fi.com/lazyrhythm', FACEBOOK_URL];
 export const SITE_IMAGE = `${SITE_URL}/assets/logo.png`;
 /** The square logo is shown as a small card; only landscape article covers use the large card. */
 export const SITE_IMAGE_SIZE = 1024;

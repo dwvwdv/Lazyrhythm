@@ -24,6 +24,11 @@ const en = {
   'nav.toggleMenu': 'Toggle navigation menu',
   'nav.home': 'LazyRhythm home',
   'footer.rights': 'All rights reserved.',
+  'footer.links': 'LazyRhythm elsewhere',
+  'social.facebook': 'Facebook',
+  'social.facebookLabel': 'LazyRhythm on Facebook (opens in a new tab)',
+  'social.github': 'GitHub',
+  'social.githubLabel': 'Developer GitHub (opens in a new tab)',
 
   'home.kicker': 'Personal experimental laboratory',
   'home.subtitle': 'Build slowly. Explore deeply. Ship when it clicks.',
@@ -127,6 +132,8 @@ const en = {
   'contact.title': 'Get in Touch',
   'contact.intro': 'Have questions, ideas, or collaboration opportunities? Feel free to reach out.',
   'contact.email': 'Email',
+  'contact.facebook': 'Facebook page',
+  'contact.github': 'GitHub',
 
   'sponsor.title': 'Support the Lab',
   'sponsor.intro': 'Your support helps keep the experiments running and new projects coming',
@@ -268,6 +275,11 @@ const zhTW: Record<TranslationKey, string> = {
   'nav.toggleMenu': '切換導覽選單',
   'nav.home': 'LazyRhythm 首頁',
   'footer.rights': '保留所有權利',
+  'footer.links': '悠閒節奏的其他據點',
+  'social.facebook': 'Facebook 粉專',
+  'social.facebookLabel': '悠閒節奏 Facebook 粉專（另開分頁）',
+  'social.github': 'GitHub',
+  'social.githubLabel': '開發者的 GitHub（另開分頁）',
 
   'home.kicker': '個人實驗室',
   'home.subtitle': '慢慢做、深入探索，打磨完畢就上線',
@@ -370,6 +382,8 @@ const zhTW: Record<TranslationKey, string> = {
   'contact.title': '與我聯絡',
   'contact.intro': '有問題、點子或合作機會嗎？歡迎隨時聯絡',
   'contact.email': '電子郵件',
+  'contact.facebook': 'Facebook 粉專',
+  'contact.github': 'GitHub',
 
   'sponsor.title': '支持實驗室',
   'sponsor.intro': '你的支持能讓實驗持續運轉，也讓新專案得以誕生',
